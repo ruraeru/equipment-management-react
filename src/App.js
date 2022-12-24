@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import Main from "components/main/Main";
+import { Link, Route, Routes, useParams } from "react-router-dom";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/" element={<Main />} />
+    </Routes>
   );
 }
 
-export default App;
+const NotFoundPage = () => {
+  const { params } = useParams();
+  return (
+    <>
+      <h1>{`${params}는 존재하지 않는 페이지 입니다.`}</h1>
+      <Link to="/">홈으로 가기</Link>
+    </>
+  )
+}

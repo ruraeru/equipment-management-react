@@ -1,0 +1,23 @@
+#main-wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#contents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 28px;
+}
+
+.main {
+  width: 1100px;
+  height: 804px;
+  background-color: aquamarine;
+
+  border: solid 2px #c6c1d1;
+  border-radius: 16px;
+  padding: 20px;
+}

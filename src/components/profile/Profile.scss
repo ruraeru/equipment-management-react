@@ -1,0 +1,26 @@
+#profile-wrap {
+  display: flex;
+  flex-direction: column;
+  //   justify-content: flex-start;
+
+  width: 220px;
+  //   height: 300px;
+
+  margin-right: 22px;
+
+  border-top: 4px solid #676767;
+  border-bottom: 4px solid #676767;
+  //   background-color: aqua;
+
+  text-align: center;
+
+  #navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    * {
+      height: 24px;
+      //   border-bottom: 8px;
+    }
+  }
+}

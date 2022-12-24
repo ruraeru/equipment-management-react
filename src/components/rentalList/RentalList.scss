@@ -1,0 +1,63 @@
+#contents-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.rentalT {
+  color: #94d82d;
+}
+
+.rentalI {
+  color: orange;
+}
+
+.rentalF {
+  color: #e03333;
+}
+
+#equipment-list {
+  width: 100%;
+  font-weight: 500;
+  text-align: center;
+
+  border-collapse: collapse;
+
+  thead {
+    height: 32px;
+
+    color: #f5f5f5;
+
+    background-color: #676767;
+  }
+
+  tbody {
+    color: #676767;
+    font-weight: 700;
+    tr {
+      height: 48px;
+      background-color: #ffffff;
+      border-bottom: 2px solid rgba(103, 103, 103, 0.3);
+      &:hover {
+        background-color: #f5f5f5;
+        color: #181818;
+      }
+    }
+  }
+
+  td {
+    max-width: 24px;
+  }
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 1100px;
+  height: 70px;
+  background-color: antiquewhite;
+}
