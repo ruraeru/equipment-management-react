@@ -3,7 +3,7 @@
   justify-content: space-around;
   align-items: center;
 
-  width: 1440px;
+  width: 100%;
   max-width: 1440px;
   height: 52px;
 
@@ -29,7 +29,8 @@
 
   #location {
     display: flex;
-    width: 1200px;
+    width: 100%;
+    max-width: 1200px;
     justify-content: flex-end;
     * {
       margin-right: 16px;

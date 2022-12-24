@@ -1,7 +1,8 @@
-import Search from "components/search/Search";
-import "./RentalList.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Search from "components/search/Search";
+import { SiMicrosoftexcel } from "react-icons/si";
+import "./RentalList.scss";
 
 export default function RentalList() {
     const [rentalList, setRentalList] = useState();
@@ -30,12 +31,16 @@ export default function RentalList() {
                 <h3>대여 목록</h3>
                 <p>대여 로그</p>
                 <Search />
+                {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
+                이유는 나중에 엑셀 export해주기 위해!! */}
+                <SiMicrosoftexcel size="27px" color="#20744A" />
             </div>
             <table id="equipment-list">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" />
+                        <th className="check-wrap">
+                            <input type="checkbox" id="check-btn" />
+                            <label htmlFor="check-btn" />
                         </th>
                         <th>구분</th>
                         <th>관리 부서</th>
@@ -46,10 +51,14 @@ export default function RentalList() {
                 </thead>
                 <tbody>
                     {rentalList && rentalList.map((item, index) => (
-                        <tr key={index}>
-                            <td>
-                                <input type="checkbox" />
-                            </td>
+                        <tr key={index} onClick={(e) => {
+                            e.target.parentNode.classList.add("hide");
+                            console.log(rentalList[index]);
+                        }}>
+                            <th className="check-wrap">
+                                <input type="checkbox" id="check-btn" />
+                                <label htmlFor="check-btn" />
+                            </th>
                             <td>{item.tool_use_division}</td>
                             <td>{item.department.department_name}</td>
                             <td>{item.tool_name}</td>
@@ -65,9 +74,10 @@ export default function RentalList() {
                     ))}
                     {rentalList && rentalList.map((item, index) => (
                         <tr key={index}>
-                            <td>
-                                <input type="checkbox" />
-                            </td>
+                            <th className="check-wrap">
+                                <input type="checkbox" id="check-btn" />
+                                <label htmlFor="check-btn" />
+                            </th>
                             <td>{item.tool_use_division}</td>
                             <td>{item.department.department_name}</td>
                             <td>{item.tool_name}</td>

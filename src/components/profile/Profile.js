@@ -6,11 +6,10 @@ export default function Profile() {
             display: "flex",
             flexDirection: "column",
             height: "100vh",
-            marginLeft: "50px"
         }}>
             <div id="profile-wrap">
                 <div style={{
-                    borderBottom: "2px solid rgba(103, 103, 130, 0.3)"
+                    borderBottom: "2px solid rgba(103, 103, 130, 0.3)",
                 }}>
                     <p>
                         <b>2022661108</b> 교번
@@ -29,18 +28,68 @@ export default function Profile() {
                     <a>기자재 추가</a>
                 </div>
             </div>
-            <div style={{
-                backgroundColor: "#F5F5F5",
-                width: "220px",
-                borderRadius: "15px",
-                marginTop: "24px"
-            }}>
-                <p>내 대여 목록</p>
+            {/*추후 분리 예정 */}
+
+            <div id="myRentalList">
+                <h4>내 대여 목록</h4>
                 <div>
-                    <h3>D - 1</h3>
+                    <p style={{
+                        fontSize: "16px",
+                        color: "#E03333",
+                    }}>D - 1</p>
                     <p>
                         스마트 패드 <br />
-                        품목 코드 : 9115
+                        <span>품목 코드 : 9115</span>
+                    </p>
+                </div>
+                <div>
+                    <p style={{
+                        fontSize: "16px",
+                        color: "#E03333",
+                    }}>D - 1</p>
+                    <p>
+                        스마트 패드 <br />
+                        <span>품목 코드 : 9115</span>
+                    </p>
+                </div>
+                <div>
+                    <p style={{
+                        fontSize: "16px",
+                        color: "#E03333",
+                    }}>D - 1</p>
+                    <p>
+                        스마트 패드 <br />
+                        <span>품목 코드 : 9115</span>
+                    </p>
+                </div>
+                <div>
+                    <p style={{
+                        fontSize: "16px",
+                        color: "#E03333",
+                    }}>D - 1</p>
+                    <p>
+                        스마트 패드 <br />
+                        <span>품목 코드 : 9115</span>
+                    </p>
+                </div>
+                <div>
+                    <p style={{
+                        fontSize: "16px",
+                        color: "#E03333",
+                    }}>D - 1</p>
+                    <p>
+                        스마트 패드 <br />
+                        <span>품목 코드 : 9115</span>
+                    </p>
+                </div>
+                <div>
+                    <p style={{
+                        fontSize: "16px",
+                        color: "#E03333",
+                    }}>D - 1</p>
+                    <p>
+                        스마트 패드 <br />
+                        <span>품목 코드 : 9115</span>
                     </p>
                 </div>
             </div>
