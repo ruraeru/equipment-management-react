@@ -1,0 +1,40 @@
+#detail-equipment {
+  height: 218px;
+  img {
+    width: 160px;
+    height: 160px;
+
+    border-radius: 8px;
+    border: 1px solid black;
+  }
+
+  #information {
+    // align-items: center;
+    // justify-content: center;
+    text-align: left;
+
+    span {
+      font-size: 20px;
+      font-weight: 700;
+      color: #181818;
+    }
+
+    .equipment-detail {
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+
+  button {
+    width: 130px;
+    height: 48px;
+
+    font-size: 16px;
+    font-weight: 700;
+    color: #fafafa;
+
+    border: none;
+    border-radius: 8px;
+    background-color: #9785cb;
+  }
+}

@@ -3,6 +3,7 @@ import axios from "axios";
 import Search from "components/search/Search";
 import { SiMicrosoftexcel } from "react-icons/si";
 import "./RentalList.scss";
+import DetailEquipment from "components/detail/DetailEquipment";
 
 export default function RentalList() {
     const [rentalList, setRentalList] = useState();
@@ -55,10 +56,10 @@ export default function RentalList() {
                             e.target.parentNode.classList.add("hide");
                             console.log(rentalList[index]);
                         }}>
-                            <th className="check-wrap">
+                            <td className="check-wrap">
                                 <input type="checkbox" id="check-btn" />
                                 <label htmlFor="check-btn" />
-                            </th>
+                            </td>
                             <td>{item.tool_use_division}</td>
                             <td>{item.department.department_name}</td>
                             <td>{item.tool_name}</td>
@@ -72,25 +73,7 @@ export default function RentalList() {
                             }>{item.tool_state}</td>
                         </tr>
                     ))}
-                    {rentalList && rentalList.map((item, index) => (
-                        <tr key={index}>
-                            <th className="check-wrap">
-                                <input type="checkbox" id="check-btn" />
-                                <label htmlFor="check-btn" />
-                            </th>
-                            <td>{item.tool_use_division}</td>
-                            <td>{item.department.department_name}</td>
-                            <td>{item.tool_name}</td>
-                            <td>{item.tool_id}</td>
-                            <td className={
-                                item.tool_state === "대여가능"
-                                    ? "rentalT"
-                                    : item.tool_state === "대여 중"
-                                        ? "rentalI"
-                                        : "rentalF"
-                            }>{item.tool_state}</td>
-                        </tr>
-                    ))}
+                    <DetailEquipment />
                 </tbody>
             </table>
             <footer>
