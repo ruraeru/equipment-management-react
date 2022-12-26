@@ -26,7 +26,9 @@ export default function RentalList() {
 
     return (
         <div style={{
-            width: "100%"
+            width: "100%",
+            height: "100vh",
+            position: "relative"
         }}>
             <div id="contents-header">
                 <h3>대여 목록</h3>
