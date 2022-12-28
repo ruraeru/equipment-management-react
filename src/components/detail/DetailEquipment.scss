@@ -9,8 +9,6 @@
   }
 
   #information {
-    // align-items: center;
-    // justify-content: center;
     text-align: left;
 
     span {
@@ -22,6 +20,10 @@
     .equipment-detail {
       font-size: 14px;
       font-weight: 400;
+    }
+
+    .equipment-code {
+      width: 230px;
     }
   }
 
