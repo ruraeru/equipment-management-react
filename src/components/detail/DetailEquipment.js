@@ -13,10 +13,10 @@ export default function DetailEquipment() {
             <td>
                 <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
             </td>
-            <td id="information" colSpan={2}>
+            <td id="information" colSpan={1}>
                 <div>
                     <p className="equipment-name">
-                        <span>스마트 패드</span> &nbsp; 대여가능 <br />
+                        <span>스마트 패드</span> &nbsp; 대여가능
                     </p>
                     <p className="equipment-code">
                         품목 코드 : &nbsp; 9115 <br />
@@ -29,9 +29,22 @@ export default function DetailEquipment() {
                     </p>
                 </div>
             </td>
-            <td>
-                <button>기자재 수리 요청</button>
+            <td id="information" style={{
+                paddingLeft: "100px"
+            }} colSpan={2}>
+                <div>
+                    <p className="equipment-name">
+                        <span>대여 정보</span>
+                    </p>
+                    <p className="equipment-code">
+                        대여자: &nbsp; 홍길동(학부생) <br />
+                        대여 기간: &nbsp; 2022 / 11 / 16 ~ 2022 / 11 / 30 (남은 기간 : 14일)
+                    </p>
+                </div>
             </td>
+            {/* <td>
+                <button>기자재 수리 요청</button>
+            </td> */}
         </tr>
     );
 }
