@@ -4,8 +4,18 @@ import Search from "components/search/Search";
 import { SiMicrosoftexcel } from "react-icons/si";
 import "./RentalList.scss";
 import DetailEquipment from "components/detail/DetailEquipment";
+import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 export default function RentalList() {
+    const ExcelExport = () => {
+        const table = document.getElementById("equipment-list");
+        const wb = XLSX.utils.table_to_book(table, {
+            raw: true
+        });
+
+        XLSX.writeFile(wb, "기자재리스트.xlsx");
+    }
     const [rentalList, setRentalList] = useState();
     const [rentalListPage, setRentalListPage] = useState(1);
     const getRentalList = async () => {
@@ -26,7 +36,9 @@ export default function RentalList() {
 
     return (
         <div style={{
-            width: "100%"
+            width: "100%",
+            height: "804px",
+            position: "relative"
         }}>
             <div id="contents-header">
                 <h3>대여 목록</h3>
@@ -34,7 +46,7 @@ export default function RentalList() {
                 <Search />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
-                <SiMicrosoftexcel size="27px" color="#20744A" />
+                <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
             </div>
             <table id="equipment-list">
                 <thead>
@@ -53,8 +65,7 @@ export default function RentalList() {
                 <tbody>
                     {rentalList && rentalList.map((item, index) => (
                         <tr key={index} onClick={(e) => {
-                            e.target.parentNode.classList.add("hide");
-                            console.log(rentalList[index]);
+
                         }}>
                             <td className="check-wrap">
                                 <input type="checkbox" id="check-btn" />
@@ -73,6 +84,17 @@ export default function RentalList() {
                             }>{item.tool_state}</td>
                         </tr>
                     ))}
+                    <tr>
+                        <td className="check-wrap">
+                            <input type="checkbox" id="check-btn" />
+                            <label htmlFor="check-btn" />
+                        </td>
+                        <td>교육용</td>
+                        <td>소프트웨어콘텐츠 과</td>
+                        <td>스마트 패드</td>
+                        <td>2017021402226</td>
+                        <td>대여 가능</td>
+                    </tr>
                     <DetailEquipment />
                 </tbody>
             </table>
@@ -82,14 +104,14 @@ export default function RentalList() {
                 </p>
                 {/* <ul style={{
                     display: "inline-flex",
-                    listStyle: "none",
+                            listStyle: "none",
                 }}>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                </ul> */}
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                            <li>4</li>
+                            <li>5</li>
+                        </ul> */}
                 <button onClick={() => setRentalListPage(1)}>1</button>
                 <button onClick={() => setRentalListPage(2)}>2</button>
                 <button onClick={() => setRentalListPage(2)}>3</button>
