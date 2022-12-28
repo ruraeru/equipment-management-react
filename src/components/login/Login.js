@@ -25,11 +25,19 @@ export default function Login() {
                 user_pw: user_pw
             }
         ).then(res => {
-            if (res.data) {
-                console.log(res.data);
-            }
-            else Promise.reject(new Error("API 반환값 에러"));
+            // if (res) {
+            console.log(res.data);
+            localStorage.setItem("token", res.data.token.token);
+            // }
+            // else Promise.reject(new Error("API 반환값 에러"));
         }).catch(err => Promise.reject(new Error("서버 에러", err)));
+    }
+
+    const onDetailEquipment = async () => {
+        await axios.get("http://120.142.105.189:5080/tool/viewTool", {
+            tool_id: "test1",
+            headers: localStorage.getItem("token")
+        }).catch(err => console.log(err));
     }
 
     const onSubmit = (e) => {
@@ -54,6 +62,7 @@ export default function Login() {
                     onChange={onInputChange} />
                 <input type="submit" />
             </LoginFormWrap>
+            <button onClick={onDetailEquipment}>기자재 자세히 보기</button>
         </>
     );
 }
