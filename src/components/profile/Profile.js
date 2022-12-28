@@ -1,3 +1,5 @@
+import { useActive } from "hooks/useActive";
+import { Link } from "react-router-dom";
 import "./Profile.scss";
 
 export default function Profile() {
@@ -21,11 +23,16 @@ export default function Profile() {
                 </div>
                 <hr />
                 <div id="navigation">
-                    <a>대여 목록</a>
-                    <a>내 대여 내역</a>
-                    <a>회원 정보 수정</a>
-                    <a>기자재 정보 수정</a>
-                    <a>기자재 추가</a>
+                    <Link to="/home/rentalList"
+                        className={useActive("/home/rental") ? "active" : null}>대여 목록</Link>
+                    <Link to="/home/myRentalList"
+                        className={useActive("/home/myRentalList") ? "active" : null}>내 대여 내역</Link>
+                    <Link to="/user/changeInfo"
+                        className={useActive("/user/changeInfo") ? "active" : null}>회원 정보 수정</Link>
+                    <Link to="/tool/changeInfo"
+                        className={useActive("/tool/changeInfo") ? "active" : null}>기자재 정보 수정</Link>
+                    <Link to="/tool/addTool"
+                        className={useActive("/tool/addTool") ? "active" : null}>기자재 추가</Link>
                 </div>
             </div>
             {/*추후 분리 예정 */}

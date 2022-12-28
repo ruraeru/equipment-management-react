@@ -20,8 +20,14 @@
     flex-direction: column;
     justify-content: center;
     * {
+      text-decoration: none;
+      color: #161616;
       height: 24px;
       margin-bottom: 8px;
+    }
+
+    .active {
+      font-weight: 700;
     }
   }
 }
