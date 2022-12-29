@@ -34,10 +34,15 @@ export default function Login() {
     }
 
     const onDetailEquipment = async () => {
-        await axios.get("http://120.142.105.189:5080/tool/viewTool", {
-            tool_id: "test1",
-            headers: localStorage.getItem("token")
-        }).catch(err => console.log(err));
+        await axios.get("http://120.142.105.189:5080/tool/viewTool",
+            {
+                params: {
+                    tool_id: "test1"
+                },
+                headers: {
+                    token: localStorage.getItem("token")
+                }
+            }).catch(err => console.log(err));
     }
 
     const onSubmit = (e) => {
