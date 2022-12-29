@@ -3,6 +3,7 @@ import Main from "components/main/Main";
 import RentalList from "components/rentalList/RentalList";
 import AddTool from "components/tool/AddTool";
 import AddToolExcel from "components/tool/AddToolExcel";
+import ChangeInfo from "components/tool/changeInfo/ChangeInfo";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 
 export default function App() {
@@ -25,7 +26,7 @@ export default function App() {
       } />
       <Route path="/tool/changeInfo" element={
         <Main>
-
+          <ChangeInfo />
         </Main>
       } />
       <Route path="/tool/addTool" element={
