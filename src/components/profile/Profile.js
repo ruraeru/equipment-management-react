@@ -8,6 +8,7 @@ export default function Profile() {
             display: "flex",
             flexDirection: "column",
             height: "100vh",
+            marginLeft: "24px"
         }}>
             <div id="profile-wrap">
                 <div style={{
