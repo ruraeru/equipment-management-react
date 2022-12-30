@@ -101,42 +101,49 @@ export default function ChangeInfo() {
                             <input type="checkbox" id="check-btn" />
                             <label htmlFor="check-btn" />
                         </td>
-                        <td>
-                            <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
-                        </td>
-                        <td id="code-detail" colSpan={2}>
-                            <h3>스마트 패드</h3>
-                            <p id="code">
-                                품목 코드 : 9115 <br />
-                                자산 번호 : 2017021402226
-                            </p>
-                            <p id="detail">
-                                구입 구분 : 교비 (등록금) <br />
-                                구입 일자 : 2017년 2월 14일 <br />
-                                물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
-                            </p>
-                        </td>
-                        <td>
-                            <h3>건의 신청</h3>
-                            <p>
-                                건의자: 홍길동(학부생) <br />
-                                건의 일자 : 2022 / 11 / 21
-                            </p>
-                            <p>
-                                변동 일자 : 2022 / 12 / 05
-                            </p>
+                        <td id="code-detail" colSpan={4}>
+                            <div style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "left",
+                                alignItems: "center"
+                            }}>
+                                <div>
+                                    <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
+                                </div>
+                                <div>
+                                    <h3>스마트 패드</h3>
+                                    <p id="code">
+                                        품목 코드 : 9115 <br />
+                                        자산 번호 : 2017021402226
+                                    </p>
+                                    <p id="detail">
+                                        구입 구분 : 교비 (등록금) <br />
+                                        구입 일자 : 2017년 2월 14일 <br />
+                                        물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
+                                    </p>
+                                </div>
+                                <div>
+                                    <h3>건의 신청</h3>
+                                    <p>
+                                        건의자: 홍길동(학부생) <br />
+                                        건의 일자 : 2022 / 11 / 21
+                                    </p>
+                                    <p>
+                                        변동 일자 : 2022 / 12 / 05
+                                    </p>
+                                </div>
+                            </div>
+                            <div id="report-comment">
+                                <h3>건의 내용 : </h3>
+                                <p>터치가 안돼요</p>
+                            </div>
                         </td>
                         <td>
                             <select>
                                 <option>대여 불가</option>
                                 <option>대여 가능</option>
                             </select>
-                        </td>
-                        <td>
-                            <div>
-                                <h3>건의 내용 : </h3>
-                                <p>터치가 안돼요</p>
-                            </div>
                         </td>
                     </TR>
                 </tbody>
@@ -160,28 +167,30 @@ export default function ChangeInfo() {
 
 const TR = styled.tr`
    position: relative;
-    margin-top: 200px;
    height: 390px;
    img {
     width: 160px;
     height: 160px;
+    border: 1px solid black;
    }
    #code-detail {
-    padding-left: 100px;
     text-align: left;
    }
-   #code {
-
-   }
-
-   & > td:last-child {
-    div {
-        background-color: aliceblue;
-    position: absolute;
-    bottom: -170px;
-    left: 50px;
+   #report-comment {
     width: 728px;
     height: 170px;
+    background-color: aliceblue;
+    padding: 16px;
+
+    border-radius: 15px;
+    background-color: #f5f5f5;
+    margin-bottom: 24px;
+    * {
+        margin: 0;
+    }
+    h3 {
+        margin-bottom: 8px;
     }
    }
+
 `
