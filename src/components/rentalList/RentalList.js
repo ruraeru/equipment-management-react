@@ -6,6 +6,7 @@ import "./RentalList.scss";
 import DetailEquipment from "components/detail/DetailEquipment";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
+import { useHeaderActive } from "hooks/useActive";
 
 export default function RentalList() {
     const ExcelExport = () => {
@@ -41,11 +42,12 @@ export default function RentalList() {
             position: "relative"
         }}>
             <div id="contents-header">
-                <Link to="/home/rentalList">
-                    <h3>대여 목록</h3>
+                <Link to="/home/rentalList"
+                    className={useHeaderActive("/home/rentalList") ? "active" : null}>
+                    대여 목록
                 </Link>
-                <Link to="/home/rentalList/rentalLog">
-                    <p>대여 로그</p>
+                <Link to="/home/rentalList/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
+                    대여 로그
                 </Link>
                 <Search />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
