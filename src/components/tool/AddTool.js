@@ -1,7 +1,9 @@
 import { SiMicrosoftexcel } from "react-icons/si";
+import { Navigate, useNavigate } from "react-router-dom";
 import "./AddTool.scss";
 
 export default function AddTool() {
+    const navigate = useNavigate();
     const onFileChange = (e) => {
         console.log(e.target.files[0]);
         document.querySelector("img");
@@ -18,9 +20,7 @@ export default function AddTool() {
         }
     }
     return (
-        <div className="add-tool-wrap" style={{
-            position: "relative"
-        }}>
+        <div className="add-tool-wrap">
             <h3>대여 목록</h3>
             <div id="input-filed-wrap">
                 <img
@@ -38,6 +38,10 @@ export default function AddTool() {
                     </div>
                     <label>기자재 명칭</label>
                     <input type="text" />
+                    <SiMicrosoftexcel size={27} color="#20744A" onClick={() => {
+                        navigate("/tool/addToolExcel")
+                    }} />
+                    <input type="text" onClick={() => alert(123)} />
                 </div>
             </div>
             <div id="equipment-input-info-wrap">
@@ -72,7 +76,9 @@ export default function AddTool() {
                 </div>
                 <div>
                     <p>구입 일자 :</p>
-                    <input type="date" />
+                    <input type="date" onChange={(e) => {
+                        console.log(e.target.value);
+                    }} />
                 </div>
                 <div>
                     <p>품목 규격 :</p>
