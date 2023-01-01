@@ -1,6 +1,7 @@
 import Login from "components/login/Login";
 import Main from "components/main/Main";
 import RentalList from "components/rentalList/RentalList";
+import RentalLog from "components/rentalList/rentalLog/RentalLog";
 import AddTool from "components/tool/AddTool";
 import AddToolExcel from "components/tool/AddToolExcel";
 import ChangeInfo from "components/tool/changeInfo/ChangeInfo";
@@ -19,6 +20,11 @@ export default function App() {
         <Main>
           <RentalList />
         </Main>} />
+      <Route path="/home/rentalList/rentalLog" element={
+        <Main>
+          <RentalLog />
+        </Main>
+      } />
       <Route path="/home/myRentalList" element={
         <Main>
 

@@ -41,8 +41,12 @@ export default function RentalList() {
             position: "relative"
         }}>
             <div id="contents-header">
-                <h3>대여 목록</h3>
-                <p>대여 로그</p>
+                <Link to="/home/rentalList">
+                    <h3>대여 목록</h3>
+                </Link>
+                <Link to="/home/rentalList/rentalLog">
+                    <p>대여 로그</p>
+                </Link>
                 <Search />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
@@ -98,7 +102,7 @@ export default function RentalList() {
                     <DetailEquipment />
                 </tbody>
             </table>
-            <footer>
+            <footer className="list-nav">
                 <p>
                     &lt;
                 </p>
