@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Search from "components/search/Search";
 import { SiMicrosoftexcel } from "react-icons/si";
-import "../../rentalList/RentalList.scss";
+// import "../../rentalList/RentalList.scss";
+import "./ChangeInfo.scss";
 import DetailEquipment from "components/detail/DetailEquipment";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
@@ -96,7 +97,7 @@ export default function ChangeInfo() {
                         <td>2017021402226</td>
                         <td>대여 가능</td>
                     </tr>
-                    <TR rowSpan={2}>
+                    <tr id="equipment-report">
                         <td className="check-wrap" colSpan={1}>
                             <input type="checkbox" id="check-btn" />
                             <label htmlFor="check-btn" />
@@ -111,8 +112,8 @@ export default function ChangeInfo() {
                                 <div>
                                     <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
                                 </div>
-                                <div>
-                                    <h3>스마트 패드</h3>
+                                <div id="info">
+                                    <span>스마트 패드</span>
                                     <p id="code">
                                         품목 코드 : 9115 <br />
                                         자산 번호 : 2017021402226
@@ -123,9 +124,9 @@ export default function ChangeInfo() {
                                         물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
                                     </p>
                                 </div>
-                                <div>
-                                    <h3>건의 신청</h3>
-                                    <p>
+                                <div id="report">
+                                    <span>건의 신청</span>
+                                    <p id="code">
                                         건의자: 홍길동(학부생) <br />
                                         건의 일자 : 2022 / 11 / 21
                                     </p>
@@ -140,15 +141,15 @@ export default function ChangeInfo() {
                             </div>
                         </td>
                         <td>
-                            <select>
+                            <select className="equipment-state-select">
                                 <option>대여 불가</option>
                                 <option>대여 가능</option>
                             </select>
                         </td>
-                    </TR>
+                    </tr>
                 </tbody>
             </table>
-            <footer>
+            <footer className="list-nav">
                 <p>
                     &lt;
                 </p>
@@ -164,33 +165,3 @@ export default function ChangeInfo() {
         </div >
     );
 }
-
-const TR = styled.tr`
-   position: relative;
-   height: 390px;
-   img {
-    width: 160px;
-    height: 160px;
-    border: 1px solid black;
-   }
-   #code-detail {
-    text-align: left;
-   }
-   #report-comment {
-    width: 728px;
-    height: 170px;
-    background-color: aliceblue;
-    padding: 16px;
-
-    border-radius: 15px;
-    background-color: #f5f5f5;
-    margin-bottom: 24px;
-    * {
-        margin: 0;
-    }
-    h3 {
-        margin-bottom: 8px;
-    }
-   }
-
-`
