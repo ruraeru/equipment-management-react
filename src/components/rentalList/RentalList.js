@@ -9,6 +9,7 @@ import * as XLSX from "xlsx";
 import { useHeaderActive } from "hooks/useActive";
 
 export default function RentalList() {
+    const [hide, setHide] = useState(true);
     const ExcelExport = () => {
         const table = document.getElementById("equipment-list");
         const wb = XLSX.utils.table_to_book(table, {
@@ -69,9 +70,11 @@ export default function RentalList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {rentalList && rentalList.map((item, index) => (
+                    {rentalList && rentalList.slice(0, 1).map((item, index) => (
                         <tr key={index} onClick={(e) => {
-
+                            setHide(!hide);
+                            console.log(hide);
+                            e.target.parentElement.className = hide ? "hide" : null;
                         }}>
                             <td className="check-wrap">
                                 <input type="checkbox" id="check-btn" />
@@ -90,7 +93,8 @@ export default function RentalList() {
                             }>{item.tool_state}</td>
                         </tr>
                     ))}
-                    <tr>
+                    <DetailEquipment />
+                    {/* <tr>
                         <td className="check-wrap">
                             <input type="checkbox" id="check-btn" />
                             <label htmlFor="check-btn" />
@@ -101,7 +105,7 @@ export default function RentalList() {
                         <td>2017021402226</td>
                         <td>대여 가능</td>
                     </tr>
-                    <DetailEquipment />
+                    <DetailEquipment /> */}
                 </tbody>
             </table>
             <footer className="list-nav">
