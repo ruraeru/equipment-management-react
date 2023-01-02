@@ -25,7 +25,7 @@ export default function Login() {
     }
 
     const onLogin = async () => {
-        await axios.post("http://120.142.105.189:5080/user/login",
+        await axios.post(`${process.env.REACT_APP_DOMAIN}/user/login`,
             {
                 user_id: user_id,
                 user_pw: user_pw
@@ -40,7 +40,7 @@ export default function Login() {
     }
 
     const onDetailEquipment = async () => {
-        await axios.get("http://120.142.105.189:5080/tool/viewTool",
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewTool`,
             {
                 params: {
                     tool_id: "test1"

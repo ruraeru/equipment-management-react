@@ -42,7 +42,7 @@ export default function AddToolExcel() {
     const onAddEquipment = () => {
         json.map(async (item) => {
             const { 자산번호: id, 관리부서: purchaseDivision, 구분: division, 품목코드: code, 규격: standard, 구입일자: date, 구입구분: purchase } = item;
-            await axios.post("http://120.142.105.189:5080/tool/addTool", {
+            await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, {
                 tool_id: id,
                 tool_use_division: division,
                 tool_code: code,

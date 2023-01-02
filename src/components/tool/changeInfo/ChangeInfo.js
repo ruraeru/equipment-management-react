@@ -21,7 +21,7 @@ export default function ChangeInfo() {
     const [rentalList, setRentalList] = useState();
     const [rentalListPage, setRentalListPage] = useState(1);
     const getRentalList = async () => {
-        await axios.get(`http://120.142.105.189:5080/tool/viewToolList/1/${rentalListPage}`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/1/${rentalListPage}`)
             .then(res => {
                 if (res.data.suc) {
                     setRentalList(res.data.result);
