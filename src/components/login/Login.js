@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "./Login.scss";
 
 export default function Login() {
+    const [equipmentData, setEquipmentData] = useState();
     const [cookies, setCookie, removeCookie] = useCookies(['token']);
     const [input, setInput] = useState({
         user_id: "",
@@ -43,23 +44,53 @@ export default function Login() {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewTool`,
             {
                 params: {
-                    tool_id: "test1"
+                    tool_id: "123456"
                 },
                 headers: {
                     token: cookies.token
                 }
+            }).then((res) => {
+                if (res.data.suc) {
+                    console.log(res.data);
+                    setEquipmentData(res.data.tool.result);
+                    EquipmentImg(res.data.tool.image.img_url);
+                }
+                else Promise.reject(new Error(res.data.err));
             }).catch(err => console.log(err));
+    }
+
+    const EquipmentImg = (path) => {
+        const img = document.querySelector("img");
+        img.src = `${process.env.REACT_APP_DOMAIN}/tool/${path}`;
     }
 
     const onSubmit = (e) => {
         e.preventDefault();
         onLogin();
     }
+
     return (
         <div>
             <div>
+                <img src="" alt="이미지" style={{
+                    width: "160px"
+                }} />
+                {equipmentData &&
+                    <>
+                        <p>{equipmentData.tool_code}</p>
+                        <p>{equipmentData.tool_id}</p>
+                        <p>{equipmentData.tool_name}</p>
+                        <p>{equipmentData.tool_purchase_date}</p>
+                        <p>{equipmentData.tool_purchase_division}</p>
+                        <p>{equipmentData.tool_standard}</p>
+                        <p>{equipmentData.tool_update_at}</p>
+                        <p>{equipmentData.tool_use_division}</p>
+                    </>
+                }
                 {cookies?.token}
-                <button onClick={onDetailEquipment}>토큰 인증</button>
+                <button onClick={onDetailEquipment} style={{
+                    backgroundColor: "tomato"
+                }}>토큰 인증</button>
                 <h1>로그인</h1>
                 <form onSubmit={onSubmit}>
                     <p>아이디</p>
