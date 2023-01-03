@@ -70,7 +70,7 @@ export default function RentalList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {rentalList && rentalList.slice(0, 1).map((item, index) => (
+                    {rentalList && rentalList.map((item, index) => (
                         <tr key={index} onClick={(e) => {
                             setHide(!hide);
                             console.log(hide);
