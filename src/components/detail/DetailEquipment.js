@@ -2,18 +2,14 @@ import "./DetailEquipment.scss";
 
 export default function DetailEquipment() {
     return (
-        <tr id="detail-equipment" style={{
+        <div id="detail-equipment" style={{
             height: "218px"
         }}>
-            <td className="check-wrap">
-                <input type="checkbox" id="check-btn" />
-                <label htmlFor="check-btn" />
-            </td>
-            <td>교육용</td>
-            <td>
+            {/* <div>교육용</div> */}
+            <div>
                 <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
-            </td>
-            <td id="information" colSpan={1}>
+            </div>
+            <div id="information" colSpan={1}>
                 <div>
                     <p className="equipment-name">
                         <span>스마트 패드</span> &nbsp; 대여가능
@@ -28,8 +24,8 @@ export default function DetailEquipment() {
                         물품 규격 : &nbsp; LG G패드 3 8.0 Wi-Fi 32G
                     </p>
                 </div>
-            </td>
-            <td id="information" style={{
+            </div>
+            <div id="information" style={{
                 paddingLeft: "100px"
             }} colSpan={2}>
                 <div>
@@ -41,10 +37,10 @@ export default function DetailEquipment() {
                         대여 기간: &nbsp; 2022 / 11 / 16 ~ 2022 / 11 / 30 (남은 기간 : 14일)
                     </p>
                 </div>
-            </td>
+            </div>
             {/* <td>
                 <button>기자재 수리 요청</button>
             </td> */}
-        </tr>
+        </div>
     );
 }

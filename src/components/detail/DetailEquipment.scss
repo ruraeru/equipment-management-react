@@ -1,4 +1,7 @@
 #detail-equipment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 218px;
   img {
     width: 160px;
@@ -6,6 +9,8 @@
 
     border-radius: 8px;
     border: 1px solid black;
+
+    margin-right: 24px;
   }
 
   #information {

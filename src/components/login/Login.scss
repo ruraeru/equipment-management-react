@@ -62,4 +62,9 @@
 
     margin-top: 36px;
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 }

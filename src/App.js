@@ -6,43 +6,47 @@ import RentalLog from "components/rentalList/rentalLog/RentalLog";
 import AddTool from "components/tool/AddTool";
 import AddToolExcel from "components/tool/AddToolExcel";
 import ChangeInfo from "components/tool/changeInfo/ChangeInfo";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 
 export default function App() {
+  const [cookies, setCookie, removeCookie] = useCookies(['login']);
+
   return (
     <Routes>
       <Route path="*" element={<NotFoundPage />} />
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Login setCookie={setCookie} removeCookie={removeCookie} />} />
       <Route path="/home" element={
-        <Main>
+        <Main userData={cookies}>
           <RentalList />
         </Main>} />
       <Route path="/home/rentalList" element={
-        <Main>
+        <Main userData={cookies}>
           <RentalList />
         </Main>} />
       <Route path="/home/rentalList/rentalLog" element={
-        <Main>
+        <Main userData={cookies}>
           <RentalLog />
         </Main>
       } />
       <Route path="/home/myRentalList" element={
-        <Main>
+        <Main userData={cookies}>
           <MyRentalList />
         </Main>
       } />
       <Route path="/tool/changeInfo" element={
-        <Main>
+        <Main userData={cookies}>
           <ChangeInfo />
         </Main>
       } />
       <Route path="/tool/addTool" element={
-        <Main>
+        <Main userData={cookies}>
           <AddTool />
         </Main>
       } />
       <Route path="/tool/addToolExcel" element={
-        <Main>
+        <Main userData={cookies}>
           <AddToolExcel />
         </Main>
       } />

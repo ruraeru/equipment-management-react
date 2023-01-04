@@ -2,7 +2,7 @@ import { useActive } from "hooks/useActive";
 import { Link } from "react-router-dom";
 import "./Profile.scss";
 
-export default function Profile() {
+export default function Profile({ userData }) {
     return (
         <div style={{
             display: "flex",
@@ -15,10 +15,10 @@ export default function Profile() {
                     borderBottom: "2px solid rgba(103, 103, 130, 0.3)",
                 }}>
                     <p>
-                        <b>2022661108</b> 교번
+                        <b>{userData.login.user_student_number}</b> 교번
                     </p>
                     <p>
-                        <b>홍길동</b> 님
+                        <b>{userData.login.user_name}</b> 님
                     </p>
                     <p>(관리자)</p>
                 </div>
