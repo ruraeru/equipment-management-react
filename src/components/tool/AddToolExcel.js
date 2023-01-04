@@ -69,23 +69,27 @@ export default function AddToolExcel() {
                     <input type="file" onChange={handleFile} />
                 </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>자산번호</th>
-                        <th>관리부서</th>
-                        <th>구분</th>
-                        <th>품목코드</th>
-                        <th>규격</th>
-                        <th>구입일자</th>
-                        <th>구입구분</th>
-                    </tr>
-                </thead>
-                <tbody id="tableValues">
-                    {/* {json && ScreenData()} */}
-                    {json && <ScreenData json={json} />}
-                </tbody>
-            </table>
+            <div style={{
+                overflow: "scroll"
+            }}>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>자산번호</th>
+                            <th>관리부서</th>
+                            <th>구분</th>
+                            <th>품목코드</th>
+                            <th>규격</th>
+                            <th>구입일자</th>
+                            <th>구입구분</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableValues">
+                        {/* {json && ScreenData()} */}
+                        {json && <ScreenData json={json} />}
+                    </tbody>
+                </table>
+            </div>
             <button onClick={onAddEquipment}>
                 기자재 등록하기
             </button>

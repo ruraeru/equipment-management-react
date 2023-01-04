@@ -7,8 +7,17 @@ import DetailEquipment from "components/detail/DetailEquipment";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { useHeaderActive } from "hooks/useActive";
+import Modal from "components/Modal";
 
 export default function RentalList() {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openModal = () => {
+        setModalOpen(true);
+    }
+    const closeModal = () => {
+        setModalOpen(false);
+    }
     const [hide, setHide] = useState(true);
     const ExcelExport = () => {
         const table = document.getElementById("equipment-list");
@@ -93,8 +102,8 @@ export default function RentalList() {
                             }>{item.tool_state}</td>
                         </tr>
                     ))}
-                    <DetailEquipment />
-                    {/* <tr>
+                    {/* <DetailEquipment /> */}
+                    <tr onClick={openModal}>
                         <td className="check-wrap">
                             <input type="checkbox" id="check-btn" />
                             <label htmlFor="check-btn" />
@@ -105,9 +114,12 @@ export default function RentalList() {
                         <td>2017021402226</td>
                         <td>대여 가능</td>
                     </tr>
-                    <DetailEquipment /> */}
+                    {/* <DetailEquipment /> */}
                 </tbody>
             </table>
+            <Modal open={modalOpen} close={closeModal} header="Modal Heading">
+                <DetailEquipment />
+            </Modal>
             <footer className="list-nav">
                 <p>
                     &lt;
