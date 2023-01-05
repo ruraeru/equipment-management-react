@@ -12,7 +12,9 @@ import { Link, Route, Routes, useParams } from "react-router-dom";
 
 export default function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['login']);
-
+  useEffect(() => {
+    console.log("APP render");
+  }, []);
   return (
     <Routes>
       <Route path="*" element={<NotFoundPage />} />
@@ -23,7 +25,7 @@ export default function App() {
         </Main>} />
       <Route path="/home/rentalList" element={
         <Main userData={cookies}>
-          <RentalList />
+          <RentalList userData={cookies} />
         </Main>} />
       <Route path="/home/rentalList/rentalLog" element={
         <Main userData={cookies}>
