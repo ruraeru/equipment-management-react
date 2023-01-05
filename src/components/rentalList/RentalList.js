@@ -9,8 +9,39 @@ import * as XLSX from "xlsx";
 import { useHeaderActive } from "hooks/useActive";
 import Modal from "components/Modal";
 
-export default function RentalList() {
+export default function RentalList({ userData }) {
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalData, setModalData] = useState();
+
+    const setDetailEquipmentData = async (tool_id) => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewTool/test`, {
+            headers: {
+                token: userData.token
+            }
+        }).then(res => {
+            if (res.data.suc) {
+                console.log(res);
+            }
+            else Promise.reject(new Error(res.data.error));
+        }).catch(
+            setModalData({
+                "result": {
+                    "tool_id": "123456",
+                    "tool_use_division": "교육용",
+                    "tool_code": "123456",
+                    "tool_name": "123456",
+                    "tool_purchase_division": "test",
+                    "tool_purchase_date": "2022-12-05T00:00:00.000Z",
+                    "tool_standard": "test"
+                },
+                "image": {
+                    "img_id": 4,
+                    "img_url": "images\\123456-rentaltool-image.png",
+                    "tool_id": "123456"
+                }
+            })
+        );
+    }
 
     const openModal = () => {
         setModalOpen(true);
@@ -18,7 +49,6 @@ export default function RentalList() {
     const closeModal = () => {
         setModalOpen(false);
     }
-    const [hide, setHide] = useState(true);
     const ExcelExport = () => {
         const table = document.getElementById("equipment-list");
         const wb = XLSX.utils.table_to_book(table, {
@@ -30,8 +60,14 @@ export default function RentalList() {
     const [rentalList, setRentalList] = useState();
     const [rentalListPage, setRentalListPage] = useState(1);
     const getRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/1/${rentalListPage}`)
+        console.log(userData.token)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/1/${rentalListPage}`, {
+            headers: {
+                token: userData.token
+            }
+        })
             .then(res => {
+                console.log(res);
                 if (res.data.suc) {
                     setRentalList(res.data.result);
                 }
@@ -80,10 +116,9 @@ export default function RentalList() {
                 </thead>
                 <tbody>
                     {rentalList && rentalList.map((item, index) => (
-                        <tr key={index} onClick={(e) => {
-                            setHide(!hide);
-                            console.log(hide);
-                            e.target.parentElement.className = hide ? "hide" : null;
+                        <tr key={index} onClick={() => {
+                            openModal();
+                            setDetailEquipmentData(item.tool_id);
                         }}>
                             <td className="check-wrap">
                                 <input type="checkbox" id="check-btn" />
@@ -103,7 +138,10 @@ export default function RentalList() {
                         </tr>
                     ))}
                     {/* <DetailEquipment /> */}
-                    <tr onClick={openModal}>
+                    <tr onClick={() => {
+                        openModal();
+                        setDetailEquipmentData("test");
+                    }}>
                         <td className="check-wrap">
                             <input type="checkbox" id="check-btn" />
                             <label htmlFor="check-btn" />
@@ -117,8 +155,8 @@ export default function RentalList() {
                     {/* <DetailEquipment /> */}
                 </tbody>
             </table>
-            <Modal open={modalOpen} close={closeModal} header="Modal Heading">
-                <DetailEquipment />
+            <Modal open={modalOpen} close={closeModal} data={modalData}>
+                <DetailEquipment data={modalData} />
             </Modal>
             <footer className="list-nav">
                 <p>
