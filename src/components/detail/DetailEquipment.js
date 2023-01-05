@@ -1,6 +1,17 @@
+import axios from "axios";
+import { useEffect } from "react";
 import "./DetailEquipment.scss";
 
-export default function DetailEquipment() {
+export default function DetailEquipment({ data }) {
+    useEffect(() => {
+        console.log(data);
+        loadEquipmentImg();
+    }, []);
+
+    const loadEquipmentImg = async () => {
+        const img = document.querySelector("img");
+        img.src = `${process.env.REACT_APP_DOMAIN}/tool/${data.image.img_url}`;
+    }
     return (
         <div id="detail-equipment" style={{
             height: "218px"
@@ -12,7 +23,7 @@ export default function DetailEquipment() {
             <div id="information" colSpan={1}>
                 <div>
                     <p className="equipment-name">
-                        <span>스마트 패드</span> &nbsp; 대여가능
+                        <span>{data.result.tool_name}</span> &nbsp; 대여 가능
                     </p>
                     <p className="equipment-code">
                         품목 코드 : &nbsp; 9115 <br />
