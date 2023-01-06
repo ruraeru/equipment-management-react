@@ -1,3 +1,4 @@
+import Authorization from "components/authorization/Authorization";
 import Login from "components/login/Login";
 import Main from "components/main/Main";
 import MyRentalList from "components/myRentalList/MyRentalList";
@@ -12,6 +13,7 @@ import { Link, Route, Routes, useParams } from "react-router-dom";
 
 export default function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['login']);
+  // window.location.reload();
   useEffect(() => {
     console.log("APP render");
   }, []);
@@ -52,7 +54,11 @@ export default function App() {
           <AddToolExcel />
         </Main>
       } />
-      <Route path="/home/:params" element={<NotFoundPage />} />
+      <Route path="/user/authorization" element={
+        <Main userData={cookies}>
+          <Authorization />
+        </Main>
+      } />
     </Routes>
   );
 }
