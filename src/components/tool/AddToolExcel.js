@@ -40,29 +40,46 @@ export default function AddToolExcel() {
     }
 
     const onAddEquipment = () => {
+        console.log(json);
         json.map(async (item) => {
-            const { 자산번호: id, 관리부서: purchaseDivision, 구분: division, 품목코드: code, 규격: standard, 구입일자: date, 구입구분: purchase } = item;
+            const { 자산번호: id, 구분: use_division,
+                품목코드: code, 품명: name,
+                규격: standard, 구입일자: purchase_date,
+                구입구분: purchase_division } = item;
+            console.log(id, use_division, code, name, standard, purchase_date, purchase_division);
             await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, {
                 tool_id: id,
-                tool_use_division: division,
+                tool_use_division: use_division,
                 tool_code: code,
-                tool_name: "123",
-            });
+                tool_name: name,
+                tool_purchase_division: purchase_division,
+                tool_purchase_date: purchase_date,
+                tool_standard: standard,
+                tool_condition: "대여가능",
+                tool_update_at: new Date(),
+                // tool_image: new File(),
+                department_id: "1"
+            }).then((res) => {
+                console.log(res);
+            })
         });
+        /*
+          <td>{item.자산번호}</td>
+                    <td>{item.관리부서}</td>
+                    <td>{item.구분}</td>
+                    <td>{item.품목코드}</td>
+                    <td>{item.품명}</td>
+                    <td>{item.규격}</td>
+                    <td>{item.구입일자}</td>
+                    <td>{item.구입구분}</td>
+        */
     }
 
     return (
         <div className="add-tool-wrap">
             <h3>대여 목록</h3>
             <div id="input-filed-wrap">
-                <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
                 <div id="input-filed">
-                    <label>이미지 파일 불러오기</label>
-                    <div className="filebox">
-                        <input type="file" id="file" onChange={onFileChange} />
-                    </div>
-                    <label>기자재 명칭</label>
-                    <input type="text" />
                     <SiMicrosoftexcel size="27px" color="#20744A" style={{
                         marginBottom: "8px"
                     }} />
@@ -79,6 +96,7 @@ export default function AddToolExcel() {
                             <th>관리부서</th>
                             <th>구분</th>
                             <th>품목코드</th>
+                            <th>품명</th>
                             <th>규격</th>
                             <th>구입일자</th>
                             <th>구입구분</th>
