@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import "./Header.scss";
 
 export default function Header({ userData }) {
+    const navigate = useNavigate();
     return (
         <div id="header-wrap">
             <div id="logo">
@@ -15,9 +16,14 @@ export default function Header({ userData }) {
                 <p>
                     <b>{userData.login.user_name}</b> 님
                 </p>
-                <Link to={"/"} onClick={() => alert("로그아웃 되었습니다.")}>
-                    <p>로그아웃</p>
-                </Link>
+                <p style={{
+                    cursor: "pointer"
+                }} onClick={() => {
+                    navigate("/");
+                    alert("로그아웃 되었습니다.");
+                }}>
+                    로그아웃
+                </p>
                 <Link to={"/home/myRentalList"}>
                     <p>대여 목록 보기</p>
                 </Link>
