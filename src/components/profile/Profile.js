@@ -19,7 +19,7 @@ export default function Profile({ userData }) {
         getMyRentalList();
     }, []);
     useEffect(() => {
-        switch (userData.login.user_license) {
+        switch (userData?.login?.user_license) {
             case 1:
                 setUserType("마스터");
                 break;
@@ -45,10 +45,10 @@ export default function Profile({ userData }) {
                     borderBottom: "2px solid rgba(103, 103, 130, 0.3)",
                 }}>
                     <p>
-                        <b>{userData.login.user_student_number}</b> 교번
+                        <b>{userData?.login?.user_student_number}</b> 교번
                     </p>
                     <p>
-                        <b>{userData.login.user_name}</b> 님
+                        <b>{userData?.login?.user_name}</b> 님
                     </p>
                     <p>({userType})</p>
                 </div>

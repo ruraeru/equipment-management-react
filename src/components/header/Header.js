@@ -11,10 +11,10 @@ export default function Header({ userData }) {
             </div>
             <div id="location">
                 <p>
-                    <b>{userData.login.user_student_number}</b> 교번
+                    <b>{userData?.login?.user_student_number}</b> 교번
                 </p>
                 <p>
-                    <b>{userData.login.user_name}</b> 님
+                    <b>{userData?.login?.user_name}</b> 님
                 </p>
                 <p style={{
                     cursor: "pointer"
