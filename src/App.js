@@ -1,4 +1,4 @@
-import Authorization from "components/authorization/Authorization";
+import Authorization from "components/user/authorization/Authorization";
 import Login from "components/login/Login";
 import Main from "components/main/Main";
 import MyRentalList from "components/myRentalList/MyRentalList";
@@ -10,6 +10,7 @@ import ChangeInfo from "components/tool/changeInfo/ChangeInfo";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, Route, Routes, useParams } from "react-router-dom";
+import ChangeInfoUser from "components/user/changeInfo/ChangeInfoUser";
 
 export default function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['login']);
@@ -52,6 +53,11 @@ export default function App() {
       <Route path="/tool/addToolExcel" element={
         <Main userData={cookies}>
           <AddToolExcel />
+        </Main>
+      } />
+      <Route path="/user/changeInfo" element={
+        <Main userData={cookies}>
+          <ChangeInfoUser />
         </Main>
       } />
       <Route path="/user/authorization" element={
