@@ -60,10 +60,15 @@ export default function Profile({ userData }) {
                         className={useActive("/home/myRentalList") ? "active" : null}>내 대여 내역</Link>
                     <Link to="/user/changeInfo"
                         className={useActive("/user/changeInfo") ? "active" : null}>회원 정보 수정</Link>
-                    <Link to="/tool/changeInfo"
-                        className={useActive("/tool/changeInfo") ? "active" : null}>기자재 정보 수정</Link>
-                    <Link to="/tool/addTool"
-                        className={useActive("/tool/addTool") ? "active" : null}>기자재 추가</Link>
+                    {userType !== "학부생" &&
+                        <>
+                            <Link to="/tool/changeInfo"
+                                // eslint-disable-next-line react-hooks/rules-of-hooks
+                                className={useActive("/tool/changeInfo") ? "active" : null}>기자재 정보 수정</Link>
+                            <Link to="/tool/addTool"
+                                // eslint-disable-next-line react-hooks/rules-of-hooks
+                                className={useActive("/tool/addTool") ? "active" : null}>기자재 추가</Link>
+                        </>}
                     {userType === "마스터" &&
                         <Link to={"/user/authorization"}
                             // eslint-disable-next-line react-hooks/rules-of-hooks
