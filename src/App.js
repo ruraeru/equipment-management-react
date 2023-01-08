@@ -42,7 +42,7 @@ export default function App() {
       } />
       <Route path="/tool/changeInfo" element={
         <Main userData={cookies}>
-          <ChangeInfo />
+          <ChangeInfo userData={cookies} />
         </Main>
       } />
       <Route path="/tool/addTool" element={
