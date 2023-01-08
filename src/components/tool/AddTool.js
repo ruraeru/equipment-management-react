@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./AddTool.scss";
@@ -6,18 +6,26 @@ import "./AddTool.scss";
 export default function AddTool() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        id: "",
-        use_division: "",
-        code: "",
-        name: "",
-        purchase_division: "",
-        purchase_date: "",
-        standard: "",
-        condition: "",
-        update_at: "",
-        image: "",
-        department_id: ""
+        id: "", //기자재 자산번호
+        use_division: "", //구분
+        code: "", //품목코드
+        name: "", //품명
+        purchase_division: "", //구입 구분
+        purchase_date: "", //구입일자
+        standard: "", //규격
+        condition: "", //자산상태
+        update_at: "", //변동일자
+        image: "", //기자재 사진
+        department_id: "" //관리 부서
     });
+
+    const onSubmit = () => {
+        setValues({
+            ...values,
+            update_at: new Date()
+        });
+        console.loe([values]);
+    }
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -28,6 +36,10 @@ export default function AddTool() {
         });
         console.log(name, value);
     }
+
+    useEffect(() => {
+        console.log(values);
+    }, [values]);
     const onFileChange = (e) => {
         console.log(e.target.files[0]);
         document.querySelector("img");
@@ -149,7 +161,7 @@ export default function AddTool() {
                     />
                 </div>
             </div>
-            <button>
+            <button onClick={onSubmit}>
                 기자재 등록하기
             </button>
         </div>
