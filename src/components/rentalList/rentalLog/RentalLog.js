@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SiMicrosoftexcel } from "react-icons/si";
 // import "../RentalList.scss";
-import DetailEquipment from "components/detail/DetailEquipment";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { useHeaderActive } from "hooks/useActive";
+import { Cookies } from "react-cookie";
 
 export default function RentalLog() {
     const ExcelExport = () => {
@@ -15,12 +15,17 @@ export default function RentalLog() {
             raw: true
         });
 
-        XLSX.writeFile(wb, "기자재리스트.xlsx");
+        XLSX.writeFile(wb, `대여로그 - ${new Date().toLocaleString()}.xlsx`);
     }
     const [rentalList, setRentalList] = useState();
     const [rentalListPage, setRentalListPage] = useState(1);
     const getRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/1/${rentalListPage}`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList`, {
+            params: {
+                department_id: 1,
+                page: 1
+            }
+        })
             .then(res => {
                 if (res.data.suc) {
                     setRentalList(res.data.result);
@@ -54,7 +59,7 @@ export default function RentalLog() {
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
             </div>
-            <table>
+            <table id="equipment-list">
                 <thead>
                     <tr>
                         <th className="check-wrap">

@@ -5,7 +5,7 @@ export default function Search() {
     return (
         <SearchBox>
             <SearchBar placeholder="검색어를 입력하세요." />
-            <BiSearchAlt2 size="17px" color="#9785CB" />
+            <BiSearchAlt2 size="20px" color="#9785CB" />
         </SearchBox>
     );
 }
@@ -34,7 +34,7 @@ const SearchBox = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   
+
    width: 618px;
    height: 40px;
    
@@ -43,4 +43,4 @@ const SearchBox = styled.div`
    border: 2px solid rgba(198, 193, 209, 0.3);
 
    background-color: #F5F5F5;
-`
+`;

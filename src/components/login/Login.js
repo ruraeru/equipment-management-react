@@ -10,6 +10,7 @@ export default function Login({ userData, setUserData, setCookie, removeCookie }
     useEffect(() => {
         removeCookie('token');
         removeCookie('login');
+        console.log("login render")
         // window.location.reload();
     }, []);
     const [input, setInput] = useState({
@@ -35,8 +36,12 @@ export default function Login({ userData, setUserData, setCookie, removeCookie }
         ).then(res => {
             if (res.data.suc) {
                 console.log(res.data.login);
-                setCookie('token', res.data.token.token);
-                setCookie('login', res.data.login);
+                setCookie('token', res.data.token.token, {
+                    // httpOnly: true
+                });
+                setCookie('login', res.data.login, {
+                    // httpOnly: true
+                });
                 navigate("/home/rentalList");
             }
             else Promise.reject(new Error(res.data.err));

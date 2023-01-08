@@ -7,9 +7,9 @@ import "./Main.scss";
 
 export default function Main({ children, userData }) {
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!userData) navigate("/");
-    })
+    // useEffect(() => {
+    //     if (!userData) navigate("/");
+    // })
     return (
         <div id="main-wrap">
             <Header userData={userData} />

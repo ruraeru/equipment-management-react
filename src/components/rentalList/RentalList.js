@@ -3,18 +3,21 @@ import axios from "axios";
 import Search from "components/search/Search";
 import { SiMicrosoftexcel } from "react-icons/si";
 import "./RentalList.scss";
-import DetailEquipment from "components/detail/DetailEquipment";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { useHeaderActive } from "hooks/useActive";
-import Modal from "components/Modal";
+import DetailEquipment from "components/detail/DetailEquipment";
+import Modal from "components/detail/EquipmentModal";
 
 export default function RentalList({ userData }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState();
 
     const setDetailEquipmentData = async (tool_id) => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewTool/test`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewTool`, {
+            params: {
+                tool_id: "123456"
+            },
             headers: {
                 token: userData.token
             }
@@ -162,16 +165,6 @@ export default function RentalList({ userData }) {
                 <p>
                     &lt;
                 </p>
-                {/* <ul style={{
-                    display: "inline-flex",
-                            listStyle: "none",
-                }}>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                        </ul> */}
                 <button onClick={() => setRentalListPage(1)}>1</button>
                 <button onClick={() => setRentalListPage(2)}>2</button>
                 <button onClick={() => setRentalListPage(2)}>3</button>
@@ -181,6 +174,6 @@ export default function RentalList({ userData }) {
                     &gt;
                 </p>
             </footer>
-        </div>
+        </div >
     );
 }
