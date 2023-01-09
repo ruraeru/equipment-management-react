@@ -57,7 +57,7 @@ export default function App() {
       } />
       <Route path="/user/changeInfo" element={
         <Main userData={cookies}>
-          <ChangeInfoUser />
+          <ChangeInfoUser userInfo={cookies} />
         </Main>
       } />
       <Route path="/user/authorization" element={
