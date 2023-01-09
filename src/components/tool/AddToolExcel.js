@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function AddToolExcel() {
     const [__html, setHTML] = useState("");
-    const [json, setJSON] = useState(null);
+    const [json, setJSON] = useState();
 
     const handleFile = async (e) => {
         const file = e.target.files[0];
@@ -21,6 +21,18 @@ export default function AddToolExcel() {
             blankrows: "",
             header: "1"
         }));
+    }
+
+    const ExcelExport = () => {
+        if (!json) {
+            return;
+        }
+        const table = document.getElementById("equipment-list");
+        const wb = XLSX.utils.table_to_book(table, {
+            raw: true
+        });
+
+        XLSX.writeFile(wb, "불러온 값.xlsx");
     }
 
     const onFileChange = (e) => {
@@ -40,13 +52,13 @@ export default function AddToolExcel() {
     }
 
     const onAddEquipment = () => {
+        // ExcelExport();
         console.log(json);
         json.map(async (item) => {
             const { 자산번호: id, 구분: use_division,
                 품목코드: code, 품명: name,
                 규격: standard, 구입일자: purchase_date,
                 구입구분: purchase_division } = item;
-            console.log(id, use_division, code, name, standard, purchase_date, purchase_division);
             await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, {
                 tool_id: id,
                 tool_use_division: use_division,
@@ -79,17 +91,18 @@ export default function AddToolExcel() {
         <div className="add-tool-wrap">
             <h3>대여 목록</h3>
             <div id="input-filed-wrap">
+                <SiMicrosoftexcel size="27px" color="#20744A" style={{
+                    // marginBottom: "8px"
+                    marginRight: "8px"
+                }} onClick={ExcelExport} />
+                <input type="file" onChange={handleFile} accept=".xls, .xlsx" />
                 <div id="input-filed">
-                    <SiMicrosoftexcel size="27px" color="#20744A" style={{
-                        marginBottom: "8px"
-                    }} />
-                    <input type="file" onChange={handleFile} />
                 </div>
             </div>
             <div style={{
                 overflow: "scroll"
             }}>
-                <table>
+                <table id="equipment-list">
                     <thead>
                         <tr>
                             <th>자산번호</th>
