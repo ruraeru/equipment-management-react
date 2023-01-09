@@ -4,7 +4,6 @@ import "./DetailEquipment.scss";
 
 export default function DetailEquipment({ data }) {
     useEffect(() => {
-        console.log(data);
         loadEquipmentImg();
     }, []);
 
@@ -25,13 +24,15 @@ export default function DetailEquipment({ data }) {
                         <span>{data.result.tool_name}</span> &nbsp; 대여 가능
                     </p>
                     <p className="equipment-code">
-                        품목 코드 : &nbsp; 9115 <br />
-                        자산 번호 : &nbsp; 2017021402226
+                        품목 코드 : &nbsp; {data.result.tool_code} <br />
+                        자산 번호 : &nbsp; {data.result.tool_id}
                     </p>
                     <p className="equipment-detail">
-                        구입구분 : &nbsp; 교비(등록금) <br />
-                        구입 일자 : &nbsp; 2017년 2월 14일 <br />
-                        물품 규격 : &nbsp; LG G패드 3 8.0 Wi-Fi 32G
+                        구입구분 : &nbsp; {data.result.tool_purchase_division} <br />
+                        구입 일자 : &nbsp; {data.result.tool_purchase_date.split("-")[0]}년&nbsp;
+                        {data.result.tool_purchase_date.split("-")[1]}월&nbsp;
+                        {data.result.tool_purchase_date.split("-")[2].slice(0, 2)}일 <br />
+                        물품 규격 : &nbsp; {data.result.tool_standard}
                     </p>
                 </div>
             </div>
