@@ -13,7 +13,7 @@ export default function AddTool() {
         purchase_division: "", //구입 구분
         purchase_date: "", //구입일자
         standard: "", //규격
-        condition: "", //자산상태
+        condition: "정상", //자산상태
         update_at: "", //변동일자
         image: "", //기자재 사진
         department_id: "" //관리 부서
@@ -22,24 +22,23 @@ export default function AddTool() {
     const onSubmit = () => {
         setValues({
             ...values,
-            update_at: new Date()
+            update_at: new Date().toLocaleString()
         });
-        console.loe([values]);
+        console.loe(values);
     }
 
     const onChange = (e) => {
         const { name, value } = e.target;
-
         setValues({
             ...values,
             [name]: value
         });
-        console.log(name, value);
     }
 
     useEffect(() => {
         console.log(values);
     }, [values]);
+
     const onFileChange = (e) => {
         console.log(e.target.files[0]);
         document.querySelector("img");
@@ -61,7 +60,7 @@ export default function AddTool() {
     }
     return (
         <div className="add-tool-wrap">
-            <h3 onClick={() => console.log(values)}>대여 목록</h3>
+            <h3 style={{ color: "#161616" }} onClick={() => console.log(values)}>대여 목록</h3>
             <div id="input-filed-wrap">
                 <img
                     src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx"
