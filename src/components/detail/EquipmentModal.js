@@ -6,7 +6,7 @@ export default function EquipmentModal({ open, close, header, children, data }) 
             {open && (
                 <div>
                     <header>
-                        {data.result.tool_name}
+                        {data.result.tool_name}의 정보
                         <button className="close" onClick={close}>
                             &times;
                         </button>
