@@ -16,34 +16,22 @@ export default function RentalList({ userData }) {
     const setDetailEquipmentData = async (tool_id) => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewTool`, {
             params: {
-                tool_id: "123456"
+                tool_id: tool_id
             },
             headers: {
                 token: userData.token
             }
         }).then(res => {
             if (res.data.suc) {
-                console.log(res);
+                console.log(res.data.tool);
+                setModalData(res.data.tool);
+                // setModalData(res.data.result[0]);
             }
             else Promise.reject(new Error(res.data.error));
-        }).catch(
-            setModalData({
-                "result": {
-                    "tool_id": "123456",
-                    "tool_use_division": "교육용",
-                    "tool_code": "123456",
-                    "tool_name": "123456",
-                    "tool_purchase_division": "test",
-                    "tool_purchase_date": "2022-12-05T00:00:00.000Z",
-                    "tool_standard": "test"
-                },
-                "image": {
-                    "img_id": 4,
-                    "img_url": "images\\123456-rentaltool-image.png",
-                    "tool_id": "123456"
-                }
-            })
-        );
+        }).catch(err => {
+            console.log(err);
+        });
+        openModal();
     }
 
     const openModal = () => {
@@ -120,7 +108,6 @@ export default function RentalList({ userData }) {
                 <tbody>
                     {rentalList && rentalList.map((item, index) => (
                         <tr key={index} onClick={() => {
-                            openModal();
                             setDetailEquipmentData(item.tool_id);
                         }}>
                             <td className="check-wrap">
@@ -141,7 +128,7 @@ export default function RentalList({ userData }) {
                         </tr>
                     ))}
                     {/* <DetailEquipment /> */}
-                    <tr onClick={() => {
+                    {/* <tr onClick={() => {
                         openModal();
                         setDetailEquipmentData("test");
                     }}>
@@ -154,7 +141,7 @@ export default function RentalList({ userData }) {
                         <td>스마트 패드</td>
                         <td>2017021402226</td>
                         <td>대여 가능</td>
-                    </tr>
+                    </tr> */}
                     {/* <DetailEquipment /> */}
                 </tbody>
             </table>
