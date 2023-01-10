@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import "./DetailEquipment.scss";
 
 export default function DetailEquipment({ data }) {
+    console.log(data);
+    const { tool_name, tool_code, tool_id, tool_purchase_division, tool_purchase_date, tool_standard }
+        = data.result;
     useEffect(() => {
         loadEquipmentImg();
     }, []);
@@ -21,18 +24,18 @@ export default function DetailEquipment({ data }) {
             <div id="information" colSpan={1}>
                 <div>
                     <p className="equipment-name">
-                        <span>{data.result.tool_name}</span> &nbsp; 대여 가능
+                        <span>{tool_name}</span> &nbsp; 대여 가능
                     </p>
                     <p className="equipment-code">
-                        품목 코드 : &nbsp; {data.result.tool_code} <br />
-                        자산 번호 : &nbsp; {data.result.tool_id}
+                        품목 코드 : &nbsp; {tool_code} <br />
+                        자산 번호 : &nbsp; {tool_id}
                     </p>
                     <p className="equipment-detail">
-                        구입구분 : &nbsp; {data.result.tool_purchase_division} <br />
-                        구입 일자 : &nbsp; {data.result.tool_purchase_date.split("-")[0]}년&nbsp;
-                        {data.result.tool_purchase_date.split("-")[1]}월&nbsp;
-                        {data.result.tool_purchase_date.split("-")[2].slice(0, 2)}일 <br />
-                        물품 규격 : &nbsp; {data.result.tool_standard}
+                        구입구분 : &nbsp; {tool_purchase_division} <br />
+                        구입 일자 : &nbsp; {tool_purchase_date.split("-")[0]}년&nbsp;
+                        {tool_purchase_date.split("-")[1]}월&nbsp;
+                        {tool_purchase_date.split("-")[2].slice(0, 2)}일 <br />
+                        물품 규격 : &nbsp; {tool_standard}
                     </p>
                 </div>
             </div>
