@@ -4,15 +4,21 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function ChangeInfoUser({ userInfo }) {
+    const { user_name, department_id, user_phone_number, user_student_number, user_email } = userInfo.login;
     const [edited, setEdited] = useState(false);
     const [userData, setUserData] = useState({
-        "name": "홍길동",
-        "department": "소프트웨어콘텐츠과",
-        "phone_number": "010-1234-5678",
-        "student_number": "2022661108",
-        "email": "testuser@test.com"
+        "name": user_name,
+        "department": department_id,
+        "phone_number": user_phone_number,
+        "student_number": user_student_number,
+        "email": user_email
     })
     const [newUserData, setNewUerData] = useState(userData);
+
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -27,6 +33,19 @@ export default function ChangeInfoUser({ userInfo }) {
         setUserData(newUserData);
         setEdited(false);
         console.log(newUserData);
+    }
+
+    const getUserInfo = async () => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/inquireMyInfo`, {
+            params: {
+                user_id: "master"
+            },
+            headers: {
+                token: userInfo.token
+            }
+        }).then((res) => {
+            console.log(res.data.inquireMyInfo);
+        });
     }
 
     const updateUserInfo = async () => {
@@ -68,7 +87,8 @@ export default function ChangeInfoUser({ userInfo }) {
                     fontWeight: "700",
                     color: "#676767",
                 }}>
-                    <p>대여자 : {userData.name} <br />
+                    <p>
+                        이름 : {userData.name} <br />
                         학과 : {userData.department} <br />
                         전화번호 : {userData.phone_number}
                     </p>
