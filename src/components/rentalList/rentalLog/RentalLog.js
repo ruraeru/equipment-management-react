@@ -5,8 +5,9 @@ import { SiMicrosoftexcel } from "react-icons/si";
 // import "../RentalList.scss";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
-import { useHeaderActive } from "hooks/useActive";
+import { useActive, useHeaderActive } from "hooks/useActive";
 import { Cookies } from "react-cookie";
+import Navigation from "components/nav/Navigation";
 
 export default function RentalLog() {
     const ExcelExport = () => {
@@ -47,8 +48,7 @@ export default function RentalLog() {
             position: "relative"
         }}>
             <div id="contents-header">
-                <Link to="/home/rentalList"
-                    className={useHeaderActive("/home/rentalList") ? "active" : null}>
+                <Link to="/home/rentalList/1">
                     대여 목록
                 </Link>
                 <Link to="/home/rentalList/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
@@ -87,29 +87,7 @@ export default function RentalLog() {
                     </tr>
                 </tbody>
             </table>
-            <footer className="list-nav">
-                <p>
-                    &lt;
-                </p>
-                {/* <ul style={{
-                    display: "inline-flex",
-                            listStyle: "none",
-                }}>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                        </ul> */}
-                <button onClick={() => setRentalListPage(1)}>1</button>
-                <button onClick={() => setRentalListPage(2)}>2</button>
-                <button onClick={() => setRentalListPage(2)}>3</button>
-                <button onClick={() => setRentalListPage(2)}>4</button>
-                <button onClick={() => setRentalListPage(2)}>5</button>
-                <p>
-                    &gt;
-                </p>
-            </footer>
+            <Navigation list={["/home/rentalLog/1", "/home/rentalLog/2", "/home/rentalLog/3", "/home/rentalLog/4", "/home/rentalLog/5",]} />
         </div>
     );
 }
