@@ -24,10 +24,10 @@ export default function Header({ userData }) {
                 }}>
                     로그아웃
                 </p>
-                <Link to={"/home/myRentalList"}>
+                <Link to={"/home/rentalList/1"}>
                     <p>대여 목록 보기</p>
                 </Link>
-                <Link to={"/home/rentalList"}>
+                <Link to={"/home/myRentalList"}>
                     <p>대여 내역</p>
                 </Link>
             </div>
