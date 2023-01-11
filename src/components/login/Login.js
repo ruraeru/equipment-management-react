@@ -42,7 +42,7 @@ export default function Login({ userData, setUserData, setCookie, removeCookie }
                 setCookie('login', res.data.login, {
                     // httpOnly: true
                 });
-                navigate("/home/rentalList");
+                navigate("/home/rentalList/1");
             }
             else Promise.reject(new Error(res.data.err));
         }).catch(err => Promise.reject(new Error("서버 에러", err)));
@@ -61,25 +61,6 @@ export default function Login({ userData, setUserData, setCookie, removeCookie }
     return (
         <div id="loginWrap">
             <div id="center">
-                {/* <img src="" alt="이미지" style={{
-                    width: "160px"
-                }} />
-                {equipmentData &&
-                    <>
-                        <p>{equipmentData.tool_code}</p>
-                        <p>{equipmentData.tool_id}</p>
-                        <p>{equipmentData.tool_name}</p>
-                        <p>{equipmentData.tool_purchase_date}</p>
-                        <p>{equipmentData.tool_purchase_division}</p>
-                        <p>{equipmentData.tool_standard}</p>
-                        <p>{equipmentData.tool_update_at}</p>
-                        <p>{equipmentData.tool_use_division}</p>
-                    </>
-                }
-                {cookies?.token}
-                <button onClick={onDetailEquipment} style={{
-                    backgroundColor: "tomato"
-                }}>토큰 인증</button> */}
                 <h1>로그인</h1>
                 <form onSubmit={onSubmit}>
                     <p>아이디</p>
