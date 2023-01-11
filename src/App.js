@@ -26,7 +26,7 @@ export default function App() {
         <Main userData={cookies}>
           <RentalList />
         </Main>} />
-      <Route path="/home/rentalList" element={
+      <Route path="/home/rentalList/:page" element={
         <Main userData={cookies}>
           <RentalList userData={cookies} />
         </Main>} />
