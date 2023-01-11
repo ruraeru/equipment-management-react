@@ -1,26 +1,38 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import "./ChangeInfoUser.scss";
 
 export default function ChangeInfoUser({ userInfo }) {
-    const { user_name, department_id, user_phone_number, user_student_number, user_email } = userInfo.login;
     const [edited, setEdited] = useState(false);
-    const [userData, setUserData] = useState({
-        "name": user_name,
-        "department": department_id,
-        "phone_number": user_phone_number,
-        "student_number": user_student_number,
-        "email": user_email
-    })
-    const [newUserData, setNewUerData] = useState(userData);
+    const [userData, setUserData] = useState()
+    const [newUserData, setNewUerData] = useState();
 
+    const getUserInfo = useCallback(async () => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/inquireMyInfo`, {
+            params: {
+                user_id: userInfo.login.user_id
+            },
+            headers: {
+                token: userInfo.token
+            }
+        }).then((res) => {
+            if (res.data.suc) {
+                setUserData(res.data.inquireMyInfo);
+                setNewUerData(res.data.inquireMyInfo);
+            }
+            else Promise.reject(new Error("ChangeInfoUser:49", res.data.error));
+            console.log(res.data.inquireMyInfo);
+        });
+    }, [userInfo.login.user_id, userInfo.token]);
 
     useEffect(() => {
         getUserInfo();
-    }, []);
+    }, [getUserInfo]);
 
     const onChange = (e) => {
+        console.log(e);
         const { name, value } = e.target;
         setNewUerData({
             ...newUserData,
@@ -33,115 +45,112 @@ export default function ChangeInfoUser({ userInfo }) {
         setUserData(newUserData);
         setEdited(false);
         console.log(newUserData);
+        updateUserInfo();
     }
 
-    const getUserInfo = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/inquireMyInfo`, {
-            params: {
-                user_id: "master"
-            },
+    const updateUserInfo = async () => {
+        const { user_id, user_email, user_name, user_phone_number } = newUserData;
+        console.log(user_id, user_email, user_name, user_phone_number);
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/changeInfo`, {
+            user_id: user_id,
+            user_email: user_email,
+            user_name: user_name,
+            user_phone_number: user_phone_number,
             headers: {
                 token: userInfo.token
             }
         }).then((res) => {
-            console.log(res.data.inquireMyInfo);
+            console.log(res);
         });
     }
 
-    const updateUserInfo = async () => {
-        const { name, department, phone_number, student_number, email } = newUserData;
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/changeInfo`, {
-            user_id: student_number,
-            user_email: email,
-            user_name: name,
-            user_phone_number: phone_number,
-            headers: {
-                token: userInfo.token
-            }
-        })
-    }
-
     return (
-        <>
+        <div id="changeInfoUser-wrap">
             <div id="contents-header" style={{
                 justifyContent: "space-between",
                 width: "100%",
             }}>
                 <h3 style={{
                     margin: 0
-                }}>{userData.name.slice(0, 3)}님의 정보</h3>
-                <button onClick={() => setEdited(true)} style={{
-                    width: "98px",
-                    height: "36px",
-                    backgroundColor: "#9785CB",
-                    border: "solid 1px #9785CB",
-                    borderRadius: "8px",
-                    fontWeight: "700",
-                    color: "#f5f5f5"
-                }}>
+                }}>{userData?.user_name?.slice(0, 3)}님의 정보</h3>
+                <button onClick={() => setEdited(true)}>
                     정보 수정
                 </button>
             </div>
-            {!edited ?
-                <div style={{
-                    fontWeight: "700",
-                    color: "#676767",
-                }}>
-                    <p>
-                        이름 : {userData.name} <br />
-                        학과 : {userData.department} <br />
-                        전화번호 : {userData.phone_number}
-                    </p>
-                    <p>
-                        학번 : {userData.student_number}<br />
-                        이메일 : {userData.email}
-                    </p>
-                </div>
-                :
-                <form onSubmit={onSubmit} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "200px",
-                    alignItems: "center"
-                }}>
-                    <input
-                        name="name"
-                        value={newUserData.name}
-                        onChange={onChange}
-                        autoComplete="none"
-                    />
-                    <input
-                        name="department"
-                        value={newUserData.department}
-                        onChange={onChange}
-                    />
-                    <input
-                        name="phone_number"
-                        value={newUserData.phone_number}
-                        onChange={onChange}
-                    />
-                    <input
-                        name="student_number"
-                        value={newUserData.student_number}
-                        onChange={onChange}
-                    />
-                    <input
-                        name="email"
-                        value={newUserData.email}
-                        onChange={onChange}
-                    />
-                    <button type="submit" style={{
-                        width: "98px",
-                        height: "24px",
-                        backgroundColor: "#9785CB",
-                        border: "solid 1px #9785CB",
-                        borderRadius: "8px",
+            {
+                !edited ?
+                    userData &&
+                    <div style={{
                         fontWeight: "700",
-                        color: "#f5f5f5"
+                        color: "#676767",
                     }}>
-                        완료
-                    </button>
-                </form>
+                        <p>
+                            아이디 : {userData.user_id} <br />
+                            이름 : {userData.user_name} <br />
+                            전화번호 : {userData.user_phone_number}
+                        </p>
+                        <p>
+                            학번 : {userData.user_student_number}<br />
+                            학과 : {userData.department.department_name} <br />
+                            이메일 : {userData.user_email}
+                        </p>
+                    </div>
+                    :
+                    newUserData &&
+                    <form onSubmit={onSubmit}>
+                        <p>
+                            아이디 : <input
+                                name="user_id"
+                                value={newUserData.user_id}
+                                onChange={onChange}
+                                autoComplete="none"
+                            />
+                            <br />
+                            이름 : <input
+                                name="user_name"
+                                value={newUserData.user_name}
+                                onChange={onChange}
+                                autoComplete="none"
+                            />
+                            <br />
+                            전화번호 : <input
+                                type="tel"
+                                name="user_phone_number"
+                                value={newUserData.user_phone_number}
+                                onChange={onChange}
+                                pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                                maxLength={13}
+                            />
+                        </p>
+                        <p>
+                            학번 : <input
+                                name="user_student_number"
+                                value={newUserData.user_student_number}
+                                onChange={onChange}
+                                disabled
+                            />
+                            <br />
+                            학과 : <input
+                                name="department_name"
+                                value={newUserData.department.department_name}
+                                onChange={onChange}
+                                disabled
+                            />
+                            <br />
+                            이메일 : <input
+                                type="email"
+                                name="user_email"
+                                value={newUserData.user_email}
+                                onChange={onChange}
+                                pattern=".+@mjc.ac.kr"
+                            />
+                        </p>
+                        <button type="submit" style={{
+                            display: "none"
+                        }}>
+                            완료
+                        </button>
+                    </form>
             }
             <hr style={{
                 border: "solid 1px #9785CB"
@@ -282,7 +291,7 @@ export default function ChangeInfoUser({ userInfo }) {
                     </RentalPackage>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
