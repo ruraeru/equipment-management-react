@@ -14,25 +14,31 @@
   }
 }
 
-//label:before에 체크하기 전 상태 css
-input#check-btn + label::before {
-  content: " ";
-  display: inline-block;
-  width: 17px;
-  height: 17px;
-  border: 2px solid #676767;
-  border-radius: 4px;
-  vertical-align: middle;
+input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  border: solid 1px red;
 }
 
-//label::before에 체크 된 상태 css
-input#check-btn:checked + label::before {
-  content: " ";
-  border-color: #9785cb;
-  //   background-image:
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
+// //label:before에 체크하기 전 상태 css
+// input#check-btn + label::before {
+//   content: " ";
+//   display: inline-block;
+//   width: 17px;
+//   height: 17px;
+//   border: 2px solid #676767;
+//   border-radius: 4px;
+//   vertical-align: middle;
+// }
+
+// //label::before에 체크 된 상태 css
+// input#check-btn:checked + label::before {
+//   content: " ";
+//   border-color: #9785cb;
+//   //   background-image:
+//   background-repeat: no-repeat;
+//   background-position: 50%;
+// }
 
 .rentalT {
   color: #94d82d;
