@@ -9,10 +9,7 @@ export default function MyRentalList() {
     const getMyRentalList = async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/student/1`)
             .then((res) => {
-                if (res.data.suc) {
-                    setRentalList(res.data);
-                }
-                else Promise.reject(new Error(res.data.error));
+                setRentalList(res.data);
             }).catch(err => {
                 console.log(err);
             });
@@ -54,7 +51,7 @@ export default function MyRentalList() {
                             <td>{item.result.tool.department.department_name}</td>
                             <td>{item.result.tool.tool_name}</td>
                             <td>{item.result.tool.tool_id}</td>
-                            <td>{item.D_day}</td>
+                            <td className={item.D_day === "미반납" ? "rentalF" : ""}>{item.D_day}</td>
                         </tr>
                     ))}
                     <tr>

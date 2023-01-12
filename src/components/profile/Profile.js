@@ -10,10 +10,7 @@ export default function Profile({ userData }) {
     const getMyRentalList = async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/student/1`)
             .then((res) => {
-                if (res.suc) {
-                    setRentalList(res.data);
-                }
-                else Promise.reject(new Error(res.error));
+                setRentalList(res.data);
             }).catch(err => {
                 console.log(err);
             });

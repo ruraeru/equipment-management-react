@@ -57,9 +57,8 @@ export default function RentalList({ userData }) {
             }
         }).then(res => {
             if (res.data.suc) {
-                console.log(res.data.tool);
                 setModalData(res.data.tool);
-                // setModalData(res.data.result[0]);
+                console.log("detailData", res.data);
             }
             else Promise.reject(new Error(res.data.error));
         }).catch(err => {
@@ -93,7 +92,7 @@ export default function RentalList({ userData }) {
             }
         })
             .then(res => {
-                console.log(res.data.result);
+                console.log("getRentalList", res.data.result);
                 if (res.data.suc) {
                     setRentalList(res.data.result);
                 }
@@ -204,9 +203,11 @@ export default function RentalList({ userData }) {
                     ))}
                 </tbody>
             </table>
-            <Modal open={modalOpen} close={closeModal} data={modalData}>
-                <DetailEquipment data={modalData} />
-            </Modal>
+            {modalData &&
+                <Modal open={modalOpen} close={closeModal} data={modalData}>
+                    <DetailEquipment data={modalData} />
+                </Modal>
+            }
             <Navigation list={["/home/rentalList/1", "/home/rentalList/2", "/home/rentalList/3", "/home/rentalList/4", "/home/rentalList/5",]} />
         </div >
     );
