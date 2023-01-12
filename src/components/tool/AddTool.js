@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -19,12 +20,34 @@ export default function AddTool() {
         department_id: "" //관리 부서
     });
 
+    const onAddEquipment = async () => {
+        console.log("add", values);
+        const { id, use_division, code, name,
+            purchase_division, purchase_date, standard,
+            condition, update_at, image, department_id } = values;
+        await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, {
+            tool_id: id,
+            tool_use_division: use_division,
+            tool_code: code,
+            tool_name: name,
+            tool_purchase_division: purchase_division,
+            tool_purchase_date: purchase_date,
+            tool_standard: standard,
+            tool_condition: "대여가능",
+            tool_update_at: new Date(),
+            tool_image: image,
+            department_id: "1",
+        }).then((res) => {
+            console.log(res);
+        })
+    }
+
     const onSubmit = () => {
         setValues({
             ...values,
             update_at: new Date().toLocaleString()
         });
-        console.loe(values);
+        onAddEquipment();
     }
 
     const onChange = (e) => {
@@ -35,24 +58,23 @@ export default function AddTool() {
         });
     }
 
-    useEffect(() => {
-        console.log(values);
-    }, [values]);
-
     const onFileChange = (e) => {
         console.log(e.target.files[0]);
         document.querySelector("img");
-
+        setValues({
+            ...values,
+            image: e.target.files[0]
+        });
         if (e.target.files[0]) {
             const reader = new FileReader();
 
             reader.onload = e => {
                 const previewImage = document.querySelector("img");
                 previewImage.src = e.target.result;
-                setValues({
-                    ...values,
-                    image: e.target.result
-                });
+                // setValues({
+                //     ...values,
+                //     image: e.target.result
+                // });
             }
 
             reader.readAsDataURL(e.target.files[0]);
@@ -60,7 +82,7 @@ export default function AddTool() {
     }
     return (
         <div className="add-tool-wrap">
-            <h3 style={{ color: "#161616" }} onClick={() => console.log(values)}>대여 목록</h3>
+            <h3 style={{ color: "#161616" }} onClick={() => console.log(values)}>기자재 추가</h3>
             <div id="input-filed-wrap">
                 <img
                     src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx"
@@ -77,6 +99,7 @@ export default function AddTool() {
                             type="file"
                             id="file"
                             onChange={onFileChange}
+                            accept=".png, .jpg, .jpeg, .gif"
                         />
                     </div>
                     <label>기자재 명칭</label>
