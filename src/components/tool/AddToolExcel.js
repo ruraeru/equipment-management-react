@@ -89,7 +89,7 @@ export default function AddToolExcel() {
 
     return (
         <div className="add-tool-wrap">
-            <h3>대여 목록</h3>
+            <h3>기자재 추가</h3>
             <div id="input-filed-wrap">
                 <SiMicrosoftexcel size="27px" color="#20744A" style={{
                     // marginBottom: "8px"
