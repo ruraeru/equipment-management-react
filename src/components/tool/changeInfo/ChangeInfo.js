@@ -13,6 +13,29 @@ import ReportModal from "./ReportModal";
 export default function ChangeInfo({ userData }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState();
+    const [reportData, setReportData] = useState();
+
+    const getReportList = async () => {
+        await await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/student/1`)
+            .then((res) => {
+                setReportData(res.data.error);
+
+                // if (res.data.suc) {
+                //     console.log(res.data);
+                //     setReportData(res.data);
+                // }
+                // else {
+                //     setReportData(res.data.error);
+                //     Promise.reject(new Error(res.data.error));
+                // }
+            }).catch((err) => {
+                console.log("Equipment report API Error", err);
+            });
+    }
+
+    useEffect(() => {
+        getReportList();
+    }, []);
 
     const openModal = () => {
         setModalOpen(true);
@@ -72,6 +95,19 @@ export default function ChangeInfo({ userData }) {
                     </tr>
                 </tbody>
             </table>
+            <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "red",
+                color: "white"
+            }}>
+                {reportData &&
+                    <p>
+                        {reportData}
+                    </p>
+                }
+            </div>
             <ChangeInfoModal open={modalOpen} close={closeModal} header={"황태우"}>
                 <ReportModal data={{
                     tool: {
