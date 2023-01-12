@@ -10,7 +10,7 @@ export default function Navigation({ list }) {
             </p>
             {list.map((item, index) => (
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                <button className={useActive(item) ? "active nav" : ""}
+                <button key={index} className={useActive(item) ? "active nav" : ""}
                     onClick={() => navigate(item)}>{index + 1}</button>
             ))}
             <p>
