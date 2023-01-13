@@ -4,11 +4,13 @@ import { useHeaderActive } from "hooks/useActive";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function MyRentalList() {
+export default function MyRentalList({ userData }) {
     const [rentalList, setRentalList] = useState();
     const getMyRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/student/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/${userData.login.user_id}/1`)
             .then((res) => {
+                console.log(res.data);
+                if (res.data.suc === false) return;
                 setRentalList(res.data);
             }).catch(err => {
                 console.log(err);
@@ -44,7 +46,7 @@ export default function MyRentalList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {rentalList && rentalList.map((item, index) => (
+                    {rentalList ? rentalList.map((item, index) => (
                         <tr key={index}>
                             <td>{item.result.rental_date.split("-")[1] + " / " + item.result.rental_date.split("-")[2].slice(0, 2)}</td>
                             <td>{item.result.tool.tool_use_division}</td>
@@ -53,15 +55,13 @@ export default function MyRentalList() {
                             <td>{item.result.tool.tool_id}</td>
                             <td className={item.D_day === "미반납" ? "rentalF" : ""}>{item.D_day}</td>
                         </tr>
-                    ))}
-                    <tr>
-                        <td>11 / 16</td>
-                        <td>교육용</td>
-                        <td>소프트웨어콘텐츠 과</td>
-                        <td>스마트 패드</td>
-                        <td>2017021402226</td>
-                        <td>대여중</td>
-                    </tr>
+                    )) :
+                        <tr>
+                            <td colSpan={6}>
+                                <p>대여 내역이 없습니다.</p>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </>
