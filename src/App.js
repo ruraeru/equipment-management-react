@@ -37,7 +37,7 @@ export default function App() {
       } />
       <Route path="/home/myRentalList" element={
         <Main userData={cookies}>
-          <MyRentalList />
+          <MyRentalList userData={cookies} />
         </Main>
       } />
       <Route path="/tool/changeInfo" element={
