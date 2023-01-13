@@ -4,7 +4,6 @@ import "./DetailEquipment.scss";
 
 export default function DetailEquipment({ data }) {
     console.log("data", data);
-    const { rental_date, rental_due_date } = data.rental;
     const { tool_name, tool_code, tool_id, tool_purchase_division, tool_purchase_date, tool_standard, tool_state }
         = data.result;
     useEffect(() => {
@@ -35,9 +34,9 @@ export default function DetailEquipment({ data }) {
                     </p>
                     <p className="equipment-detail">
                         구입구분 : &nbsp; {tool_purchase_division} <br />
-                        구입 일자 : &nbsp; {tool_purchase_date.split("-")[0]}년&nbsp;
+                        구입 일자 : &nbsp; {tool_purchase_date?.split("-")[0]}년&nbsp;
                         {tool_purchase_date.split("-")[1]}월&nbsp;
-                        {tool_purchase_date.split("-")[2].slice(0, 2)}일 <br />
+                        {tool_purchase_date.split("-")[2]?.slice(0, 2)}일 <br />
                         물품 규격 : &nbsp; {tool_standard}
                     </p>
                 </div>
@@ -63,10 +62,10 @@ export default function DetailEquipment({ data }) {
                                 marginTop: 0
                             }}>
                                 대여 기간: &nbsp;
-                                {rental_date?.split("-")[0]} / {rental_date?.split("-")[1]} / {rental_date?.split("-")[2].slice(0, 2)} <br />
-                                ~ {rental_due_date?.split("-")[0]} / {rental_due_date?.split("-")[1]} / {rental_due_date?.split("-")[2].slice(0, 2)}
+                                {data.rental?.rental_date?.split("-")[0]} / {data.rental?.rental_date?.split("-")[1]} / {data.rental?.rental_date?.split("-")[2].slice(0, 2)} <br />
+                                ~ {data.rental?.rental_due_date?.split("-")[0]} / {data.rental?.rental_due_date?.split("-")[1]} / {data.rental?.rental_due_date?.split("-")[2].slice(0, 2)}
                                 <br />
-                                (남은 기간 : {new Date().getDate() - rental_due_date?.split("-")[2].slice(0, 2)}일)
+                                (남은 기간 : {data.rental?.rental_due_date?.split("-")[2].slice(0, 2) - new Date().getDate()} 일)
                             </p>
                         </div>
                     </div>
