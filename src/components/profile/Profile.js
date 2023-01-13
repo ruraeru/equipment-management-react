@@ -5,11 +5,14 @@ import { Link } from "react-router-dom";
 import "./Profile.scss";
 
 export default function Profile({ userData }) {
+    console.log(userData.login);
     const [userType, setUserType] = useState("");
     const [rentalList, setRentalList] = useState();
     const getMyRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/student/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/${userData.login.user_id}/1`)
             .then((res) => {
+                console.log(res.data);
+                if (res.data.suc === false) return;
                 setRentalList(res.data);
             }).catch(err => {
                 console.log(err);
