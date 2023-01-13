@@ -15,10 +15,42 @@ export default function ChangeInfo({ userData }) {
     const [modalData, setModalData] = useState();
     const [reportData, setReportData] = useState();
 
+    const [checkItems, setCheckItems] = useState([]);
+
+    // 체크박스 단일 선택
+    const handleSingleCheck = (checked, id) => {
+        if (checked) {
+            // 단일 선택 시 체크된 아이템을 배열에 추가
+            setCheckItems(prev => [...prev, id]);
+        } else {
+            // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+            setCheckItems(checkItems.filter((el) => el !== id));
+        }
+        console.log(checkItems);
+    };
+
+    // 체크박스 전체 선택
+    const handleAllCheck = (checked) => {
+        if (checked) {
+            // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+            const idArray = [];
+            reportData.forEach((el) => {
+                console.log(el.tool_id);
+                idArray.push(el.tool_id);
+            });
+            setCheckItems(idArray);
+        }
+        else {
+            // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+            setCheckItems([]);
+        }
+    }
+
+
     const getReportList = async () => {
         await await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/student/1`)
             .then((res) => {
-                setReportData(res.data.error);
+                // setReportData(res.data);
 
                 // if (res.data.suc) {
                 //     console.log(res.data);
@@ -70,9 +102,11 @@ export default function ChangeInfo({ userData }) {
             <table id="equipment-list">
                 <thead>
                     <tr>
-                        <th className="check-wrap">
-                            <input type="checkbox" id="check-btn" />
-                            <label htmlFor="check-btn" />
+                        <th>
+                            <input type="checkbox" name="select-all"
+                                onChange={(e) => handleAllCheck(e.target.checked)}
+                                checked={checkItems.length === reportData?.length ? true : false}
+                            />
                         </th>
                         <th>구분</th>
                         <th>관리 부서</th>
@@ -83,9 +117,8 @@ export default function ChangeInfo({ userData }) {
                 </thead>
                 <tbody>
                     <tr onClick={openModal}>
-                        <td className="check-wrap">
-                            <input type="checkbox" id="check-btn" />
-                            <label htmlFor="check-btn" />
+                        <td>
+                            <input type="checkbox" />
                         </td>
                         <td>교육용</td>
                         <td>소프트웨어콘텐츠 과</td>
@@ -93,21 +126,29 @@ export default function ChangeInfo({ userData }) {
                         <td>2017021402226</td>
                         <td>대여 가능</td>
                     </tr>
+                    {reportData ?
+                        <tr>
+                            <td>
+                                {/* 건의사항 출력 */}
+                                {/* <td>
+                            <input type="checkbox" name={`select-${item.tool_id}`}
+                                onChange={(e) => handleSingleCheck(e.target.checked, item.tool_id)}
+                                checked={checkItems.includes(item.tool_id) ? true : false}
+                            />
+                        </td> */}
+                            </td>
+                        </tr>
+                        :
+                        <tr>
+                            <td colspan={6}>
+                                <p>
+                                    건의사항이 없습니다.
+                                </p>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
-            <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "red",
-                color: "white"
-            }}>
-                {reportData &&
-                    <p>
-                        {reportData}
-                    </p>
-                }
-            </div>
             <ChangeInfoModal open={modalOpen} close={closeModal} header={"황태우"}>
                 <ReportModal data={{
                     tool: {
