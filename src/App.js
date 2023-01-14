@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 import ChangeInfoUser from "components/user/changeInfo/ChangeInfoUser";
+import ReportLog from "components/myRentalList/ReportLog";
 
 export default function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['login']);
@@ -38,6 +39,11 @@ export default function App() {
       <Route path="/home/myRentalList" element={
         <Main userData={cookies}>
           <MyRentalList userData={cookies} />
+        </Main>
+      } />
+      <Route path="/home/myRentalList/reportLog" element={
+        <Main userData={cookies}>
+          <ReportLog userData={cookies} />
         </Main>
       } />
       <Route path="/tool/changeInfo" element={
