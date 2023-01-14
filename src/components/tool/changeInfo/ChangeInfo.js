@@ -9,11 +9,13 @@ import * as XLSX from "xlsx";
 import styled from "styled-components";
 import ChangeInfoModal from "./ChangeInfoModal";
 import ReportModal from "./ReportModal";
+import Navigation from "components/nav/Navigation";
 
 export default function ChangeInfo({ userData }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState();
-    const [reportData, setReportData] = useState();
+    const [reportList, setReportList] = useState();
+    const [repairData, setRepairData] = useState();
 
     const [checkItems, setCheckItems] = useState([]);
 
@@ -34,7 +36,7 @@ export default function ChangeInfo({ userData }) {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            reportData.forEach((el) => {
+            reportList.forEach((el) => {
                 console.log(el.tool_id);
                 idArray.push(el.tool_id);
             });
@@ -46,20 +48,27 @@ export default function ChangeInfo({ userData }) {
         }
     }
 
+    const getRepairData = async (repair_id) => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepair/${repair_id}`)
+            .then((res) => {
+                console.log(res.data.result);
+                if (res.data.suc) {
+                    setRepairData(res.data.result);
+                }
+                else Promise.reject(new Error(res.data.error));
+            }).catch((err) => {
+                console.log("gerRepairData API", err);
+            })
+    }
 
     const getReportList = async () => {
-        await await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/student/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/1`)
             .then((res) => {
-                // setReportData(res.data);
-
-                // if (res.data.suc) {
-                //     console.log(res.data);
-                //     setReportData(res.data);
-                // }
-                // else {
-                //     setReportData(res.data.error);
-                //     Promise.reject(new Error(res.data.error));
-                // }
+                if (res.data.suc) {
+                    setReportList(res.data.result);
+                    console.log(res.data.result);
+                }
+                else Promise.reject(new Error(res.data.error));
             }).catch((err) => {
                 console.log("Equipment report API Error", err);
             });
@@ -81,7 +90,7 @@ export default function ChangeInfo({ userData }) {
             raw: true
         });
 
-        XLSX.writeFile(wb, "기자재리스트.xlsx");
+        XLSX.writeFile(wb, "기자재 건의사항.xlsx");
     }
 
     return (
@@ -99,13 +108,13 @@ export default function ChangeInfo({ userData }) {
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
             </div>
-            <table id="equipment-list">
+            <table>
                 <thead>
                     <tr>
                         <th>
                             <input type="checkbox" name="select-all"
                                 onChange={(e) => handleAllCheck(e.target.checked)}
-                                checked={checkItems.length === reportData?.length ? true : false}
+                                checked={checkItems.length === reportList?.length ? true : false}
                             />
                         </th>
                         <th>구분</th>
@@ -116,31 +125,29 @@ export default function ChangeInfo({ userData }) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr onClick={openModal}>
-                        <td>
-                            <input type="checkbox" />
-                        </td>
-                        <td>교육용</td>
-                        <td>소프트웨어콘텐츠 과</td>
-                        <td>스마트 패드</td>
-                        <td>2017021402226</td>
-                        <td>대여 가능</td>
-                    </tr>
-                    {reportData ?
-                        <tr>
-                            <td>
-                                {/* 건의사항 출력 */}
-                                {/* <td>
-                            <input type="checkbox" name={`select-${item.tool_id}`}
-                                onChange={(e) => handleSingleCheck(e.target.checked, item.tool_id)}
-                                checked={checkItems.includes(item.tool_id) ? true : false}
-                            />
-                        </td> */}
-                            </td>
-                        </tr>
+                    {reportList ?
+                        reportList.map((item, index) => (
+                            <tr key={index} onClick={(e) => {
+                                if (e.target.tagName !== "INPUT") {
+                                    getRepairData(item.repair_id).then(() => openModal());
+                                }
+                            }}>
+                                <td>
+                                    <input type="checkbox" name={`select-${item.tool_id}`}
+                                        onChange={(e) => handleSingleCheck(e.target.checked, item.tool_id)}
+                                        checked={checkItems.includes(item.tool_id) ? true : false}
+                                    />
+                                </td>
+                                <td>{item.tool.tool_use_division}</td>
+                                <td>{item.tool.department_id}</td>
+                                <td>{item.tool.tool_name}</td>
+                                <td>{item.tool.tool_code}</td>
+                                <td>{item.tool.tool_state}</td>
+                            </tr>
+                        ))
                         :
                         <tr>
-                            <td colspan={6}>
+                            <td colSpan={6}>
                                 <p>
                                     건의사항이 없습니다.
                                 </p>
@@ -149,36 +156,38 @@ export default function ChangeInfo({ userData }) {
                     }
                 </tbody>
             </table>
-            <ChangeInfoModal open={modalOpen} close={closeModal} header={"황태우"}>
-                <ReportModal data={{
-                    tool: {
-                        name: "스마트 패드",
-                        code: "9155",
-                        number: "201702140226",
-                    },
-                    comment: {
-                        comment: "터치가 안돼요",
-                        user: {
-                            name: "홍길동(학부생)",
-                            date: new Date().toLocaleString(),
-                            change_date: new Date().toLocaleString()
-                        }
-                    }
-                }} />
+            <table style={{
+                display: "none"
+            }} id="equipment-list">
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>관리 부서</th>
+                        <th>기자재명</th>
+                        <th>자산 번호</th>
+                        <th>기자재 상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {checkItems?.map((item_id) => (
+                        reportList?.map((item, index) => (
+                            item_id === item.tool_id ?
+                                <tr key={index}>
+                                    <td>{item.tool.tool_use_division}</td>
+                                    <td>{item.tool.department_id}</td>
+                                    <td>{item.tool.tool_name}</td>
+                                    <td>{item.tool.tool_code}</td>
+                                    <td>{item.tool.tool_state}</td>
+                                </tr>
+                                : null
+                        ))
+                    ))}
+                </tbody>
+            </table>
+            <ChangeInfoModal open={modalOpen} close={closeModal} header={repairData?.user_id}>
+                <ReportModal data={repairData} token={userData.token} />
             </ChangeInfoModal>
-            <footer className="list-nav">
-                <p>
-                    &lt;
-                </p>
-                <button onClick={() => (1)}>1</button>
-                <button onClick={() => (2)}>2</button>
-                <button onClick={() => (2)}>3</button>
-                <button onClick={() => (2)}>4</button>
-                <button onClick={() => (2)}>5</button>
-                <p>
-                    &gt;
-                </p>
-            </footer>
+            <Navigation list={["/tool/changeInfo/1", "/tool/changeInfo/2", "/tool/changeInfo/3", "/tool/changeInfo/4", "/tool/changeInfo/5",]} />
         </div >
     );
 }
