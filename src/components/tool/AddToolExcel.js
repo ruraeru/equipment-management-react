@@ -6,7 +6,7 @@ import ScreenData from "./ScreenData";
 import axios from "axios";
 
 export default function AddToolExcel() {
-    const [__html, setHTML] = useState("");
+    // const [__html, setHTML] = useState("");
     const [json, setJSON] = useState();
 
     const handleFile = async (e) => {
@@ -15,7 +15,7 @@ export default function AddToolExcel() {
 
         const wb = XLSX.read(data);
         const ws = wb.Sheets[wb.SheetNames[0]];
-        setHTML(XLSX.utils.sheet_to_html(ws, { id: "tabeller" }));
+        // setHTML(XLSX.utils.sheet_to_html(ws, { id: "tabeller" }));
 
         setJSON(XLSX.utils.sheet_to_json(ws, {
             blankrows: "",
@@ -59,13 +59,16 @@ export default function AddToolExcel() {
                 품목코드: code, 품명: name,
                 규격: standard, 구입일자: purchase_date,
                 구입구분: purchase_division } = item;
+
+            //엑셀로 불러온 날짜를 Date 타입으로 바꿔서 서버로 보내기 위해 파싱해줌
+            const date = new Date(purchase_date.toString().slice(0, 4), purchase_date.toString().slice(4, 6), purchase_date.toString().slice(6, 8));
             await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, {
                 tool_id: id,
                 tool_use_division: use_division,
                 tool_code: code,
                 tool_name: name,
                 tool_purchase_division: purchase_division,
-                tool_purchase_date: purchase_date,
+                tool_purchase_date: date,
                 tool_standard: standard,
                 tool_condition: "대여가능",
                 tool_update_at: new Date(),
