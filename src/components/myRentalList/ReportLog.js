@@ -29,9 +29,9 @@ export default function ReportLog({ userData }) {
                 <Link to="/home/myRentalList/reportLog" className="active">
                     내 건의 내역
                 </Link>
-                <Link to="/home/myRentalList/rentalListManagement">
+                {/* <Link to="/home/myRentalList/rentalListManagement">
                     대여 관리
-                </Link>
+                </Link> */}
                 <Search />
             </div>
             <table>

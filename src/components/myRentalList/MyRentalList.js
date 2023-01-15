@@ -29,9 +29,9 @@ export default function MyRentalList({ userData }) {
                 <Link to="/home/myRentalList/reportLog" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
                     내 건의 내역
                 </Link>
-                <Link to="/home/myRentalList/rentalListManagement" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
+                {/* <Link to="/home/myRentalList/rentalListManagement" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
                     대여 관리
-                </Link>
+                </Link> */}
                 <Search />
             </div>
             <table>
