@@ -53,10 +53,7 @@ export default function AddTool() {
         formData.append("tool_update_at", new Date());
         formData.append("tool_image", image);
         formData.append("department_id", "1");
-        for (let [name, value] of formData) {
-            console.log(name, value);
-        }
-        console.log(e.target.file.files[0]);
+
         onAddEquipment(formData);
     }
 
