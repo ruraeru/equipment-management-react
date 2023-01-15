@@ -8,6 +8,8 @@ export default function ChangeInfoUser({ userInfo }) {
     const [edited, setEdited] = useState(false);
     const [userData, setUserData] = useState()
     const [newUserData, setNewUerData] = useState();
+    const [myRentalList, setMyRentalList] = useState();
+    const [myRepairList, setRepairList] = useState();
 
     const getUserInfo = useCallback(async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/user/inquireMyInfo`, {
@@ -22,13 +24,42 @@ export default function ChangeInfoUser({ userInfo }) {
                 setUserData(res.data.inquireMyInfo);
                 setNewUerData(res.data.inquireMyInfo);
             }
-            else Promise.reject(new Error("ChangeInfoUser:49", res.data.error));
+            else Promise.reject(new Error("ChangeInfoUser", res.data.error));
             console.log(res.data.inquireMyInfo);
         });
     }, [userInfo.login.user_id, userInfo.token]);
 
+
+    const getMyRentalList = async () => {
+        axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myAllRentalList/student/1`)
+            .then((res) => {
+                if (res.data.suc) {
+                    setMyRentalList(res.data.result.slice(0, 2));
+                }
+                else Promise.reject(new Error("getMyRentalList", res.data.error));
+            })
+            .catch((err) => {
+                console.log("getMyRentalList", err);
+            });
+    };
+
+    const getRepairList = async () => {
+        axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/1`)
+            .then((res) => {
+                if (res.data.suc) {
+                    setRepairList(res.data.result.slice(0, 2));
+                }
+                else Promise.reject(new Error("getRepairList", res.data.error));
+            })
+            .catch((err) => {
+                console.log("getRepairList", err);
+            });
+    }
+
     useEffect(() => {
         getUserInfo();
+        getMyRentalList();
+        getRepairList();
     }, [getUserInfo]);
 
     const onChange = (e) => {
@@ -158,138 +189,96 @@ export default function ChangeInfoUser({ userInfo }) {
             <div>
                 <div id="contents-header" style={{
                     justifyContent: "space-between",
+                    padding: "0px 5px 0px 5px"
                 }}>
                     <h3>최근 대여 품목</h3>
                     <Link to={"/home"}>더보기</Link>
                 </div>
-                <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    paddingBottom: "32px",
-                    borderBottom: "solid 1px black"
-                }}>
-                    <RentalPackage>
-                        <div style={{
-                            display: "flex",
-                        }}>
-                            <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
-                            <div style={{
-                                marginRight: "8px"
-                            }}>
-                                <span>스마트 패드</span> &nbsp; 대여 중
-                                <p id="code">
-                                    품목 코드 : 9115 <br />
-                                    자산번호 : 2017021402226
-                                </p>
-                                <p id="info">
-                                    구입 구분 : 교비 (등록금) <br />
-                                    구입 일자 : 2017년 2월 14일 <br />
-                                    물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
-                                </p>
-                            </div>
-                        </div>
-                        <div style={{
-                            textAlign: "center",
-                        }}>
-                            <h3>D - 7</h3>
-                            <p>~ 11 / 30</p>
-                        </div>
-                    </RentalPackage>
-                    <RentalPackage>
-                        <div style={{
-                            display: "flex",
-                        }}>
-                            <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
-                            <div style={{
-                                marginRight: "8px"
-                            }}>
-                                <span>스마트 패드</span> &nbsp; 대여 중
-                                <p id="code">
-                                    품목 코드 : 9115 <br />
-                                    자산번호 : 2017021402226
-                                </p>
-                                <p id="info">
-                                    구입 구분 : 교비 (등록금) <br />
-                                    구입 일자 : 2017년 2월 14일 <br />
-                                    물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
-                                </p>
-                            </div>
-                        </div>
-                        <div style={{
-                            textAlign: "center"
-                        }}>
-                            <h3>D - 7</h3>
-                            <p>~ 11 / 30</p>
-                        </div>
-                    </RentalPackage>
-                </div>
+                {myRentalList &&
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingBottom: "32px",
+                        borderBottom: "solid 1px black"
+                    }}>
+                        {myRentalList.map((item, index) => (
+                            <RentalPackage key={index}>
+                                <div style={{
+                                    display: "flex",
+                                }}>
+                                    <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
+                                    <div style={{
+                                        minWidth: "300px",
+                                        marginRight: "8px"
+                                    }}>
+                                        <span>{item.tool.tool_name}</span> &nbsp; 대여 중
+                                        <p id="code">
+                                            품목 코드 : 9115 <br />
+                                            자산번호 : {item.tool.tool_id}
+                                        </p>
+                                        <p id="info">
+                                            구입 구분 : 교비 (등록금) <br />
+                                            구입 일자 : 2017년 2월 14일 <br />
+                                            물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style={{
+                                    textAlign: "center",
+                                }}>
+                                    <h3>{item.rental_state}</h3>
+                                    <p>~ {item.rental_date.split("-")[1]} / {item.rental_date.split("-")[2].slice(0, 2)}</p>
+                                </div>
+                            </RentalPackage>
+                        ))}
+                    </div>
+                }
                 <div id="contents-header" style={{
                     justifyContent: "space-between",
+                    padding: "0px 5px 0px 5px"
                 }}>
                     <h3>최근 건의 내역</h3>
                     <Link to={"/home"}>더보기</Link>
                 </div>
-                <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    paddingBottom: "32px",
-                    borderBottom: "solid 1px black"
-                }}>
-                    <RentalPackage>
-                        <div style={{
-                            display: "flex",
-                        }}>
-                            <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
-                            <div style={{
-                                marginRight: "8px"
-                            }}>
-                                <span>스마트 패드</span> &nbsp; 대여 중
-                                <p id="code">
-                                    품목 코드 : 9115 <br />
-                                    자산번호 : 2017021402226
-                                </p>
-                                <p id="info">
-                                    구입 구분 : 교비 (등록금) <br />
-                                    구입 일자 : 2017년 2월 14일 <br />
-                                    물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
-                                </p>
-                            </div>
-                        </div>
-                        <div style={{
-                            textAlign: "center"
-                        }}>
-                            <h3>D - 7</h3>
-                            <p>~ 11 / 30</p>
-                        </div>
-                    </RentalPackage>
-                    <RentalPackage>
-                        <div style={{
-                            display: "flex",
-                        }}>
-                            <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
-                            <div style={{
-                                marginRight: "8px"
-                            }}>
-                                <span>스마트 패드</span> &nbsp; 대여 중
-                                <p id="code">
-                                    품목 코드 : 9115 <br />
-                                    자산번호 : 2017021402226
-                                </p>
-                                <p id="info">
-                                    구입 구분 : 교비 (등록금) <br />
-                                    구입 일자 : 2017년 2월 14일 <br />
-                                    물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
-                                </p>
-                            </div>
-                        </div>
-                        <div style={{
-                            textAlign: "center"
-                        }}>
-                            <h3>D - 7</h3>
-                            <p>~ 11 / 30</p>
-                        </div>
-                    </RentalPackage>
-                </div>
+                {myRepairList &&
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingBottom: "32px",
+                        borderBottom: "solid 1px black"
+                    }}>
+                        {myRepairList.map((item, index) => (
+                            <RentalPackage key={index}>
+                                <div style={{
+                                    display: "flex",
+                                }}>
+                                    <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
+                                    <div style={{
+                                        minWidth: "300px",
+                                        marginRight: "8px"
+                                    }}>
+                                        <span>{item.tool.tool_name}</span> &nbsp; 대여 중
+                                        <p id="code">
+                                            품목 코드 : {item.tool.tool_code} <br />
+                                            자산번호 : {item.tool.tool_id}
+                                        </p>
+                                        <p id="info">
+                                            구입 구분 : {item.tool.tool_purchase_division} <br />
+                                            구입 일자 : {item.tool.tool_purchase_date.split("-")[0]}년 {item.tool.tool_purchase_date.split("-")[1]}월 {item.tool.tool_purchase_date.split("-")[2].slice(0, 2)}일<br />
+                                            물품 규격 : {item.tool.tool_standard}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style={{
+                                    textAlign: "center",
+                                }}>
+                                    <h3>{item.tool.tool_state}</h3>
+                                    {/* <p>~ 11 / 30</p> */}
+                                </div>
+                            </RentalPackage>
+                        ))}
+                    </div>
+                }
             </div>
         </div>
     );
@@ -301,6 +290,8 @@ const RentalPackage = styled.div`
    color: #676767;
    font-weight: 700;
    margin-right: 64px;
+
+   width: 100%;
 
    
    img {
