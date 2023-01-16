@@ -33,6 +33,7 @@ export default function ChangeInfoUser({ userInfo }) {
     const getMyRentalList = async () => {
         axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myAllRentalList/student/1`)
             .then((res) => {
+                console.log("getMyRentalList", res.data.result);
                 if (res.data.suc) {
                     setMyRentalList(res.data.result.slice(0, 2));
                 }
@@ -44,8 +45,9 @@ export default function ChangeInfoUser({ userInfo }) {
     };
 
     const getRepairList = async () => {
-        axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/1`)
+        axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/${userInfo.login.user_id}/1`)
             .then((res) => {
+                console.log("getRepairList", res.data.result.slice(0, 2));
                 if (res.data.suc) {
                     setRepairList(res.data.result.slice(0, 2));
                 }
@@ -192,9 +194,9 @@ export default function ChangeInfoUser({ userInfo }) {
                     padding: "0px 5px 0px 5px"
                 }}>
                     <h3>최근 대여 품목</h3>
-                    <Link to={"/home"}>더보기</Link>
+                    <Link to={"/home/myRentalList"}>더보기</Link>
                 </div>
-                {myRentalList &&
+                {myRentalList ?
                     <div style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -206,9 +208,9 @@ export default function ChangeInfoUser({ userInfo }) {
                                 <div style={{
                                     display: "flex",
                                 }}>
-                                    <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
+                                    <img src={`${process.env.REACT_APP_DOMAIN}/tool/${item.tool.img.img_url}`} alt="태블릿" />
                                     <div style={{
-                                        minWidth: "300px",
+                                        // minWidth: "300px",
                                         marginRight: "8px"
                                     }}>
                                         <span>{item.tool.tool_name}</span> &nbsp; 대여 중
@@ -232,15 +234,19 @@ export default function ChangeInfoUser({ userInfo }) {
                             </RentalPackage>
                         ))}
                     </div>
+                    :
+                    <div>
+                        <p>최근 대여 품목이 없습니다.</p>
+                    </div>
                 }
                 <div id="contents-header" style={{
                     justifyContent: "space-between",
                     padding: "0px 5px 0px 5px"
                 }}>
                     <h3>최근 건의 내역</h3>
-                    <Link to={"/home"}>더보기</Link>
+                    <Link to={"/home/myRentalList/reportLog"}>더보기</Link>
                 </div>
-                {myRepairList &&
+                {myRepairList ?
                     <div style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -252,9 +258,9 @@ export default function ChangeInfoUser({ userInfo }) {
                                 <div style={{
                                     display: "flex",
                                 }}>
-                                    <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
+                                    <img src={`${process.env.REACT_APP_DOMAIN}/tool/${item.tool.img.img_url}`} alt="태블릿" />
                                     <div style={{
-                                        minWidth: "300px",
+                                        // maxWidth: "300px",
                                         marginRight: "8px"
                                     }}>
                                         <span>{item.tool.tool_name}</span> &nbsp; 대여 중
@@ -277,6 +283,10 @@ export default function ChangeInfoUser({ userInfo }) {
                                 </div>
                             </RentalPackage>
                         ))}
+                    </div>
+                    :
+                    <div>
+                        <p>최근 건의 내역이 없습니다.</p>
                     </div>
                 }
             </div>
