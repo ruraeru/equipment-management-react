@@ -3,13 +3,46 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SiMicrosoftexcel } from "react-icons/si";
 // import "../RentalList.scss";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { useActive, useHeaderActive } from "hooks/useActive";
 import { Cookies } from "react-cookie";
 import Navigation from "components/nav/Navigation";
 
 export default function RentalLog() {
+    const page = useParams().page;
+
+    const [checkItems, setCheckItems] = useState([]);
+
+    // 체크박스 단일 선택
+    const handleSingleCheck = (checked, id) => {
+        if (checked) {
+            // 단일 선택 시 체크된 아이템을 배열에 추가
+            setCheckItems(prev => [...prev, id]);
+        } else {
+            // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+            setCheckItems(checkItems.filter((el) => el !== id));
+        }
+        console.log(checkItems);
+    };
+
+    // 체크박스 전체 선택
+    const handleAllCheck = (checked) => {
+        if (checked) {
+            // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+            const idArray = [];
+            rentalLog.forEach((el) => {
+                console.log(el.log_id);
+                idArray.push(el.log_id);
+            });
+            setCheckItems(idArray);
+        }
+        else {
+            // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+            setCheckItems([]);
+        }
+    }
+
     const ExcelExport = () => {
         const table = document.getElementById("equipment-list");
         const wb = XLSX.utils.table_to_book(table, {
@@ -18,28 +51,19 @@ export default function RentalLog() {
 
         XLSX.writeFile(wb, `대여로그 - ${new Date().toLocaleString()}.xlsx`);
     }
-    const [rentalList, setRentalList] = useState();
-    const [rentalListPage, setRentalListPage] = useState(1);
-    const getRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList`, {
-            params: {
-                department_id: 1,
-                page: 1
-            }
-        })
-            .then(res => {
-                if (res.data.suc) {
-                    setRentalList(res.data.result);
-                }
-                else Promise.reject(new Error("rentalList API 호출 실패"));
-            }).catch(err => {
-                console.log("rentalList API 오류", err);
-            });
+    const [rentalLog, setRentalLog] = useState();
+
+    const getRentalLog = async () => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/viewLog/1/${page}`)
+            .then((res) => {
+                console.log(res.data.result);
+                setRentalLog(res.data.result);
+            })
     }
 
     useEffect(() => {
-        getRentalList(1, rentalListPage);
-    }, [rentalListPage]);
+        getRentalLog();
+    }, [page]);
 
     return (
         <div style={{
@@ -51,7 +75,7 @@ export default function RentalLog() {
                 <Link to="/home/rentalList/1">
                     대여 목록
                 </Link>
-                <Link to="/home/rentalList/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
+                <Link to="/home/rentalLog/1" className="active">
                     대여 로그
                 </Link>
                 <Search />
@@ -59,32 +83,68 @@ export default function RentalLog() {
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
             </div>
-            <table id="equipment-list">
+            <table>
                 <thead>
                     <tr>
-                        <th className="check-wrap">
-                            <input type="checkbox" id="check-btn" />
-                            <label htmlFor="check-btn" />
+                        <th>
+                            <input type="checkbox" name="select-all"
+                                onChange={(e) => handleAllCheck(e.target.checked)}
+                                checked={checkItems.length === rentalLog?.length ? true : false}
+                            />
                         </th>
+                        <th>번호</th>
                         <th>구분</th>
-                        <th>대여자명</th>
-                        <th>기자재명</th>
-                        <th>자산 번호</th>
-                        <th>대여 일자</th>
+                        <th>로그</th>
+                        <th>학과 번호</th>
+                        <th>로그 일자</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {rentalLog && rentalLog.map((item, index) => {
+                        return (
+                            <tr key={index}>
+                                <td>
+                                    <input type="checkbox" name={`select-${item?.log_id}`}
+                                        onChange={(e) => handleSingleCheck(e.target.checked, item?.log_id)}
+                                        checked={checkItems.includes(item?.log_id) ? true : false}
+                                    />
+                                </td>
+                                <td>{item?.log_id}</td>
+                                <td>{item?.log_title}</td>
+                                <td>{item?.log_content}</td>
+                                <td>{item?.department_id}</td>
+                                <td>{item?.log_create_at.split("-")[1]} / {item?.log_create_at.split("-")[0].slice(0, 2)}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+            <table style={{
+                display: "none"
+            }} id="equipment-list">
+                <thead>
                     <tr>
-                        <td className="check-wrap">
-                            <input type="checkbox" id="check-btn" />
-                            <label htmlFor="check-btn" />
-                        </td>
-                        <td>교육용</td>
-                        <td>김홍길동</td>
-                        <td>스마트 패드</td>
-                        <td>2017021402226</td>
-                        <td>11 / 21</td>
+                        <th>번호</th>
+                        <th>구분</th>
+                        <th>로그</th>
+                        <th>학과 번호</th>
+                        <th>로그 일자</th>
                     </tr>
+                </thead>
+                <tbody>
+                    {checkItems?.map((log_id) => (
+                        rentalLog?.map((item, index) => (
+                            log_id === item.log_id ?
+                                <tr key={index}>
+                                    <td>{item.log_id}</td>
+                                    <td>{item.log_title}</td>
+                                    <td>{item.log_content}</td>
+                                    <td>{item.department_id}</td>
+                                    <td>{item.log_create_at.split("-")[1]} / {item.log_create_at.split("-")[2].slice(0, 2)}</td>
+                                </tr>
+                                : null
+                        )
+                        )))}
                 </tbody>
             </table>
             <Navigation list={["/home/rentalLog/1", "/home/rentalLog/2", "/home/rentalLog/3", "/home/rentalLog/4", "/home/rentalLog/5",]} />
