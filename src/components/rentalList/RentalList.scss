@@ -41,15 +41,33 @@ input[type="checkbox"] {
 // }
 
 .rentalT {
-  color: #94d82d;
+  td {
+    &:last-child {
+      color: #94d82d;
+    }
+  }
 }
 
-.rentalI {
-  color: orange;
+.rentalI,
+.repair {
+  td {
+    &:last-child {
+      color: orange;
+    }
+  }
 }
 
 .rentalF {
-  color: #e03333;
+  td {
+    &:last-child {
+      color: #e03333;
+    }
+  }
+  background-color: #d9d9d9;
+
+  &:hover {
+    background-color: #d9d9d9;
+  }
 }
 .hide {
   display: none;
