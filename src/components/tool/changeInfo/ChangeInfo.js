@@ -129,7 +129,7 @@ export default function ChangeInfo({ userData }) {
                         reportList.map((item, index) => (
                             <tr key={index} onClick={(e) => {
                                 if (e.target.tagName !== "INPUT") {
-                                    getRepairData(item.repair_id).then(() => openModal());
+                                    getRepairData(item?.repair_id).then(() => openModal());
                                 }
                             }}>
                                 <td>
@@ -138,11 +138,11 @@ export default function ChangeInfo({ userData }) {
                                         checked={checkItems.includes(item.tool_id) ? true : false}
                                     />
                                 </td>
-                                <td>{item.tool.tool_use_division}</td>
-                                <td>{item.tool.department_id}</td>
-                                <td>{item.tool.tool_name}</td>
-                                <td>{item.tool.tool_code}</td>
-                                <td>{item.tool.tool_state}</td>
+                                <td>{item?.tool?.tool_use_division}</td>
+                                <td>{item?.tool?.department_id}</td>
+                                <td>{item?.tool?.tool_name}</td>
+                                <td>{item?.tool?.tool_code}</td>
+                                <td>{item?.tool?.tool_state}</td>
                             </tr>
                         ))
                         :
