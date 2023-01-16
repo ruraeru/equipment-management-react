@@ -1,10 +1,27 @@
 import styled from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
+import { useState } from "react";
+import axios from "axios";
 
-export default function Search() {
+export default function Search({ rentalList, setRentalList, getRentalList }) {
+    const [input, setInput] = useState("");
+    const onSerach = async (e) => {
+        setInput(e.target.value);
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/search/${e.target.value}`)
+            .then((res) => {
+                if (res.data.suc) {
+                    setRentalList(res.data.tool);
+                }
+                else getRentalList();
+            });
+    }
     return (
         <SearchBox>
-            <SearchBar placeholder="검색어를 입력하세요." />
+            <SearchBar
+                value={input}
+                placeholder="검색어를 입력하세요."
+                onChange={onSerach}
+            />
             <BiSearchAlt2 size="20px" color="#9785CB" />
         </SearchBox>
     );
