@@ -31,7 +31,7 @@ export default function App() {
         <Main userData={cookies}>
           <RentalList userData={cookies} />
         </Main>} />
-      <Route path="/home/rentalList/rentalLog" element={
+      <Route path="/home/rentalLog/:page" element={
         <Main userData={cookies}>
           <RentalLog />
         </Main>
@@ -68,7 +68,7 @@ export default function App() {
       } />
       <Route path="/user/authorization" element={
         <Main userData={cookies}>
-          <Authorization />
+          <Authorization userData={cookies} />
         </Main>
       } />
     </Routes>
