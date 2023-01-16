@@ -117,10 +117,10 @@ export default function RentalList({ userData }) {
                     className={useActive("/home/rentalList") ? "active" : null}>
                     대여 목록
                 </Link>
-                <Link to="/home/rentalList/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
+                <Link to="/home/rentalLog/1" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
                     대여 로그
                 </Link>
-                <Search />
+                <Search setRentalList={setRentalList} rentalList={rentalList} getRentalList={getRentalList} />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
@@ -145,26 +145,27 @@ export default function RentalList({ userData }) {
                     {rentalList && rentalList.map((item, index) => (
                         <tr key={index} onClick={(e) => {
                             if (e.target.tagName !== "INPUT") {
-                                setDetailEquipmentData(item.tool_id);
+                                setDetailEquipmentData(item?.tool_id);
                             }
-                        }}>
+                        }} className={
+                            item?.tool_state === "대여가능"
+                                ? "rentalT"
+                                : item?.tool_state === "대여중"
+                                    ? "rentalI"
+                                    : item.tool_state === "대여불가" ? "rentalF"
+                                        : "repair"
+                        }>
                             <td>
-                                <input type="checkbox" name={`select-${item.tool_id}`}
-                                    onChange={(e) => handleSingleCheck(e.target.checked, item.tool_id)}
-                                    checked={checkItems.includes(item.tool_id) ? true : false}
+                                <input type="checkbox" name={`select-${item?.tool_id}`}
+                                    onChange={(e) => handleSingleCheck(e.target.checked, item?.tool_id)}
+                                    checked={checkItems.includes(item?.tool_id) ? true : false}
                                 />
                             </td>
-                            <td>{item.tool_use_division}</td>
-                            <td>{item.department.department_name}</td>
-                            <td>{item.tool_name}</td>
-                            <td>{item.tool_id}</td>
-                            <td className={
-                                item.tool_state === "대여가능"
-                                    ? "rentalT"
-                                    : item.tool_state === "대여 중"
-                                        ? "rentalI"
-                                        : "rentalF"
-                            }>{item.tool_state}</td>
+                            <td>{item?.tool_use_division}</td>
+                            <td>{item?.department?.department_name}</td>
+                            <td>{item?.tool_name}</td>
+                            <td>{item?.tool_id}</td>
+                            <td>{item?.tool_state}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -198,7 +199,12 @@ export default function RentalList({ userData }) {
                                                 : "rentalF"
                                     }>{item.tool_state}</td>
                                 </tr>
-                                : null
+                                :
+                                <tr>
+                                    <td colSpan={6}>
+                                        검색 결과가 없습니다.
+                                    </td>
+                                </tr>
                         ))
                     ))}
                 </tbody>
