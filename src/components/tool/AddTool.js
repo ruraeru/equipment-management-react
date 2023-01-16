@@ -90,14 +90,14 @@ export default function AddTool() {
     return (
         <div className="add-tool-wrap">
             <h3 style={{ color: "#161616" }} onClick={() => console.log(values)}>기자재 추가</h3>
-            <form onSubmit={onSubmit} encType="multipart/form-data" id="formElem">
+            <form onSubmit={onSubmit} encType="multipart/form-data">
                 <div id="input-filed-wrap">
                     <img
                         src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx"
                         alt="태블릿"
                         style={{
-                            maxWidth: "240px",
-                            maxHeight: "240px",
+                            width: "240px",
+                            height: "240px",
                         }}
                     />
                     <div id="input-filed">
@@ -117,9 +117,19 @@ export default function AddTool() {
                             value={values.name}
                             onChange={onChange}
                         />
-                        <SiMicrosoftexcel size={27} color="#20744A" onClick={() => {
+                        <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                        }} onClick={() => {
                             navigate("/tool/addToolExcel")
-                        }} />
+                        }}>
+                            <SiMicrosoftexcel size={27} color="#20744A" />
+                            <p style={{
+                                marginLeft: "16px"
+                            }}>
+                                엑셀 파일 불러오기
+                            </p>
+                        </div>
                         {/* <input type="text" /> */}
                     </div>
                 </div>

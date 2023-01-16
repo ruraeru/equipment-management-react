@@ -13,7 +13,8 @@
     border-radius: 8px;
     margin-right: 16px;
   }
-  p {
+  p,
+  label {
     font-weight: 700;
     font-size: 14px;
     color: #676767;
@@ -67,6 +68,11 @@
   color: #161616;
 
   position: relative;
+
+  td {
+    // max-width: 12px;
+    width: 12px;
+  }
 
   button {
     width: 130px;
