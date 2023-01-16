@@ -12,6 +12,7 @@ export default function ReportLog({ userData }) {
     const getReportList = async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/${userData.login.user_id}/1`)
             .then((res) => {
+                console.log(res.data);
                 if (res.data.suc) {
                     setReportList(res.data.result);
                 }
@@ -42,18 +43,18 @@ export default function ReportLog({ userData }) {
                         <th>관리 부서</th>
                         <th>기자재명</th>
                         <th>자산 번호</th>
-                        <th>대여 기간</th>
+                        <th>기자재 상태</th>
                     </tr>
                 </thead>
                 <tbody>
                     {reportList ? reportList.map((item, index) => (
                         <tr key={index}>
-                            {/* <td>{item.result.rental_date.split("-")[1] + " / " + item.result.rental_date.split("-")[2].slice(0, 2)}</td>
-                            <td>{item.result.tool.tool_use_division}</td>
-                            <td>{item.result.tool.department.department_name}</td>
-                            <td>{item.result.tool.tool_name}</td>
-                            <td>{item.result.tool.tool_id}</td>
-                            <td className={item.D_day === "미반납" ? "rentalF" : ""}>{item.D_day}</td> */}
+                            <td>{item.repair_create_at.split("-")[1] + " / " + item.repair_create_at.split("-")[2].slice(0, 2)}</td>
+                            <td>{item.tool.tool_use_division}</td>
+                            <td>{item.tool.department_id}</td>
+                            <td>{item.tool.tool_name}</td>
+                            <td>{item.tool.tool_id}</td>
+                            <td>{item.tool.tool_state}</td>
                         </tr>
                     )) :
                         <tr>
