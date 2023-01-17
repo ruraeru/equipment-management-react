@@ -66,12 +66,13 @@ export default function AddToolExcel() {
                 규격: standard, 구입일자: purchase_date,
                 구입구분: purchase_division } = item;
             const formData = new FormData();
+            const date = new Date(purchase_date.toString().slice(0, 4), purchase_date.toString().slice(4, 6), purchase_date.toString().slice(6, 8));
             formData.append("tool_id", id);
             formData.append("tool_use_division", use_division);
             formData.append("tool_code", code);
             formData.append("tool_name", name);
             formData.append("tool_purchase_division", purchase_division);
-            formData.append("tool_purchase_date", purchase_date);
+            formData.append("tool_purchase_date", date);
             formData.append("tool_standard", standard);
             formData.append("tool_condition", "대여가능");
             formData.append("tool_update_at", new Date());
@@ -85,9 +86,9 @@ export default function AddToolExcel() {
     const onAddEquipment = async (data) => {
         // ExcelExport();
         // console.log(json);
-        for (let [name, value] of data) {
-            console.log(name, value);
-        }
+        // for (let [name, value] of data) {
+        //     console.log(name, value);
+        // }
         await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, data)
             .then((res) => {
                 console.log(res);
