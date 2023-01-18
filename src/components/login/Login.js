@@ -4,13 +4,13 @@ import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.scss";
 
-export default function Login({ userData, setUserData, setCookie, removeCookie }) {
+export default function Login({ setCookie, removeCookie }) {
     const navigate = useNavigate();
 
     useEffect(() => {
         removeCookie('token');
         removeCookie('login');
-        console.log("login render")
+        console.log("login render");
         // window.location.reload();
     }, []);
     const [input, setInput] = useState({
