@@ -25,7 +25,7 @@ export default function App() {
       <Route path="/" element={<Login setCookie={setCookie} removeCookie={removeCookie} />} />
       <Route path="/home" element={
         <Main userData={cookies}>
-          <RentalList />
+          <RentalList userData={cookies} />
         </Main>} />
       <Route path="/home/rentalList/:page" element={
         <Main userData={cookies}>
@@ -33,7 +33,7 @@ export default function App() {
         </Main>} />
       <Route path="/home/rentalLog/:page" element={
         <Main userData={cookies}>
-          <RentalLog />
+          <RentalLog token={cookies.token} />
         </Main>
       } />
       <Route path="/home/myRentalList" element={
