@@ -9,7 +9,11 @@ export default function Profile({ userData }) {
     const [userType, setUserType] = useState("");
     const [rentalList, setRentalList] = useState();
     const getMyRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/${userData.login.user_id}/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/1`, {
+            headers: {
+                token: userData.token
+            }
+        })
             .then((res) => {
                 console.log(res.data);
                 if (res.data.suc === false) return;

@@ -49,7 +49,11 @@ export default function ChangeInfo({ userData }) {
     }
 
     const getRepairData = async (repair_id) => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepair/${repair_id}`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepair/${repair_id}`, {
+            headers: {
+                token: userData.token
+            }
+        })
             .then((res) => {
                 console.log(res.data.result);
                 if (res.data.suc) {
@@ -62,7 +66,11 @@ export default function ChangeInfo({ userData }) {
     }
 
     const getReportList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/1`, {
+            headers: {
+                token: userData.token
+            }
+        })
             .then((res) => {
                 if (res.data.suc) {
                     setReportList(res.data.result);

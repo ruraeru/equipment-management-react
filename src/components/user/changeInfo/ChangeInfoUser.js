@@ -13,9 +13,9 @@ export default function ChangeInfoUser({ userInfo }) {
 
     const getUserInfo = useCallback(async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/user/inquireMyInfo`, {
-            params: {
-                user_id: userInfo.login.user_id
-            },
+            // params: {
+            //     user_id: userInfo.login.user_id
+            // },
             headers: {
                 token: userInfo.token
             }
@@ -31,7 +31,11 @@ export default function ChangeInfoUser({ userInfo }) {
 
 
     const getMyRentalList = async () => {
-        axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myAllRentalList/student/1`)
+        axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myAllRentalList/1`, {
+            headers: {
+                token: userInfo.token
+            }
+        })
             .then((res) => {
                 console.log("getMyRentalList", res.data.result);
                 if (res.data.suc) {
@@ -45,7 +49,11 @@ export default function ChangeInfoUser({ userInfo }) {
     };
 
     const getRepairList = async () => {
-        axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/${userInfo.login.user_id}/1`)
+        axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/1`, {
+            headers: {
+                token: userInfo.token
+            }
+        })
             .then((res) => {
                 console.log("getRepairList", res.data.result.slice(0, 2));
                 if (res.data.suc) {

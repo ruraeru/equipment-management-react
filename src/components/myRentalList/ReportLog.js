@@ -10,7 +10,11 @@ export default function ReportLog({ userData }) {
         getReportList();
     }, []);
     const getReportList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/${userData.login.user_id}/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/1`, {
+            headers: {
+                token: userData.token
+            }
+        })
             .then((res) => {
                 console.log(res.data);
                 if (res.data.suc) {

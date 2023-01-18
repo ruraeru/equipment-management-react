@@ -3,16 +3,23 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { useState } from "react";
 import axios from "axios";
 
-export default function Search({ rentalList, setRentalList, getRentalList }) {
+export default function Search({ rentalList, setRentalList, getRentalList, token }) {
     const [input, setInput] = useState("");
     const onSerach = async (e) => {
         setInput(e.target.value);
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/search/${e.target.value}`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/search/${e.target.value}/1`, {
+            headers: {
+                token: token
+            }
+        })
             .then((res) => {
+                console.log(res);
                 if (res.data.suc) {
                     setRentalList(res.data.tool);
                 }
-                else getRentalList();
+            }).catch((err) => {
+                console.log(err);
+                getRentalList();
             });
     }
     return (

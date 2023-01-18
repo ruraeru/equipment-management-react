@@ -7,7 +7,11 @@ import { Link } from "react-router-dom";
 export default function MyRentalList({ userData }) {
     const [rentalList, setRentalList] = useState();
     const getMyRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/${userData.login.user_id}/1`)
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/1`, {
+            headers: {
+                token: userData.token
+            }
+        })
             .then((res) => {
                 console.log(res.data);
                 if (res.data.suc === false) return;
@@ -53,7 +57,7 @@ export default function MyRentalList({ userData }) {
                             <td>{item.result.tool.department.department_name}</td>
                             <td>{item.result.tool.tool_name}</td>
                             <td>{item.result.tool.tool_id}</td>
-                            <td className={item.D_day === "미반납" ? "rentalF" : ""}>{item.D_day}</td>
+                            <td>{item.D_day}</td>
                         </tr>
                     )) :
                         <tr>
