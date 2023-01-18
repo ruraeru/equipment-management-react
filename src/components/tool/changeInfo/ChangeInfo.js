@@ -111,7 +111,7 @@ export default function ChangeInfo({ userData }) {
                 <p style={{
                     fontWeight: "700"
                 }}>기자재 건의사항</p>
-                <Search />
+                <Search type="report" token={userData.token} setList={setReportList} getList={getReportList} />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />

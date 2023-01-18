@@ -9,7 +9,7 @@ import { useActive, useHeaderActive } from "hooks/useActive";
 import { Cookies } from "react-cookie";
 import Navigation from "components/nav/Navigation";
 
-export default function RentalLog() {
+export default function RentalLog({ token }) {
     const page = useParams().page;
 
     const [checkItems, setCheckItems] = useState([]);
@@ -54,11 +54,14 @@ export default function RentalLog() {
     const [rentalLog, setRentalLog] = useState();
 
     const getRentalLog = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/viewLog/1/${page}`)
-            .then((res) => {
-                console.log(res.data.result);
-                setRentalLog(res.data.result);
-            })
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/viewLog/${page}`, {
+            headers: {
+                token: token
+            }
+        }).then((res) => {
+            console.log(res.data.result);
+            setRentalLog(res.data.result);
+        })
     }
 
     useEffect(() => {
@@ -78,7 +81,7 @@ export default function RentalLog() {
                 <Link to="/home/rentalLog/1" className="active">
                     대여 로그
                 </Link>
-                <Search />
+                <Search type="log" token={token} setList={setRentalLog} getList={getRentalLog} />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
@@ -94,9 +97,8 @@ export default function RentalLog() {
                         </th>
                         <th>번호</th>
                         <th>구분</th>
-                        <th>로그</th>
-                        <th>학과 번호</th>
-                        <th>로그 일자</th>
+                        <th>내용</th>
+                        <th>일자</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,7 +114,6 @@ export default function RentalLog() {
                                 <td>{item?.log_id}</td>
                                 <td>{item?.log_title}</td>
                                 <td>{item?.log_content}</td>
-                                <td>{item?.department_id}</td>
                                 <td>{item?.log_create_at.split("-")[1]} / {item?.log_create_at.split("-")[0].slice(0, 2)}</td>
                             </tr>
                         )
@@ -126,9 +127,8 @@ export default function RentalLog() {
                     <tr>
                         <th>번호</th>
                         <th>구분</th>
-                        <th>로그</th>
-                        <th>학과 번호</th>
-                        <th>로그 일자</th>
+                        <th>내용</th>
+                        <th>일자</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -139,7 +139,6 @@ export default function RentalLog() {
                                     <td>{item.log_id}</td>
                                     <td>{item.log_title}</td>
                                     <td>{item.log_content}</td>
-                                    <td>{item.department_id}</td>
                                     <td>{item.log_create_at.split("-")[1]} / {item.log_create_at.split("-")[2].slice(0, 2)}</td>
                                 </tr>
                                 : null

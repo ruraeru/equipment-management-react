@@ -3,24 +3,74 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { useState } from "react";
 import axios from "axios";
 
-export default function Search({ rentalList, setRentalList, getRentalList, token }) {
+export default function Search({ type, list, setList, getList, token }) {
+    console.log("search", token);
     const [input, setInput] = useState("");
     const onSerach = async (e) => {
         setInput(e.target.value);
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/search/${e.target.value}/1`, {
-            headers: {
-                token: token
-            }
-        })
-            .then((res) => {
+        if (type === "rental") {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchRental/${e.target.value}`, {
+                headers: {
+                    token: token
+                }
+            })
+                .then((res) => {
+                    console.log(res);
+                    if (res.data.suc) {
+                        setList(res.data.tool);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    getList();
+                });
+            return;
+        }
+        if (type === "log") {
+            console.log("log");
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchLog/${e.target.value}/1`, {
+                headers: {
+                    token: token
+                }
+            }).then((res) => {
                 console.log(res);
                 if (res.data.suc) {
-                    setRentalList(res.data.tool);
+                    setList(res.data.result);
                 }
             }).catch((err) => {
-                console.log(err);
-                getRentalList();
-            });
+                getList();
+            })
+            return;
+        }
+
+        if (type === "myReport") {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/searchMyRepair/${e.target.value}/1`, {
+                headers: {
+                    token: token
+                }
+            }).then((res) => {
+                if (res.data.suc) {
+                    setList(res.data.result);
+                }
+            }).catch((err) => {
+                getList();
+            })
+            return;
+        }
+
+        if (type === "report") {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/searchRequestedRepair/${e.target.value}/1`, {
+                headers: {
+                    token: token
+                }
+            }).then((res) => {
+                console.log(res);
+                if (res.data.suc) {
+                    setList(res.data.result);
+                }
+            }).catch((err) => {
+                getList();
+            })
+        }
     }
     return (
         <SearchBox>

@@ -37,7 +37,7 @@ export default function ReportLog({ userData }) {
                 {/* <Link to="/home/myRentalList/rentalListManagement">
                     대여 관리
                 </Link> */}
-                <Search />
+                <Search type="myReport" token={userData.token} setList={setReportList} getList={getReportList} />
             </div>
             <table>
                 <thead>
