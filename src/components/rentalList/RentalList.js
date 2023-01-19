@@ -58,7 +58,6 @@ export default function RentalList({ userData }) {
         }).then(res => {
             if (res.data.suc) {
                 setModalData(res.data.tool);
-                console.log("detailData", res.data);
             }
             else Promise.reject(new Error(res.data.error));
         }).catch(err => {
@@ -86,7 +85,7 @@ export default function RentalList({ userData }) {
         console.log(userData.login.user_license);
         console.log(userData.token);
         //${userData.login.user_license}
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/1/${page}`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/${page}`, {
             headers: {
                 token: userData.token
             }
@@ -120,7 +119,7 @@ export default function RentalList({ userData }) {
                 <Link to="/home/rentalLog/1" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
                     대여 로그
                 </Link>
-                <Search setRentalList={setRentalList} rentalList={rentalList} getRentalList={getRentalList} />
+                <Search type="rental" setList={setRentalList} list={rentalList} getList={getRentalList} token={userData.token} />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
@@ -199,12 +198,7 @@ export default function RentalList({ userData }) {
                                                 : "rentalF"
                                     }>{item.tool_state}</td>
                                 </tr>
-                                :
-                                <tr>
-                                    <td colSpan={6}>
-                                        검색 결과가 없습니다.
-                                    </td>
-                                </tr>
+                                : null
                         ))
                     ))}
                 </tbody>
