@@ -9,7 +9,7 @@ export default function Search({ type, list, setList, getList, token }) {
     const onSerach = async (e) => {
         setInput(e.target.value);
         if (type === "rental") {
-            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchRental/${e.target.value}`, {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/searchTool/${e.target.value}/1`, {
                 headers: {
                     token: token
                 }
@@ -20,7 +20,6 @@ export default function Search({ type, list, setList, getList, token }) {
                         setList(res.data.tool);
                     }
                 }).catch((err) => {
-                    console.log(err);
                     getList();
                 });
             return;
