@@ -53,12 +53,12 @@ export default function App() {
       } />
       <Route path="/tool/addTool" element={
         <Main userData={cookies}>
-          <AddTool />
+          <AddTool token={cookies.token} />
         </Main>
       } />
       <Route path="/tool/addToolExcel" element={
         <Main userData={cookies}>
-          <AddToolExcel />
+          <AddToolExcel token={cookies.token} />
         </Main>
       } />
       <Route path="/user/changeInfo" element={
