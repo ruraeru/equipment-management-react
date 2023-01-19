@@ -102,7 +102,7 @@ export default function Authorization({ userData }) {
                     display: "flex",
                     alignItems: "center"
                 }}>
-                    <Search />
+                    {/* <Search /> */}
                     <button onClick={onAuth} style={{
                         width: "98px",
                         height: "36px",
