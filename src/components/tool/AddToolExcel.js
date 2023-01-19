@@ -5,7 +5,7 @@ import "./AddTool.scss";
 import ScreenData from "./ScreenData";
 import axios from "axios";
 
-export default function AddToolExcel() {
+export default function AddToolExcel({ token }) {
     // const [__html, setHTML] = useState("");
     const [image, setImage] = useState();
     const [json, setJSON] = useState();
@@ -89,7 +89,12 @@ export default function AddToolExcel() {
         // for (let [name, value] of data) {
         //     console.log(name, value);
         // }
-        await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, data)
+        await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                token: token
+            }
+        })
             .then((res) => {
                 console.log(res);
             }).catch((err) => {

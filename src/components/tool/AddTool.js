@@ -4,7 +4,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import { Form, Navigate, useNavigate } from "react-router-dom";
 import "./AddTool.scss";
 
-export default function AddTool() {
+export default function AddTool({ token }) {
     const navigate = useNavigate();
     const formData = new FormData();
     const [values, setValues] = useState({
@@ -26,9 +26,14 @@ export default function AddTool() {
         const { id, use_division, code, name,
             purchase_division, purchase_date, standard,
             condition, update_at, image, department_id } = values;
-        await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, data)
+        await axios.post(`${process.env.REACT_APP_DOMAIN}/tool/addTool`, data, {
+            headers: {
+                "Content-type": "multipart/form-data",
+                token: token
+            }
+        })
             .then((res) => {
-                console.log(res);
+                console.log(res.data.result);
             });
     }
 
