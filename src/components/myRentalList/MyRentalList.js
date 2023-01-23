@@ -1,19 +1,22 @@
 import axios from "axios";
+import Pagination from "components/nav/Pagination";
 import Search from "components/search/Search";
 import { useHeaderActive } from "hooks/useActive";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function MyRentalList({ userData }) {
+    const [page, setPage] = useState(1);
+    const [isSearch, setSearch] = useState(false);
     const [rentalList, setRentalList] = useState();
     const getMyRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/1`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/${page}`, {
             headers: {
                 token: userData.token
             }
         })
             .then((res) => {
-                console.log(res.data);
+                console.log(res);
                 if (res.data.suc === false) return;
                 setRentalList(res.data);
             }).catch(err => {
@@ -22,9 +25,13 @@ export default function MyRentalList({ userData }) {
     }
     useEffect(() => {
         getMyRentalList();
-    }, []);
+    }, [page]);
     return (
-        <>
+        <div style={{
+            width: "100%",
+            height: "804px",
+            position: "relative"
+        }}>
             <div id="contents-header">
                 <Link to="/home/myRentalList"
                     className={useHeaderActive("/home/myRentalList") ? "active" : null}>
@@ -36,7 +43,14 @@ export default function MyRentalList({ userData }) {
                 {/* <Link to="/home/myRentalList/rentalListManagement" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
                     대여 관리
                 </Link> */}
-                <Search />
+                <Search
+                    type="myRental"
+                    setList={setRentalList}
+                    getList={getMyRentalList}
+                    token={userData.token}
+                    isSearch={isSearch}
+                    setSearch={setSearch}
+                />
             </div>
             <table>
                 <thead>
@@ -50,7 +64,7 @@ export default function MyRentalList({ userData }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {rentalList ? rentalList.map((item, index) => (
+                    {rentalList?.map((item, index) => (
                         <tr key={index}>
                             <td>{item.result.rental_date.split("-")[1] + " / " + item.result.rental_date.split("-")[2].slice(0, 2)}</td>
                             <td>{item.result.tool.tool_use_division}</td>
@@ -59,15 +73,10 @@ export default function MyRentalList({ userData }) {
                             <td>{item.result.tool.tool_id}</td>
                             <td>{item.D_day}</td>
                         </tr>
-                    )) :
-                        <tr>
-                            <td colSpan={6}>
-                                <p>대여 내역이 없습니다.</p>
-                            </td>
-                        </tr>
-                    }
+                    ))}
                 </tbody>
             </table>
-        </>
+            <Pagination page={page} setPage={setPage} active={!isSearch} />
+        </div>
     );
 }

@@ -1,15 +1,20 @@
 import styled from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Pagination from "components/nav/Pagination";
 
-export default function Search({ type, list, setList, getList, token }) {
-    console.log("search", token);
+export default function Search({ type, setList, getList, token, setSearch, isSearch }) {
     const [input, setInput] = useState("");
-    const onSerach = async (e) => {
-        setInput(e.target.value);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        if (input) getSearchResult(input);
+    }, [page]);
+
+    const getSearchResult = async (text) => {
         if (type === "rental") {
-            await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/searchTool/${e.target.value}/1`, {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/searchTool/${text}/${page}`, {
                 headers: {
                     token: token
                 }
@@ -17,8 +22,8 @@ export default function Search({ type, list, setList, getList, token }) {
                 .then((res) => {
                     console.log(res);
                     if (res.data.suc) {
-                        setList(res.data.tool);
                     }
+                    setList(res.data.tool);
                 }).catch((err) => {
                     getList();
                 });
@@ -26,15 +31,15 @@ export default function Search({ type, list, setList, getList, token }) {
         }
         if (type === "log") {
             console.log("log");
-            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchLog/${e.target.value}/1`, {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchLog/${input}/${page}`, {
                 headers: {
                     token: token
                 }
             }).then((res) => {
                 console.log(res);
                 if (res.data.suc) {
-                    setList(res.data.result);
                 }
+                setList(res.data.result);
             }).catch((err) => {
                 getList();
             })
@@ -42,14 +47,14 @@ export default function Search({ type, list, setList, getList, token }) {
         }
 
         if (type === "myReport") {
-            await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/searchMyRepair/${e.target.value}/1`, {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/searchMyRepair/${input}/${page}`, {
                 headers: {
                     token: token
                 }
             }).then((res) => {
                 if (res.data.suc) {
-                    setList(res.data.result);
                 }
+                setList(res.data.result);
             }).catch((err) => {
                 getList();
             })
@@ -57,29 +62,46 @@ export default function Search({ type, list, setList, getList, token }) {
         }
 
         if (type === "report") {
-            await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/searchRequestedRepair/${e.target.value}/1`, {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/searchRequestedRepair/${input}/${page}`, {
                 headers: {
                     token: token
                 }
             }).then((res) => {
                 console.log(res);
                 if (res.data.suc) {
-                    setList(res.data.result);
                 }
+                setList(res.data.result);
             }).catch((err) => {
                 getList();
             })
         }
     }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        getSearchResult(input);
+        setSearch(true);
+    }
+
     return (
-        <SearchBox>
-            <SearchBar
-                value={input}
-                placeholder="검색어를 입력하세요."
-                onChange={onSerach}
-            />
-            <BiSearchAlt2 size="20px" color="#9785CB" />
-        </SearchBox>
+        <>
+            <SearchBox onSubmit={onSubmit}>
+                <SearchBar
+                    value={input}
+                    onChange={(e) => {
+                        setInput(e.target.value);
+                        if (e.target.value.length === 0) {
+                            setPage(1);
+                            setSearch(false);
+                            getList();
+                        }
+                    }}
+                    placeholder="검색어를 입력하세요." />
+                <button type="submit" className="hide">검색</button>
+                <BiSearchAlt2 size="20px" color="#9785CB" />
+            </SearchBox>
+            <Pagination page={page} setPage={setPage} active={isSearch} />
+        </>
     );
 }
 
@@ -103,7 +125,7 @@ const SearchBar = styled.input`
    }
 `;
 
-const SearchBox = styled.div`
+const SearchBox = styled.form`
    display: flex;
    justify-content: space-between;
    align-items: center;

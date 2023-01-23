@@ -1,16 +1,19 @@
 import axios from "axios";
+import Pagination from "components/nav/Pagination";
 import Search from "components/search/Search";
 import { useActive, useHeaderActive } from "hooks/useActive";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function ReportLog({ userData }) {
+    const [page, setPage] = useState(1);
+    const [isSearch, setSearch] = useState(false);
     const [reportList, setReportList] = useState();
     useEffect(() => {
         getReportList();
-    }, []);
+    }, [page]);
     const getReportList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/1`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/${page}`, {
             headers: {
                 token: userData.token
             }
@@ -26,7 +29,11 @@ export default function ReportLog({ userData }) {
             });
     }
     return (
-        <>
+        <div style={{
+            width: "100%",
+            height: "804px",
+            position: "relative"
+        }}>
             <div id="contents-header">
                 <Link to="/home/myRentalList">
                     내 대여 내역
@@ -37,7 +44,14 @@ export default function ReportLog({ userData }) {
                 {/* <Link to="/home/myRentalList/rentalListManagement">
                     대여 관리
                 </Link> */}
-                <Search type="myReport" token={userData.token} setList={setReportList} getList={getReportList} />
+                <Search
+                    type="myReport"
+                    setList={setReportList}
+                    getList={getReportList}
+                    token={userData.token}
+                    isSearch={isSearch}
+                    setSearch={setSearch}
+                />
             </div>
             <table>
                 <thead>
@@ -69,6 +83,7 @@ export default function ReportLog({ userData }) {
                     }
                 </tbody>
             </table>
-        </>
+            <Pagination page={page} setPage={setPage} active={!isSearch} />
+        </div>
     )
 }

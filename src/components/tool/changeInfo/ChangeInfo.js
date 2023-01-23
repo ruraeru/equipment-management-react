@@ -10,12 +10,16 @@ import styled from "styled-components";
 import ChangeInfoModal from "./ChangeInfoModal";
 import ReportModal from "./ReportModal";
 import Navigation from "components/nav/Navigation";
+import Pagination from "components/nav/Pagination";
 
 export default function ChangeInfo({ userData }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState();
     const [reportList, setReportList] = useState();
     const [repairData, setRepairData] = useState();
+
+    const [page, setPage] = useState(1);
+    const [isSearch, setSearch] = useState(false);
 
     const [checkItems, setCheckItems] = useState([]);
 
@@ -66,7 +70,7 @@ export default function ChangeInfo({ userData }) {
     }
 
     const getReportList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/1`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepairList/${page}`, {
             headers: {
                 token: userData.token
             }
@@ -84,7 +88,7 @@ export default function ChangeInfo({ userData }) {
 
     useEffect(() => {
         getReportList();
-    }, []);
+    }, [page]);
 
     const openModal = () => {
         setModalOpen(true);
@@ -111,7 +115,14 @@ export default function ChangeInfo({ userData }) {
                 <p style={{
                     fontWeight: "700"
                 }}>기자재 건의사항</p>
-                <Search type="report" token={userData.token} setList={setReportList} getList={getReportList} />
+                <Search
+                    type="report"
+                    setList={setReportList}
+                    getList={getReportList}
+                    token={userData.token}
+                    isSearch={isSearch}
+                    setSearch={setSearch}
+                />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
@@ -126,7 +137,6 @@ export default function ChangeInfo({ userData }) {
                             />
                         </th>
                         <th>구분</th>
-                        <th>관리 부서</th>
                         <th>기자재명</th>
                         <th>자산 번호</th>
                         <th>기자재 상태</th>
@@ -147,7 +157,7 @@ export default function ChangeInfo({ userData }) {
                                     />
                                 </td>
                                 <td>{item?.tool?.tool_use_division}</td>
-                                <td>{item?.tool?.department_id}</td>
+                                {/* <td>{item?.tool?.department_id}</td> */}
                                 <td>{item?.tool?.tool_name}</td>
                                 <td>{item?.tool?.tool_code}</td>
                                 <td>{item?.tool?.tool_state}</td>
@@ -170,7 +180,7 @@ export default function ChangeInfo({ userData }) {
                 <thead>
                     <tr>
                         <th>구분</th>
-                        <th>관리 부서</th>
+                        {/* <th>관리 부서</th> */}
                         <th>기자재명</th>
                         <th>자산 번호</th>
                         <th>기자재 상태</th>
@@ -182,7 +192,7 @@ export default function ChangeInfo({ userData }) {
                             item_id === item.tool_id ?
                                 <tr key={index}>
                                     <td>{item.tool.tool_use_division}</td>
-                                    <td>{item.tool.department_id}</td>
+                                    {/* <td>{item.tool.department_id}</td> */}
                                     <td>{item.tool.tool_name}</td>
                                     <td>{item.tool.tool_code}</td>
                                     <td>{item.tool.tool_state}</td>
@@ -195,7 +205,8 @@ export default function ChangeInfo({ userData }) {
             <ChangeInfoModal open={modalOpen} close={closeModal} header={repairData?.user_id}>
                 <ReportModal data={repairData} token={userData.token} />
             </ChangeInfoModal>
-            <Navigation list={["/tool/changeInfo/1", "/tool/changeInfo/2", "/tool/changeInfo/3", "/tool/changeInfo/4", "/tool/changeInfo/5",]} />
+            <Pagination page={page} setPage={setPage} active={!isSearch} />
+            {/* <Navigation list={["/tool/changeInfo/1", "/tool/changeInfo/2", "/tool/changeInfo/3", "/tool/changeInfo/4", "/tool/changeInfo/5",]} /> */}
         </div >
     );
 }

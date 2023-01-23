@@ -42,15 +42,10 @@ export default function Login({ setCookie, removeCookie }) {
                 setCookie('login', res.data.login, {
                     // httpOnly: true
                 });
-                navigate("/home/rentalList/1");
+                navigate("/home/rentalList");
             }
             else Promise.reject(new Error(res.data.err));
         }).catch(err => Promise.reject(new Error("서버 에러", err)));
-    }
-
-    const EquipmentImg = (path) => {
-        const img = document.querySelector("img");
-        img.src = `${process.env.REACT_APP_DOMAIN}/tool/${path}`;
     }
 
     const onSubmit = (e) => {

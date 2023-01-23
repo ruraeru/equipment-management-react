@@ -9,12 +9,15 @@ import { useActive, useHeaderActive } from "hooks/useActive";
 import DetailEquipment from "components/detail/DetailEquipment";
 import Modal from "components/detail/EquipmentModal";
 import Navigation from "components/nav/Navigation";
+import Pagination from "components/nav/Pagination";
+import { useCallback } from "react";
 
 export default function RentalList({ userData }) {
-    const page = useParams().page;
-    const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState();
+
+    const [page, setPage] = useState(1);
+    const [isSearch, setSearch] = useState(false);
 
     const [checkItems, setCheckItems] = useState([]);
 
@@ -81,10 +84,7 @@ export default function RentalList({ userData }) {
         XLSX.writeFile(wb, "기자재리스트.xlsx");
     }
     const [rentalList, setRentalList] = useState();
-    const getRentalList = async () => {
-        console.log(userData.login.user_license);
-        console.log(userData.token);
-        //${userData.login.user_license}
+    const getRentalList = useCallback(async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/viewToolList/${page}`, {
             headers: {
                 token: userData.token
@@ -99,11 +99,11 @@ export default function RentalList({ userData }) {
             }).catch(err => {
                 console.log("rentalList API 오류", err);
             });
-    }
+    }, [page, userData.token]);
 
     useEffect(() => {
-        getRentalList(1, page);
-    }, [page]);
+        getRentalList();
+    }, [getRentalList, page]);
 
     return (
         <div style={{
@@ -112,14 +112,21 @@ export default function RentalList({ userData }) {
             position: "relative"
         }}>
             <div id="contents-header">
-                <Link to="/home/rentalList/1"
+                <Link to="/home/rentalList"
                     className={useActive("/home/rentalList") ? "active" : null}>
                     대여 목록
                 </Link>
-                <Link to="/home/rentalLog/1" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
+                <Link to="/home/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
                     대여 로그
                 </Link>
-                <Search type="rental" setList={setRentalList} list={rentalList} getList={getRentalList} token={userData.token} />
+                <Search
+                    type="rental"
+                    setList={setRentalList}
+                    getList={getRentalList}
+                    token={userData.token}
+                    isSearch={isSearch}
+                    setSearch={setSearch}
+                />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
@@ -208,7 +215,8 @@ export default function RentalList({ userData }) {
                     <DetailEquipment data={modalData} />
                 </Modal>
             }
-            <Navigation list={["/home/rentalList/1", "/home/rentalList/2", "/home/rentalList/3", "/home/rentalList/4", "/home/rentalList/5",]} />
+            <Pagination page={page} setPage={setPage} active={!isSearch} />
+            {/* <Navigation list={["/home/rentalList/1", "/home/rentalList/2", "/home/rentalList/3", "/home/rentalList/4", "/home/rentalList/5",]} /> */}
         </div >
     );
 }

@@ -27,11 +27,11 @@ export default function App() {
         <Main userData={cookies}>
           <RentalList userData={cookies} />
         </Main>} />
-      <Route path="/home/rentalList/:page" element={
+      <Route path="/home/rentalList" element={
         <Main userData={cookies}>
           <RentalList userData={cookies} />
         </Main>} />
-      <Route path="/home/rentalLog/:page" element={
+      <Route path="/home/rentalLog" element={
         <Main userData={cookies}>
           <RentalLog token={cookies.token} />
         </Main>

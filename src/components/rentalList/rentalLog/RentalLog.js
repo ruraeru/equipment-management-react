@@ -8,10 +8,11 @@ import * as XLSX from "xlsx";
 import { useActive, useHeaderActive } from "hooks/useActive";
 import { Cookies } from "react-cookie";
 import Navigation from "components/nav/Navigation";
+import Pagination from "components/nav/Pagination";
 
 export default function RentalLog({ token }) {
-    const page = useParams().page;
-
+    const [page, setPage] = useState(1);
+    const [isSearch, setSearch] = useState(false);
     const [checkItems, setCheckItems] = useState([]);
 
     // 체크박스 단일 선택
@@ -75,13 +76,20 @@ export default function RentalLog({ token }) {
             position: "relative"
         }}>
             <div id="contents-header">
-                <Link to="/home/rentalList/1">
+                <Link to="/home/rentalList">
                     대여 목록
                 </Link>
-                <Link to="/home/rentalLog/1" className="active">
+                <Link to="/home/rentalLog" className="active">
                     대여 로그
                 </Link>
-                <Search type="log" token={token} setList={setRentalLog} getList={getRentalLog} />
+                <Search
+                    type="log"
+                    setList={setRentalLog}
+                    getList={getRentalLog}
+                    token={token}
+                    isSearch={isSearch}
+                    setSearch={setSearch}
+                />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
                 <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
@@ -146,7 +154,8 @@ export default function RentalLog({ token }) {
                         )))}
                 </tbody>
             </table>
-            <Navigation list={["/home/rentalLog/1", "/home/rentalLog/2", "/home/rentalLog/3", "/home/rentalLog/4", "/home/rentalLog/5",]} />
+            <Pagination page={page} setPage={setPage} active={!isSearch} />
+            {/* <Navigation list={["/home/rentalLog/1", "/home/rentalLog/2", "/home/rentalLog/3", "/home/rentalLog/4", "/home/rentalLog/5",]} /> */}
         </div>
     );
 }

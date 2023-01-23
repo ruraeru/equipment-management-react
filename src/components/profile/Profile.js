@@ -61,7 +61,7 @@ export default function Profile({ userData }) {
                 </div>
                 <hr />
                 <div id="navigation">
-                    <Link to="/home/rentalList/1"
+                    <Link to="/home/rentalList"
                         className={useActive("/home/rental") ? "active" : null}>대여 목록</Link>
                     <Link to="/home/myRentalList"
                         className={useActive("/home/myRentalList") ? "active" : null}>내 대여 내역</Link>
