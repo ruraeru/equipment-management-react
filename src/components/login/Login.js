@@ -4,15 +4,20 @@ import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.scss";
 
-export default function Login({ setCookie, removeCookie }) {
+export default function Login({ cookies, setCookie, removeCookie }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        removeCookie('token');
-        removeCookie('login');
+        if (cookies.login) {
+            navigate("/home/rentalList");
+        }
+        else {
+            removeCookie('token');
+            removeCookie('login');
+        }
         console.log("login render");
         // window.location.reload();
-    }, []);
+    }, [cookies.login, navigate, removeCookie]);
     const [input, setInput] = useState({
         user_id: "",
         user_pw: ""
@@ -70,17 +75,21 @@ export default function Login({ setCookie, removeCookie }) {
                         placeholder="비밀번호를 입력해주세요."
                         value={input.user_pw}
                         onChange={onInputChange} />
-                    <button type="submit">로그인</button>
+                    <button type="submit"
+                        className={(input.user_id && input.user_pw) ? "activeLoginBtn" : "noneActiveLoginBtn"}
+                        disabled={!(input.user_id && input.user_pw)}>
+                        로그인
+                    </button>
                 </form>
                 <ul>
                     <li>
-                        <Link to="/user/findid">아이디 찾기</Link>
+                        <Link to="/user/findId">아이디 찾기</Link>
                     </li>
                     <li>
-                        <Link to="/user/modifypass">비밀번호 변경</Link>
+                        <Link to="/user/changePw">비밀번호 변경</Link>
                     </li>
                     <li>
-                        <Link to="/user/signup">회원가입</Link>
+                        <Link to="/user/signUp/userType">회원가입</Link>
                     </li>
                 </ul>
             </div>

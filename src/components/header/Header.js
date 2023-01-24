@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import "./Header.scss";
 
-export default function Header({ userData }) {
+export default function Header({ userData, logOut }) {
     const navigate = useNavigate();
     return (
         <div id="header-wrap">
@@ -19,8 +19,10 @@ export default function Header({ userData }) {
                 <p style={{
                     cursor: "pointer"
                 }} onClick={() => {
-                    navigate("/");
                     alert("로그아웃 되었습니다.");
+                    logOut("login");
+                    logOut("token");
+                    navigate("/");
                 }}>
                     로그아웃
                 </p>

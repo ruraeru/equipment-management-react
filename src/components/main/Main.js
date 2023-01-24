@@ -5,14 +5,14 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Main.scss";
 
-export default function Main({ children, userData }) {
+export default function Main({ children, userData, logOut }) {
     const navigate = useNavigate();
     // useEffect(() => {
     //     if (!userData) navigate("/");
     // })
     return (
         <div id="main-wrap">
-            <Header userData={userData} />
+            <Header userData={userData} logOut={logOut} />
             <div id="contents">
                 <Profile userData={userData} />
                 <div className="main">
