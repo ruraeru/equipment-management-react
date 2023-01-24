@@ -1,0 +1,63 @@
+#userType {
+  display: flex;
+  img {
+    width: 140px;
+    height: 180px;
+    cursor: pointer;
+    filter: opacity(0.7);
+    &:hover {
+      filter: opacity(1);
+    }
+    &:nth-child(2) {
+      margin: 0 50px 0 50px;
+    }
+  }
+  .select {
+    filter: opacity(1);
+  }
+}
+
+button {
+  background-color: #c6c1d1;
+}
+
+#univInput {
+  font-weight: 700;
+  height: 350px;
+}
+#input-select-atEmail,
+select {
+  width: 540px;
+  height: 64px;
+  padding: 24px;
+  border: 1px solid #c6c1d1;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: #ffffff;
+}
+
+#id-email {
+  #checkID,
+  #emailAuth {
+    width: 100px;
+    background-color: #9785cb;
+    font-size: 14px;
+    margin: 0;
+  }
+  input {
+    width: 440px;
+    height: 14px;
+    margin-right: 16px;
+  }
+  #email {
+    input {
+      width: 280px;
+    }
+    select {
+      width: 220px;
+    }
+    #input-select-atEmail {
+      width: 100px;
+    }
+  }
+}

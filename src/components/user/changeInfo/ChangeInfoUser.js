@@ -91,7 +91,7 @@ export default function ChangeInfoUser({ userInfo }) {
 
     const updateUserInfo = async () => {
         const { user_id, user_email, user_name, user_phone_number } = newUserData;
-        console.log(user_id, user_email, user_name, user_phone_number);
+        // console.log(newUserData);
         await axios.get(`${process.env.REACT_APP_DOMAIN}/user/changeInfo`, {
             user_id: user_id,
             user_email: user_email,
@@ -159,7 +159,7 @@ export default function ChangeInfoUser({ userInfo }) {
                                 name="user_phone_number"
                                 value={newUserData.user_phone_number}
                                 onChange={onChange}
-                                pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                                pattern="[0-9]{3}[0-9]{4}[0-9]{4}"
                                 maxLength={13}
                             />
                         </p>
@@ -183,7 +183,7 @@ export default function ChangeInfoUser({ userInfo }) {
                                 name="user_email"
                                 value={newUserData.user_email}
                                 onChange={onChange}
-                                pattern=".+@mjc.ac.kr"
+                            // pattern=".+@mjc.ac.kr"
                             />
                         </p>
                         <button type="submit" style={{

@@ -1,7 +1,7 @@
 #center {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 
   width: 1200px;
@@ -9,6 +9,11 @@
 
   border-radius: 550px;
   background-color: #ffffff;
+
+  text-align: center;
+  p {
+    text-align: left;
+  }
 }
 
 #loginWrap {
@@ -48,7 +53,9 @@
   }
 
   button {
-    width: 540px;
+    align-items: center;
+    max-width: 540px;
+    width: 100%;
     height: 44px;
 
     font-weight: 700;
@@ -56,10 +63,8 @@
     color: #f5f5f5;
 
     border-radius: 8px;
-    border: 1px solid #c6c1d1;
 
-    background-color: #c6c1d1;
-
+    margin: 0;
     margin-top: 36px;
   }
 
@@ -67,4 +72,14 @@
     display: flex;
     flex-direction: column;
   }
+}
+
+.noneActiveLoginBtn {
+  border: 1px solid #c6c1d1;
+
+  background-color: #c6c1d1;
+}
+
+.activeLoginBtn {
+  background-color: #9785cb;
 }
