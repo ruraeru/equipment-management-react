@@ -74,6 +74,35 @@ export default function Search({ type, setList, getList, token, setSearch, isSea
             }).catch((err) => {
                 getList();
             })
+            return;
+        }
+
+        if (type === "approvalList") {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/user/searchNotApprovedList/${input}/${page}`, {
+                headers: {
+                    token: token
+                }
+            }).then((res) => {
+                console.log(res);
+                setList(res.data.result);
+            }).catch((err) => {
+                getList();
+            });
+            return;
+        }
+
+        if (type === "myRental") {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchMyRental/${input}/${page}`, {
+                headers: {
+                    token: token
+                }
+            }).then((res) => {
+                console.log(res);
+                setList(res.data.result);
+            }).catch((err) => {
+                getList();
+            });
+            return;
         }
     }
 
