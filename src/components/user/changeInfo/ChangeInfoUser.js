@@ -20,6 +20,7 @@ export default function ChangeInfoUser({ userInfo }) {
                 token: userInfo.token
             }
         }).then((res) => {
+            console.log("userInfo", res);
             if (res.data.suc) {
                 setUserData(res.data.inquireMyInfo);
                 setNewUerData(res.data.inquireMyInfo);
@@ -91,11 +92,12 @@ export default function ChangeInfoUser({ userInfo }) {
     const updateUserInfo = async () => {
         const { user_id, user_email, user_name, user_phone_number } = newUserData;
         console.log("newUserData", newUserData);
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/changeInfo`, {
+        await axios.post(`${process.env.REACT_APP_DOMAIN}/user/changeInfo`, {
             user_id: user_id,
             user_email: user_email,
             user_name: user_name,
             user_phone_number: user_phone_number,
+        }, {
             headers: {
                 token: userInfo.token
             }
