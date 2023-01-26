@@ -12,7 +12,8 @@ import Navigation from "components/nav/Navigation";
 import Pagination from "components/nav/Pagination";
 import { useCallback } from "react";
 
-export default function RentalList({ userData }) {
+export default function RentalList({ userData, expriedToken }) {
+    const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState();
 
@@ -20,6 +21,12 @@ export default function RentalList({ userData }) {
     const [isSearch, setSearch] = useState(false);
 
     const [checkItems, setCheckItems] = useState([]);
+    const [RepairBtnState, setRepairBtnState] = useState(false);
+
+
+    useEffect(() => {
+        getRentalList();
+    }, [page]);
 
     // 체크박스 단일 선택
     const handleSingleCheck = (checked, id) => {
@@ -97,13 +104,15 @@ export default function RentalList({ userData }) {
                 }
                 else Promise.reject(new Error("rentalList API 호출 실패"));
             }).catch(err => {
-                console.log("rentalList API 오류", err);
+                if (err.response.data.message === "expired token") {
+                    alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+                    expriedToken('login');
+                    expriedToken('token');
+                    navigate('/');
+                }
+                // console.log("rentalList API 오류", err);
             });
     }, [page, userData.token]);
-
-    useEffect(() => {
-        getRentalList();
-    }, [getRentalList, page]);
 
     return (
         <div style={{
@@ -116,9 +125,12 @@ export default function RentalList({ userData }) {
                     className={useActive("/home/rentalList") ? "active" : null}>
                     대여 목록
                 </Link>
-                <Link to="/home/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
-                    대여 로그
-                </Link>
+                {userData.login.user_license < 3 &&
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    <Link to="/home/rentalLog" className={useHeaderActive("/home/rentalList/rentalLog") ? "active" : null}>
+                        대여 로그
+                    </Link>
+                }
                 <Search
                     type="rental"
                     setList={setRentalList}
@@ -129,7 +141,9 @@ export default function RentalList({ userData }) {
                 />
                 {/*여기 엑셀 버튼을 나중에 컴포넌트로 따로 분리해주기 바람
                 이유는 나중에 엑셀 export해주기 위해!! */}
-                <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
+                {userData.login.user_license < 3 &&
+                    <SiMicrosoftexcel size="27px" color="#20744A" onClick={ExcelExport} />
+                }
             </div>
             <table >
                 <thead>
@@ -152,6 +166,8 @@ export default function RentalList({ userData }) {
                         <tr key={index} onClick={(e) => {
                             if (e.target.tagName !== "INPUT") {
                                 setDetailEquipmentData(item?.tool_id);
+                                if (item.tool_state === "대여가능") setRepairBtnState(true);
+                                else setRepairBtnState(false);
                             }
                         }} className={
                             item?.tool_state === "대여가능"
@@ -191,28 +207,21 @@ export default function RentalList({ userData }) {
                 <tbody>
                     {checkItems?.map((item_id) => (
                         rentalList?.map((item, index) => (
-                            item_id === item.tool_id ?
-                                <tr key={index}>
-                                    <td>{item.tool_use_division}</td>
-                                    <td>{item.department.department_name}</td>
-                                    <td>{item.tool_name}</td>
-                                    <td>{item.tool_id}</td>
-                                    <td className={
-                                        item.tool_state === "대여가능"
-                                            ? "rentalT"
-                                            : item.tool_state === "대여 중"
-                                                ? "rentalI"
-                                                : "rentalF"
-                                    }>{item.tool_state}</td>
-                                </tr>
-                                : null
+                            item_id === item.tool_id &&
+                            <tr key={index}>
+                                <td>{item.tool_use_division}</td>
+                                <td>{item.department.department_name}</td>
+                                <td>{item.tool_name}</td>
+                                <td>{item.tool_id}</td>
+                                <td>{item.tool_state}</td>
+                            </tr>
                         ))
                     ))}
                 </tbody>
             </table>
             {modalData &&
                 <Modal open={modalOpen} close={closeModal} data={modalData}>
-                    <DetailEquipment data={modalData} />
+                    <DetailEquipment data={modalData} repairBtnActive={RepairBtnState} />
                 </Modal>
             }
             <Pagination page={page} setPage={setPage} active={!isSearch} />
