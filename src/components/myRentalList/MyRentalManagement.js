@@ -30,6 +30,9 @@ export default function MyRentalManagement({ userData }) {
             .then((res) => {
                 if (res.data.suc === false) return;
                 setRentalList(res.data);
+                // if (res.data.suc) {
+                // }
+                // else Promise.reject(new Error(res.data.error));
             }).catch(err => {
                 console.log(err);
             });
