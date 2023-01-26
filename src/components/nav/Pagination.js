@@ -43,6 +43,9 @@ const Nav = styled.nav`
 `;
 
 const Button = styled.button`
+    border: none;
+    background-color: #ffffff;
+
    &[aria-current] {
     font-size: 16px;
     font-weight: 700;

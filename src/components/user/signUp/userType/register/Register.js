@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react"
+import { SiJitsi } from "react-icons/si";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function Register() {
@@ -87,7 +88,7 @@ export default function Register() {
             }
 
             {page === "2" &&
-                <>
+                <div>
                     <div>
                         <p>이름</p>
                         <input
@@ -104,39 +105,52 @@ export default function Register() {
                             type="tel"
                             placeholder="전화번호를 입력해주세요. ex) 01012345678"
                         />
-                        <button
-                            onClick={setRegisterData}
-                            className={(univInput.name && univInput.phone_number) && "activeLoginBtn"}
-                            disabled={!(univInput.name && univInput.phone_number)}>
-                            다음
-                        </button>
                     </div>
-                </>
+                    <button
+                        onClick={setRegisterData}
+                        className={(univInput.name && univInput.phone_number) && "activeLoginBtn"}
+                        disabled={!(univInput.name && univInput.phone_number)}>
+                        다음
+                    </button>
+                </div>
             }
 
 
             {page === "3" &&
-                <>
+                <div style={{
+                    width: "100%"
+                }}>
                     <div id="id-email">
                         <div id="id">
                             <p>아이디</p>
                             <input
+                                style={{
+                                    width: "384px",
+                                    marginRight: "16px"
+                                }}
                                 name="id"
                                 value={univInput.id}
                                 onChange={onChange}
                                 placeholder="아이디를 입력해주세요."
                             />
-                            <button id="checkID">중복 확인</button>
+                            <button id="checkID" onClick={onSignUp}>중복 확인</button>
                         </div>
                         <div id="email">
                             <p>이메일</p>
                             <input
+                                style={{
+                                    width: "280px",
+                                    marginRight: "16px"
+                                }}
                                 name="email"
                                 value={univInput.email}
                                 onChange={onChange}
                                 placeholder="이메일을 입력해주세요."
-                            />&nbsp; @ &nbsp;
-                            <select onChange={onChange} value={univInput.atEmail} name="atEmail">
+                            />@
+                            <select onChange={onChange} value={univInput.atEmail} name="atEmail" style={{
+                                width: "210px",
+                                marginLeft: "16px"
+                            }}>
                                 <option>gmail.com</option>
                                 <option>mjc.ac.kr</option>
                                 <option>daum.net</option>
@@ -150,21 +164,30 @@ export default function Register() {
                         className={(univInput.id && (univInput.email && univInput.atEmail)) ? "activeLoginBtn" : ""}>
                         다음
                     </button>
-                </>
+                </div>
             }
 
             {page === "4" &&
-                <>
+                <div style={{
+                    width: "100%"
+                }}>
                     <div id="id-email">
                         <div id="email">
                             <p>이메일</p>
                             <input
+                                style={{
+                                    width: "280px",
+                                    marginRight: "16px"
+                                }}
                                 name="email"
                                 value={univInput.email}
                                 disabled
                                 placeholder="이메일을 입력해주세요."
-                            />&nbsp; @ &nbsp;
-                            <select value={univInput.atEmail} name="atEmail" disabled>
+                            />@
+                            <select value={univInput.atEmail} name="atEmail" disabled style={{
+                                width: "210px",
+                                marginLeft: "16px"
+                            }}>
                                 <option>gmail.com</option>
                                 <option>mjc.ac.kr</option>
                                 <option>daum.net</option>
@@ -177,6 +200,10 @@ export default function Register() {
                                 onChange={(e) => {
                                     setAuthNumber(e.target.value);
                                 }}
+                                style={{
+                                    width: "384px",
+                                    marginRight: "16px"
+                                }}
                                 placeholder="인증번호를 입력해주세요."
                             />
                             <button id="emailAuth">이메일 인증</button>
@@ -188,7 +215,7 @@ export default function Register() {
                             다음
                         </button>
                     </div>
-                </>
+                </div>
             }
 
             {page === "5" &&
@@ -227,32 +254,3 @@ export default function Register() {
         </div>
     )
 }
-
-// const Univ = () => {
-//     return (
-//         <>
-//             <div>
-//                 <p>학교</p>
-//                 <select onChange={onChange} name="univ">
-//                     <option>학교를 선택해주세요.</option>
-//                     <option>명지전문대학교</option>
-//                     <option>명지대학교 서울캠퍼스</option>
-//                     <option>명지대학교 용인캠퍼스</option>
-//                 </select>
-//             </div>
-//             <div>
-//                 <p>학과</p>
-//                 <select onChange={onChange} name="department">
-//                     <option>학과를 선택해주세요.</option>
-//                     <option value="1">소프트웨어콘텐츠과</option>
-//                 </select>
-//             </div>
-//             <button
-//                 onClick={setRegisterData}
-//                 disabled={!(univInput.univ && univInput.department)}
-//                 className={(univInput.univ && univInput.department) ? "activeLoginBtn" : ""}>
-//                 다음
-//             </button>
-//         </>
-//     );
-// }

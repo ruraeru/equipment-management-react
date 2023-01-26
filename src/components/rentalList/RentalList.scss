@@ -1,7 +1,8 @@
 #contents-header {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 32px 0 32px;
 }
 
 .check-wrap {
@@ -112,10 +113,6 @@ input[type="checkbox"] {
 
 button {
   margin-left: 24px;
-
-  &:nth-child(6) {
-    margin-right: 24px;
-  }
 
   border: none;
   background-color: #ffffff;

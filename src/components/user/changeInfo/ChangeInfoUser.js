@@ -27,7 +27,7 @@ export default function ChangeInfoUser({ userInfo }) {
             else Promise.reject(new Error("ChangeInfoUser", res.data.error));
             console.log(res.data.inquireMyInfo);
         });
-    }, [userInfo.login.user_id, userInfo.token]);
+    }, [userInfo.token]);
 
 
     const getMyRentalList = async () => {
@@ -85,13 +85,12 @@ export default function ChangeInfoUser({ userInfo }) {
         e.preventDefault();
         setUserData(newUserData);
         setEdited(false);
-        console.log(newUserData);
         updateUserInfo();
     }
 
     const updateUserInfo = async () => {
         const { user_id, user_email, user_name, user_phone_number } = newUserData;
-        // console.log(newUserData);
+        console.log("newUserData", newUserData);
         await axios.get(`${process.env.REACT_APP_DOMAIN}/user/changeInfo`, {
             user_id: user_id,
             user_email: user_email,
@@ -108,8 +107,8 @@ export default function ChangeInfoUser({ userInfo }) {
     return (
         <div id="changeInfoUser-wrap">
             <div id="contents-header" style={{
-                justifyContent: "space-between",
-                width: "100%",
+                // width: "100%",
+                padding: 0
             }}>
                 <h3 style={{
                     margin: 0

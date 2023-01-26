@@ -8,17 +8,21 @@ import { Link } from "react-router-dom";
 export default function MyRentalList({ userData }) {
     const [page, setPage] = useState(1);
     const [isSearch, setSearch] = useState(false);
+
     const [rentalList, setRentalList] = useState();
     const getMyRentalList = async () => {
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myCurrentRentalList/${page}`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/myAllRentalList/${page}`, {
+            params: {
+                user_id: userData.login.user_id
+            },
             headers: {
                 token: userData.token
             }
         })
             .then((res) => {
                 console.log(res);
-                if (res.data.suc === false) return;
-                setRentalList(res.data);
+                // if (res.data.suc === false) return;
+                setRentalList(res.data.result);
             }).catch(err => {
                 console.log(err);
             });
@@ -40,9 +44,9 @@ export default function MyRentalList({ userData }) {
                 <Link to="/home/myRentalList/reportLog" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
                     내 건의 내역
                 </Link>
-                {/* <Link to="/home/myRentalList/rentalListManagement" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
+                <Link to="/home/myRentalList/manage" className={useHeaderActive("/home/myRentalList/rentalLog") ? "active" : null}>
                     대여 관리
-                </Link> */}
+                </Link>
                 <Search
                     type="myRental"
                     setList={setRentalList}
@@ -60,20 +64,25 @@ export default function MyRentalList({ userData }) {
                         <th>관리 부서</th>
                         <th>기자재명</th>
                         <th>자산 번호</th>
-                        <th>대여 기간</th>
+                        <th>기자재 상태</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rentalList?.map((item, index) => (
+                    {rentalList ? rentalList.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.result.rental_date.split("-")[1] + " / " + item.result.rental_date.split("-")[2].slice(0, 2)}</td>
-                            <td>{item.result.tool.tool_use_division}</td>
-                            <td>{item.result.tool.department.department_name}</td>
-                            <td>{item.result.tool.tool_name}</td>
-                            <td>{item.result.tool.tool_id}</td>
-                            <td>{item.D_day}</td>
+                            <td>{item.rental_date.split("-")[1] + " / " + item.rental_date.split("-")[2].slice(0, 2)}</td>
+                            <td>{item.tool.tool_use_division}</td>
+                            <td>{item.tool.department.department_name}</td>
+                            <td>{item.tool.tool_name}</td>
+                            <td>{item.tool.tool_id}</td>
+                            <td>{item.rental_state}</td>
                         </tr>
-                    ))}
+                    ))
+                        :
+                        <tr>
+                            <td colSpan={6}>대여 내역이 없습니다.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
             <Pagination page={page} setPage={setPage} active={!isSearch} />
