@@ -1,46 +1,29 @@
 import axios from "axios";
+import Pagination from "components/nav/Pagination";
 import Search from "components/search/Search";
+import { useEffect } from "react";
 import { useState } from "react";
 
 export default function Authorization({ userData }) {
     const [checkItems, setCheckItems] = useState([]);
-    const authUserList = [
-        {
-            "id": "2021661096",
-            "name": "홍길동",
-            "division": "학부생",
-            "email": "test1234@test.com",
-            "date": "11 / 20"
-        },
-        {
-            "id": "2021661096",
-            "name": "홍길동",
-            "division": "학부생",
-            "email": "test1234@test.com",
-            "date": "11 / 20"
-        },
-        {
-            "id": "2021661096",
-            "name": "홍길동",
-            "division": "학부생",
-            "email": "test1234@test.com",
-            "date": "11 / 20"
-        },
-        {
-            "id": "2021661096",
-            "name": "홍길동",
-            "division": "학부생",
-            "email": "test1234@test.com",
-            "date": "11 / 20"
-        },
-        {
-            "id": "2021661096",
-            "name": "홍길동",
-            "division": "학부생",
-            "email": "test1234@test.com",
-            "date": "11 / 20"
-        },
-    ]
+    const [approvalRequestList, setApprovalRequestList] = useState();
+    const [page, setPage] = useState(1);
+    const [isSearch, setSearch] = useState(false);
+
+    useEffect(() => {
+        getApprovalRequestList();
+    }, [page]);
+
+    const getApprovalRequestList = async () => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/approvalRequestList/${page}`, {
+            headers: {
+                token: userData.token
+            }
+        }).then((res) => {
+            console.log(res);
+            setApprovalRequestList(res.data.result);
+        })
+    }
 
     // 체크박스 단일 선택
     const handleSingleCheck = (checked, id) => {
@@ -59,9 +42,9 @@ export default function Authorization({ userData }) {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            authUserList.forEach((el) => {
-                console.log(el.id);
-                idArray.push(el.id);
+            approvalRequestList.forEach((el) => {
+                console.log(el.user_id);
+                idArray.push(el.user_id);
             });
             setCheckItems(idArray);
         }
@@ -82,6 +65,9 @@ export default function Authorization({ userData }) {
                 }
             }).then((res) => {
                 console.log(res.data);
+                if (res.data.suc) {
+                    setApprovalRequestList(res.data.result);
+                }
             })
         ))
     }
@@ -98,11 +84,18 @@ export default function Authorization({ userData }) {
                     marginLeft: "16px",
                     fontWeight: "700"
                 }}>회원가입 승인</p>
+                <Search
+                    type="approvalList"
+                    setList={setApprovalRequestList}
+                    getList={getApprovalRequestList}
+                    token={userData.token}
+                    isSearch={isSearch}
+                    setSearch={setSearch}
+                />
                 <div style={{
                     display: "flex",
                     alignItems: "center"
                 }}>
-                    {/* <Search /> */}
                     <button onClick={onAuth} style={{
                         width: "98px",
                         height: "36px",
@@ -124,47 +117,35 @@ export default function Authorization({ userData }) {
                         <th>
                             <input type="checkbox" name="select-all"
                                 onChange={(e) => handleAllCheck(e.target.checked)}
-                                checked={checkItems.length === authUserList?.length ? true : false}
+                                checked={checkItems.length === approvalRequestList?.length ? true : false}
                             />
                         </th>
                         <th>이름</th>
-                        <th>분류</th>
+                        {/* <th>분류</th> */}
                         <th>아이디</th>
                         <th>이메일</th>
                         <th>가입 일자</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {authUserList && authUserList.map((item, index) => (
+                    {approvalRequestList && approvalRequestList.map((item, index) => (
                         <tr key={index}>
                             <td>
-                                <input type="checkbox" name={`select-${item?.id}`}
-                                    onChange={(e) => handleSingleCheck(e.target.checked, item?.id)}
-                                    checked={checkItems.includes(item?.id) ? true : false}
+                                <input type="checkbox" name={`select-${item?.user_id}`}
+                                    onChange={(e) => handleSingleCheck(e.target.checked, item?.user_id)}
+                                    checked={checkItems.includes(item?.user_id) ? true : false}
                                 />
                             </td>
-                            <td>{item.name}</td>
-                            <td>{item.division}</td>
-                            <td>{item.id}</td>
-                            <td>{item.email}</td>
-                            <td>{item.date}</td>
+                            <td>{item.user_name}</td>
+                            {/* <td>{item.division}</td> */}
+                            <td>{item.user_id}</td>
+                            <td>{item.user_email}</td>
+                            <td>{item.user_created_at.split("-")[1]} / {item.user_created_at.split("-")[2].slice(0, 2)}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <footer className="list-nav">
-                <p>
-                    &lt;
-                </p>
-                <button onClick={() => (1)}>1</button>
-                <button onClick={() => (2)}>2</button>
-                <button onClick={() => (2)}>3</button>
-                <button onClick={() => (2)}>4</button>
-                <button onClick={() => (2)}>5</button>
-                <p>
-                    &gt;
-                </p>
-            </footer>
+            <Pagination page={page} setPage={setPage} active={!isSearch} />
         </div>
     );
 }
