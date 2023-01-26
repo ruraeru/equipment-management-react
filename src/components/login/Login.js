@@ -8,7 +8,7 @@ export default function Login({ cookies, setCookie, removeCookie }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (cookies.login) {
+        if (cookies.token) {
             navigate("/home/rentalList");
         }
         else {
@@ -16,8 +16,7 @@ export default function Login({ cookies, setCookie, removeCookie }) {
             removeCookie('login');
         }
         console.log("login render");
-        // window.location.reload();
-    }, [cookies.login, navigate, removeCookie]);
+    }, [cookies.token, navigate, removeCookie]);
     const [input, setInput] = useState({
         user_id: "",
         user_pw: ""
@@ -86,7 +85,7 @@ export default function Login({ cookies, setCookie, removeCookie }) {
                         <Link to="/user/findId">아이디 찾기</Link>
                     </li>
                     <li>
-                        <Link to="/user/changePw">비밀번호 변경</Link>
+                        <Link to="/user/changePw/1">비밀번호 변경</Link>
                     </li>
                     <li>
                         <Link to="/user/signUp/userType">회원가입</Link>
