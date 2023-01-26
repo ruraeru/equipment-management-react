@@ -16,6 +16,9 @@ import SignUp from "components/user/signUp/SignUp";
 import UserType from "components/user/signUp/userType/UserType";
 import Register from "components/user/signUp/userType/register/Register";
 import FindID from "components/user/findID/FindID";
+import ChangePW from "components/user/changePW/ChangePW";
+import RequestRepair from "components/tool/requestRepair/RequestRepair";
+import MyRentalManagement from "components/myRentalList/MyRentalManagement";
 
 export default function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['login']);
@@ -36,10 +39,8 @@ export default function App() {
         <SignUp>
           <Register />
         </SignUp>} />
-      <Route path="/user/findId" element={
-        <>
-          <FindID />
-        </>}
+      <Route path="/user/findId" element={<FindID />} />
+      <Route path="/user/changePw/:page" element={<ChangePW />}
       />
       {/* <Route path="/user/signUp/userType/admin" element={<SignUp />} />
       <Route path="/user/signUp/userType/enterprice" element={<SignUp />} /> */}
@@ -48,46 +49,56 @@ export default function App() {
           <RentalList userData={cookies} />
         </Main>} /> */}
       <Route path="/home/rentalList" element={
-        <Main userData={cookies} logOut={removeCookie}>
-          <RentalList userData={cookies} />
+        <Main userData={cookies}>
+          <RentalList userData={cookies} expriedToken={removeCookie} />
         </Main>} />
       <Route path="/home/rentalLog" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <RentalLog token={cookies.token} />
         </Main>
       } />
       <Route path="/home/myRentalList" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <MyRentalList userData={cookies} />
         </Main>
       } />
       <Route path="/home/myRentalList/reportLog" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <ReportLog userData={cookies} />
         </Main>
       } />
+      <Route path="/home/myRentalList/manage" element={
+        <Main userData={cookies}>
+          <MyRentalManagement userData={cookies} />
+        </Main>
+      } />
       <Route path="/tool/changeInfo" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <ChangeInfo userData={cookies} />
         </Main>
       } />
       <Route path="/tool/addTool" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <AddTool token={cookies.token} />
         </Main>
       } />
       <Route path="/tool/addToolExcel" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <AddToolExcel token={cookies.token} />
         </Main>
       } />
+      <Route path="/tool/requestRepair/:tool_id" element={
+        <Main userData={cookies}>
+          <RequestRepair userData={cookies} />
+        </Main>
+      } />
       <Route path="/user/changeInfo" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <ChangeInfoUser userInfo={cookies} />
         </Main>
       } />
       <Route path="/user/authorization" element={
-        <Main userData={cookies} logOut={removeCookie}>
+        <Main userData={cookies}>
           <Authorization userData={cookies} />
         </Main>
       } />
