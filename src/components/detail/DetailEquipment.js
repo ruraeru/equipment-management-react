@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./DetailEquipment.scss";
 
-export default function DetailEquipment({ data }) {
-    console.log("data", data);
-    const { tool_name, tool_code, tool_id, tool_purchase_division, tool_purchase_date, tool_standard, tool_state }
+export default function DetailEquipment({ data, repairBtnActive, children, due_date }) {
+    const navigate = useNavigate();
+    const { tool_name, tool_code, tool_id, tool_purchase_division, tool_purchase_date, tool_standard, tool_state, tool_update_at }
         = data.result;
     useEffect(() => {
         loadEquipmentImg();
@@ -30,7 +31,8 @@ export default function DetailEquipment({ data }) {
                     </p>
                     <p className="equipment-code">
                         품목 코드 : &nbsp; {tool_code} <br />
-                        자산 번호 : &nbsp; {tool_id}
+                        자산 번호 : &nbsp; {tool_id} <br />
+                        변동 일자 : &nbsp; {tool_update_at.split("-")[0]} / {tool_update_at.split("-")[1]} / {tool_update_at.split("-")[2].slice(0, 2)}
                     </p>
                     <p className="equipment-detail">
                         구입구분 : &nbsp; {tool_purchase_division} <br />
@@ -71,9 +73,21 @@ export default function DetailEquipment({ data }) {
                     </div>
                 }
             </div>
-            {/* <td>
-                <button>기자재 수리 요청</button>
-            </td> */}
+            {due_date &&
+                <div id="due_date">
+                    <p>
+                        <b>{due_date.D_day}</b> <br />
+                        ~ {due_date.due_date.split("-")[1]} / {due_date.due_date.split("-")[2].slice(0, 2)}
+                    </p>
+                </div>
+            }
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+            }}>
+                {repairBtnActive && <button onClick={() => navigate(`/tool/requestRepair/${tool_id}`)}>기자재 수리 요청</button>}
+                {children}
+            </div>
         </div>
     );
 }
