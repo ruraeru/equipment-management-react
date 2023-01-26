@@ -203,7 +203,7 @@ export default function ChangeInfo({ userData }) {
                 </tbody>
             </table>
             <ChangeInfoModal open={modalOpen} close={closeModal} header={repairData?.user_id}>
-                <ReportModal data={repairData} token={userData.token} />
+                <ReportModal data={repairData} userData={userData} />
             </ChangeInfoModal>
             <Pagination page={page} setPage={setPage} active={!isSearch} />
             {/* <Navigation list={["/tool/changeInfo/1", "/tool/changeInfo/2", "/tool/changeInfo/3", "/tool/changeInfo/4", "/tool/changeInfo/5",]} /> */}
