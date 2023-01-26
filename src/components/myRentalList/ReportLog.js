@@ -1,7 +1,8 @@
 import axios from "axios";
 import Pagination from "components/nav/Pagination";
 import Search from "components/search/Search";
-import { useActive, useHeaderActive } from "hooks/useActive";
+import ChangeInfoModal from "components/tool/changeInfo/ChangeInfoModal";
+import ReportModal from "components/tool/changeInfo/ReportModal";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,9 +10,14 @@ export default function ReportLog({ userData }) {
     const [page, setPage] = useState(1);
     const [isSearch, setSearch] = useState(false);
     const [reportList, setReportList] = useState();
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [repairData, setRepairData] = useState();
+
     useEffect(() => {
         getReportList();
     }, [page]);
+
     const getReportList = async () => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/myRepairList/${page}`, {
             headers: {
@@ -19,7 +25,7 @@ export default function ReportLog({ userData }) {
             }
         })
             .then((res) => {
-                console.log(res.data);
+                console.log(res.data.result);
                 if (res.data.suc) {
                     setReportList(res.data.result);
                 }
@@ -28,6 +34,32 @@ export default function ReportLog({ userData }) {
                 console.log(err);
             });
     }
+
+    const getRepairData = async (repair_id) => {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/repair/viewRepair/${repair_id}`, {
+            headers: {
+                token: userData.token
+            }
+        })
+            .then((res) => {
+                console.log(res.data.result);
+                if (res.data.suc) {
+                    setRepairData(res.data.result);
+                }
+                else Promise.reject(new Error(res.data.error));
+            }).catch((err) => {
+                console.log("gerRepairData API", err);
+            });
+        openModal();
+    }
+
+    const openModal = () => {
+        setModalOpen(true);
+    }
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+
     return (
         <div style={{
             width: "100%",
@@ -41,9 +73,9 @@ export default function ReportLog({ userData }) {
                 <Link to="/home/myRentalList/reportLog" className="active">
                     내 건의 내역
                 </Link>
-                {/* <Link to="/home/myRentalList/rentalListManagement">
+                <Link to="/home/myRentalList/manage">
                     대여 관리
-                </Link> */}
+                </Link>
                 <Search
                     type="myReport"
                     setList={setReportList}
@@ -66,7 +98,9 @@ export default function ReportLog({ userData }) {
                 </thead>
                 <tbody>
                     {reportList ? reportList.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={() => {
+                            getRepairData(1);
+                        }}>
                             <td>{item.repair_create_at.split("-")[1] + " / " + item.repair_create_at.split("-")[2].slice(0, 2)}</td>
                             <td>{item.tool.tool_use_division}</td>
                             <td>{item.tool.department_id}</td>
@@ -83,6 +117,9 @@ export default function ReportLog({ userData }) {
                     }
                 </tbody>
             </table>
+            <ChangeInfoModal open={modalOpen} close={closeModal} header={repairData?.user_id} >
+                <ReportModal data={repairData} userData={userData} />
+            </ChangeInfoModal>
             <Pagination page={page} setPage={setPage} active={!isSearch} />
         </div>
     )
