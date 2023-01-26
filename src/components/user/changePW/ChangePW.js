@@ -1,4 +1,5 @@
 import axios from "axios";
+import { authEmail } from "hooks/authEmail";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -74,7 +75,7 @@ export default function ChangePW() {
                                     onChange={onChange}
                                     placeholder="인증번호를 입려해주세요."
                                 />
-                                <button id="emailAuth">인증하기</button>
+                                <button id="emailAuth" onClick={() => authEmail(`${input.email}@${input.atEmail}`)}>인증하기</button>
                             </div>
                         </div>
                         <button
@@ -110,10 +111,17 @@ export default function ChangePW() {
                                 type="password"
                                 placeholder="변경할 비밀번호를 입력해주세요."
                             />
+                            {input.pw !== input.checkPW && input.checkPW.length > 0 &&
+                                <p style={{
+                                    margin: 0,
+                                    fontSize: "14px",
+                                    color: "#E03333"
+                                }}>입력하신 비밀번호가 일치하지 않습니다.</p>
+                            }
                         </div>
                         <button
                             className={(input.pw && input.checkPW) ? "activeLoginBtn" : ""}
-                            disabled={!(input.pw && input.checkPW)}
+                            disabled={!(input.pw && input.checkPW) || (input.pw !== input.checkPW)}
                             onClick={() => {
                                 onChangePW();
                                 navigate("/");
