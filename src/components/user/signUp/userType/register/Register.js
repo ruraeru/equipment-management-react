@@ -42,6 +42,10 @@ export default function Register() {
         // localStorage.setItem("register", JSON.stringify({
         //     ...univInput
         // }));
+        if (univInput.email === "") {
+            alert("필수값을 입력해주세요.");
+            return;
+        }
         const { name, phone_number, univ, department, id, email: domain, atEmail, pw } = univInput;
         const email = `${domain}@${atEmail}`;
         console.log(email);
@@ -55,6 +59,12 @@ export default function Register() {
             department_id: parseInt(department),
         }).then((res) => {
             console.log(res);
+            if (!res.data.suc) {
+                alert(res.data.error);
+            } else {
+                alert("회원가입을 성공적으로 마쳤습니다.");
+                navigate("/");
+            }
         });
     }
 
@@ -238,14 +248,21 @@ export default function Register() {
                                 name="checkPW"
                                 type="password"
                                 onChange={onChange}
-                                placeholder="비밀번호를 입력해주세요."
+                                placeholder="비밀번호를 한 번 더 입력해주세요."
                             />
+                            {univInput.pw !== univInput.checkPW && univInput.checkPW.length > 0 &&
+                                <p style={{
+                                    margin: 0,
+                                    fontSize: "14px",
+                                    color: "#E03333"
+                                }}>입력하신 비밀번호가 일치하지 않습니다.</p>
+                            }
                         </div>
                         <button
                             type="submit"
                             onClick={onSignUp}
                             className={(univInput.pw && univInput.checkPW) ? "activeLoginBtn" : ""}
-                            disabled={!(univInput.pw && univInput.checkPW)}>
+                            disabled={!(univInput.pw && univInput.checkPW) || (univInput.pw !== univInput.checkPW)}>
                             회원가입 완료
                         </button>
                     </form>
