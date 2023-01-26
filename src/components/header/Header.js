@@ -1,9 +1,17 @@
+import { userLicense } from "hooks/userSorting";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import "./Header.scss";
 
-export default function Header({ userData, logOut }) {
+export default function Header({ userData }) {
     const navigate = useNavigate();
+    const [, , removeCookie] = useCookies();
+    const [userType, setUserType] = useState();
+    useEffect(() => {
+        setUserType(userLicense(userData.login.user_license));
+    }, []);
     return (
         <div id="header-wrap">
             <div id="logo">
@@ -11,7 +19,7 @@ export default function Header({ userData, logOut }) {
             </div>
             <div id="location">
                 <p>
-                    <b>{userData?.login?.user_student_number}</b> 교번
+                    <b>{userData?.login?.user_student_number}</b> {userType?.userSort}
                 </p>
                 <p>
                     <b>{userData?.login?.user_name}</b> 님
@@ -20,9 +28,14 @@ export default function Header({ userData, logOut }) {
                     cursor: "pointer"
                 }} onClick={() => {
                     alert("로그아웃 되었습니다.");
-                    logOut("login");
-                    logOut("token");
+                    removeCookie('login', {
+                        path: '/'
+                    });
+                    removeCookie('token', {
+                        path: '/'
+                    });
                     navigate("/");
+                    window.location.reload();
                 }}>
                     로그아웃
                 </p>
