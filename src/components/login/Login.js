@@ -61,7 +61,11 @@ export default function Login({ cookies, setCookie, removeCookie }) {
         <div id="loginWrap">
             <div id="center">
                 <h1>로그인</h1>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit} style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}>
                     <p>아이디</p>
                     <input
                         name="user_id"
@@ -75,7 +79,7 @@ export default function Login({ cookies, setCookie, removeCookie }) {
                         value={input.user_pw}
                         onChange={onInputChange} />
                     <button type="submit"
-                        className={(input.user_id && input.user_pw) ? "activeLoginBtn" : "noneActiveLoginBtn"}
+                        className={(input.user_id && input.user_pw) && "activeLoginBtn"}
                         disabled={!(input.user_id && input.user_pw)}>
                         로그인
                     </button>
