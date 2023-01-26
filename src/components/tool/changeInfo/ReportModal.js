@@ -1,14 +1,14 @@
 import axios from "axios";
 
-export default function ReportModal({ data, token }) {
+export default function ReportModal({ data, userData }) {
     const { repair_create_at, repair_reason, user_id } = data;
     const { tool_name, tool_code, tool_id, tool_purchase_date, tool_purchase_division,
         tool_update_at, tool_state, tool_standard } = data.tool;
-
+    console.log(userData.login);
     const setRentalState = async (tool_id) => {
         await axios.get(`${process.env.REACT_APP_DOMAIN}/tool/cannotRental/${tool_id}`, {
             headers: {
-                token: token
+                token: userData.token
             }
         })
             .then((res) => {
@@ -60,18 +60,20 @@ export default function ReportModal({ data, token }) {
                     <p>{repair_reason}</p>
                 </div>
             </div>
-            <div style={{
-                position: "absolute",
-                right: 20
-            }}>
-                <select className="equipment-state-select" onChange={(e) => {
-                    console.log(e.target.value);
-                    setRentalState(tool_id);
+            {userData.login.user_license < 3 &&
+                <div style={{
+                    position: "absolute",
+                    right: 20
                 }}>
-                    <option>대여 가능</option>
-                    <option>대여 불가</option>
-                </select>
-            </div>
+                    <select className="equipment-state-select" onChange={(e) => {
+                        console.log(e.target.value);
+                        setRentalState(tool_id);
+                    }}>
+                        <option>대여 가능</option>
+                        <option>대여 불가</option>
+                    </select>
+                </div>
+            }
         </div >
     );
 }
