@@ -2,10 +2,17 @@ import axios from "axios";
 
 
 const authEmail = async (user_email, setAuth) => {
-    console.log(user_email)
-    await axios.get(`${process.env.REACT_APP_DOMAIN}/email/${user_email}`)
+    await axios.get(`${process.env.REACT_APP_DOMAIN}/authEmail`, {
+        params: {
+            user_email: user_email
+        }
+    })
         .then((res) => {
-            console.log(res);
+            if (res.data.suc) {
+                setAuth(res.data.code);
+            }
+        }).catch((err) => {
+            console.log(err);
         })
 }
 
