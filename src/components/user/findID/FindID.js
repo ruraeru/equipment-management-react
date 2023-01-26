@@ -1,4 +1,5 @@
 import axios from "axios";
+import { authEmail } from "hooks/authEmail";
 // import { authEmail } from "hooks/authEmail";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,13 +7,6 @@ import { useNavigate } from "react-router-dom";
 import "../signUp/SignUp.scss";
 
 export default function FindID() {
-    const authEmail = async (user_email, setAuth) => {
-        console.log(user_email)
-        await axios.get(`${process.env.REACT_APP_DOMAIN}/email/authEmail/${user_email}`)
-            .then((res) => {
-                console.log(res);
-            })
-    }
     const navigate = useNavigate();
     const [input, setInput] = useState({
         "email": "",
@@ -32,6 +26,11 @@ export default function FindID() {
     }
 
     const onFindID = async () => {
+        console.log(auth.toString(), input.authNumber);
+        if (auth.toString() !== input.authNumber) {
+            alert("인증 번호가 일치하지 않습니다.");
+            return;
+        }
         const { email: domain, atEmail } = input;
         console.log(input);
         const email = `${domain}@${atEmail}`;
@@ -93,9 +92,10 @@ export default function FindID() {
                                     id="emailAuth"
                                     onClick={() => {
                                         console.log(`${input.email}@${input.atEmail}`);
-                                        authEmail(`${input.email}@${input.atEmail}`);
+                                        authEmail(`${input.email}@${input.atEmail}`, setAuth);
                                     }}>
-                                    인증하기</button>
+                                    인증하기
+                                </button>
                             </div>
                         </div>
                         <button

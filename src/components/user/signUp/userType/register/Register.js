@@ -1,4 +1,5 @@
 import axios from "axios";
+import { authEmail } from "hooks/authEmail";
 import { useEffect } from "react";
 import { useState } from "react"
 import { SiJitsi } from "react-icons/si";
@@ -16,13 +17,39 @@ export default function Register() {
         "email": "",
         "atEmail": "",
         "pw": "",
-        "checkPW": ""
+        "checkPW": "",
+        "authNumber": "",
+        "confrimID": false
     });
     const [authNumber, setAuthNumber] = useState();
 
     useEffect(() => {
         console.log(univInput);
     }, [univInput]);
+
+    const onConfirmID = async () => {
+        await axios.get(`http://121.88.167.247:5080/user/confirmId/`, {
+            params: {
+                user_id: univInput.id
+            }
+        }).then((res) => {
+            console.log(res);
+            if (res.data.suc) {
+                alert("사용 가능한 아이디입니다.");
+                setUnivInput({
+                    ...univInput,
+                    "confrimID": true
+                });
+            }
+            else {
+                alert("중복된 아이디입니다.");
+                setUnivInput({
+                    ...univInput,
+                    "confrimID": true
+                });
+            }
+        })
+    }
     const onChange = (e) => {
         const { name, value } = e.target;
         setUnivInput({
@@ -38,10 +65,16 @@ export default function Register() {
         navigate(`/user/signUp/userType/${"student"}/${parseInt(page) + 1}`)
     }
 
+    const authEmailNumber = () => {
+        console.log(authNumber, univInput.authNumber)
+        if (authNumber.toString() !== univInput.authNumber) {
+            alert("인증번호가 다릅니다.");
+            return;
+        }
+        setRegisterData();
+    }
+
     const onSignUp = async () => {
-        // localStorage.setItem("register", JSON.stringify({
-        //     ...univInput
-        // }));
         if (univInput.email === "") {
             alert("필수값을 입력해주세요.");
             return;
@@ -143,7 +176,7 @@ export default function Register() {
                                 onChange={onChange}
                                 placeholder="아이디를 입력해주세요."
                             />
-                            <button id="checkID" onClick={onSignUp}>중복 확인</button>
+                            <button id="checkID" onClick={onConfirmID}>중복 확인</button>
                         </div>
                         <div id="email">
                             <p>이메일</p>
@@ -170,7 +203,7 @@ export default function Register() {
                     </div>
                     <button
                         onClick={setRegisterData}
-                        disabled={!(univInput.id && (univInput.email && univInput.atEmail))}
+                        disabled={!((univInput.id && univInput.confrimID) && (univInput.email && univInput.atEmail))}
                         className={(univInput.id && (univInput.email && univInput.atEmail)) ? "activeLoginBtn" : ""}>
                         다음
                     </button>
@@ -207,19 +240,25 @@ export default function Register() {
                         <div>
                             <p>인증번호</p>
                             <input
-                                onChange={(e) => {
-                                    setAuthNumber(e.target.value);
-                                }}
+                                name="authNumber"
+                                value={univInput.authNumber}
+                                onChange={onChange}
                                 style={{
                                     width: "384px",
                                     marginRight: "16px"
                                 }}
                                 placeholder="인증번호를 입력해주세요."
                             />
-                            <button id="emailAuth">이메일 인증</button>
+                            <button
+                                id="emailAuth"
+                                onClick={() => {
+                                    authEmail(`${univInput.email}@${univInput.atEmail}`, setAuthNumber)
+                                }}>
+                                이메일 인증
+                            </button>
                         </div>
                         <button
-                            onClick={setRegisterData}
+                            onClick={authEmailNumber}
                             className={authNumber ? "activeLoginBtn" : ""}
                             disabled={authNumber ? false : true}>
                             다음

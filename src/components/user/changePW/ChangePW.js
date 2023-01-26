@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function ChangePW() {
     const page = useParams().page;
     const navigate = useNavigate();
+    const [auth, setAuth] = useState();
     const [input, setInput] = useState({
         "email": "",
         "atEmail": "",
@@ -13,6 +14,15 @@ export default function ChangePW() {
         "pw": "",
         "checkPW": ""
     });
+
+    const authEmailNumber = () => {
+        console.log(auth, input.authNumber)
+        if (auth.toString() !== input.authNumber) {
+            alert("인증번호가 일치하지 않습니다.");
+            return;
+        }
+        navigate("/user/changePw/2");
+    }
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -75,13 +85,15 @@ export default function ChangePW() {
                                     onChange={onChange}
                                     placeholder="인증번호를 입려해주세요."
                                 />
-                                <button id="emailAuth" onClick={() => authEmail(`${input.email}@${input.atEmail}`)}>인증하기</button>
+                                <button
+                                    id="emailAuth"
+                                    onClick={() => authEmail(`${input.email}@${input.atEmail}`, setAuth)}>
+                                    인증하기
+                                </button>
                             </div>
                         </div>
                         <button
-                            onClick={() => {
-                                navigate("/user/changePw/2");
-                            }}
+                            onClick={authEmailNumber}
                             className={(input.authNumber && (input.email && input.atEmail)) ? "activeLoginBtn" : ""}
                             disabled={!(input.authNumber && (input.email && input.atEmail))}>
                             다음
