@@ -28,11 +28,7 @@ export default function MyRentalManagement({ userData }) {
             }
         })
             .then((res) => {
-                if (res.data.suc === false) return;
-                setRentalList(res.data);
-                // if (res.data.suc) {
-                // }
-                // else Promise.reject(new Error(res.data.error));
+                setRentalList(res.data.result);
             }).catch(err => {
                 console.log(err);
             });
@@ -47,7 +43,6 @@ export default function MyRentalManagement({ userData }) {
                 token: userData.token
             }
         }).then(res => {
-            console.log(res.data.tool);
             if (res.data.suc) {
                 setRentalData(res.data.tool);
             }
@@ -90,7 +85,7 @@ export default function MyRentalManagement({ userData }) {
                     대여 관리
                 </Link>
                 <Search
-                    type="myRental"
+                    type="myRentalManage"
                     setList={setRentalList}
                     getList={getMyRentalList}
                     token={userData.token}

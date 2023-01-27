@@ -21,7 +21,6 @@ export default function MyRentalList({ userData }) {
         })
             .then((res) => {
                 console.log(res);
-                // if (res.data.suc === false) return;
                 setRentalList(res.data.result);
             }).catch(err => {
                 console.log(err);
