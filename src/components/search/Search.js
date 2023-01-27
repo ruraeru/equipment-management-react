@@ -97,7 +97,20 @@ export default function Search({ type, setList, getList, token, setSearch, isSea
                     token: token
                 }
             }).then((res) => {
-                console.log(res);
+                console.log("myrentalSearch", res);
+                setList(res.data.result);
+            }).catch((err) => {
+                getList();
+            });
+            return;
+        }
+
+        if (type === "myRentalManage") {
+            await axios.get(`${process.env.REACT_APP_DOMAIN}/rental/searchMyRentalManagement/${input}/${page}`, {
+                headers: {
+                    token: token
+                }
+            }).then((res) => {
                 setList(res.data.result);
             }).catch((err) => {
                 getList();
