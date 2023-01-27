@@ -99,11 +99,11 @@ export default function ReportLog({ userData }) {
                 <tbody>
                     {reportList ? reportList.map((item, index) => (
                         <tr key={index} onClick={() => {
-                            getRepairData(1);
+                            getRepairData(item.repair_id);
                         }}>
                             <td>{item.repair_create_at.split("-")[1] + " / " + item.repair_create_at.split("-")[2].slice(0, 2)}</td>
                             <td>{item.tool.tool_use_division}</td>
-                            <td>{item.tool.department_id}</td>
+                            <td>{item.tool.department.department_name}</td>
                             <td>{item.tool.tool_name}</td>
                             <td>{item.tool.tool_id}</td>
                             <td>{item.tool.tool_state}</td>
