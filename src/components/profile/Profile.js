@@ -17,8 +17,9 @@ export default function Profile({ userData }) {
         })
             .then((res) => {
                 console.log(res.data);
-                if (res.data.suc === false) return;
-                setRentalList(res.data);
+                if (res.data.suc) {
+                    setRentalList(res.data.result);
+                }
             }).catch(err => {
                 console.log(err);
             });
