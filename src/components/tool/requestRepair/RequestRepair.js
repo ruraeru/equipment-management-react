@@ -1,11 +1,12 @@
 import axios from "axios";
 import DetailEquipment from "components/detail/DetailEquipment";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components";
 
 export default function RequestRepair({ userData }) {
     const tool_id = useParams().tool_id;
+    const navigate = useNavigate();
     const [equipmentData, setEquipmentData] = useState();
     const [repairReason, setRepairReason] = useState("");
 
@@ -19,7 +20,14 @@ export default function RequestRepair({ userData }) {
             tool_id: tool_id,
             user_id: userData.login.user_id
         }).then((res) => {
-            console.log(res);
+            // alert()
+            if (res.data.suc) {
+                alert("해당 기자재 수리 요청이 완료되었습니다.");
+                navigate('/home/myRentalList/reportLog');
+            }
+            else {
+                alert(res.data.error);
+            }
         })
     }
 

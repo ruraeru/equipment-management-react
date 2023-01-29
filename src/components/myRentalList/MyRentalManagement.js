@@ -5,9 +5,10 @@ import Pagination from "components/nav/Pagination";
 import Search from "components/search/Search";
 import { useHeaderActive } from "hooks/useActive";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MyRentalManagement({ userData }) {
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [isSearch, setSearch] = useState(false);
     const [rentalList, setRentalList] = useState();
@@ -57,7 +58,12 @@ export default function MyRentalManagement({ userData }) {
         await axios.post(`${process.env.REACT_APP_DOMAIN}/rental/extension`, {
             rental_id: rental_id
         }).then((res) => {
-            console.log(res);
+            if (res.data.suc) {
+                alert(res.data.extension);
+                navigate("/home/myRentalList/manage");
+                window.location.reload();
+            }
+            else alert(res.data.error);
         });
     }
 
