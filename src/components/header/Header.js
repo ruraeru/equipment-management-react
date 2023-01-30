@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
+import LogoImg from "../../images/logo.svg";
+import LogoName from "../../images/logoName.svg";
 import "./Header.scss";
 
 export default function Header({ userData }) {
@@ -15,7 +17,16 @@ export default function Header({ userData }) {
     return (
         <div id="header-wrap">
             <div id="logo">
-                <a href="/">로고</a>
+                <a href="/">
+                    <div style={{
+                        display: "flex",
+                        alignContent: "center",
+                        justifyContent: "center"
+                    }}>
+                        <img src={LogoImg} id="logo" alt="logo" />
+                        <img src={LogoName} id="logoName" alt="logo" />
+                    </div>
+                </a>
             </div>
             <div id="location">
                 <p>
