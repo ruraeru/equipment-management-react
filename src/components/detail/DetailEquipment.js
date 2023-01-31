@@ -1,18 +1,21 @@
 import axios from "axios";
+import { userLicense } from "hooks/userSorting";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DetailEquipment.scss";
 
 export default function DetailEquipment({ data, repairBtnActive, children, due_date }) {
+    console.log(data);
     const navigate = useNavigate();
     const { tool_name, tool_code, tool_id, tool_purchase_division, tool_purchase_date, tool_standard, tool_state, tool_update_at }
         = data.result;
     useEffect(() => {
+
         loadEquipmentImg();
     }, []);
 
     const loadEquipmentImg = async () => {
-        const img = document.querySelector("img");
+        const img = document.getElementById("equipment-img");
         if (data.image) {
             img.src = `${process.env.REACT_APP_DOMAIN}/tool/${data.image.img_url}`;
         }
@@ -22,7 +25,7 @@ export default function DetailEquipment({ data, repairBtnActive, children, due_d
             height: "218px"
         }}>
             <div>
-                <img src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
+                <img id="equipment-img" src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx" alt="태블릿" />
             </div>
             <div id="information">
                 <div>
@@ -57,7 +60,7 @@ export default function DetailEquipment({ data, repairBtnActive, children, due_d
                             <p style={{
                                 marginBottom: 0
                             }}>
-                                대여자: &nbsp; {data.rental.user.user_name}(학부생) <br />
+                                대여자: &nbsp; {data.rental.user.user_name} ({userLicense(data.rental.user.user_license).userType}) <br />
                             </p>
                             <p style={{
                                 textAlign: "right",
@@ -67,7 +70,7 @@ export default function DetailEquipment({ data, repairBtnActive, children, due_d
                                 {data.rental?.rental_date?.split("-")[0]} / {data.rental?.rental_date?.split("-")[1]} / {data.rental?.rental_date?.split("-")[2].slice(0, 2)} <br />
                                 ~ {data.rental?.rental_due_date?.split("-")[0]} / {data.rental?.rental_due_date?.split("-")[1]} / {data.rental?.rental_due_date?.split("-")[2].slice(0, 2)}
                                 <br />
-                                (남은 기간 : {data.rental?.rental_due_date?.split("-")[2].slice(0, 2) - new Date().getDate()} 일)
+                                (남은 기간 : {Math.floor((new Date(data.rental.rental_due_date.split("T")[0]) - new Date()) / (1000 * 60 * 60 * 24))}일)
                             </p>
                         </div>
                     </div>

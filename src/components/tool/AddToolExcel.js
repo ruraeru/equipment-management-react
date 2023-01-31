@@ -4,9 +4,11 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import "./AddTool.scss";
 import ScreenData from "./ScreenData";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AddToolExcel({ token }) {
     // const [__html, setHTML] = useState("");
+    const navigate = useNavigate();
     const [image, setImage] = useState();
     const [json, setJSON] = useState();
 
@@ -45,7 +47,7 @@ export default function AddToolExcel({ token }) {
             const reader = new FileReader();
 
             reader.onload = e => {
-                const previewImage = document.querySelector("img");
+                const previewImage = document.getElementById("equipment-img");
                 previewImage.src = e.target.result;
                 // setValues({
                 //     ...values,
@@ -97,6 +99,10 @@ export default function AddToolExcel({ token }) {
         })
             .then((res) => {
                 console.log(res);
+                if (res.data.suc) {
+                    alert("기자재 추가에 성공하였습니다.");
+                    navigate("/home/rentalList");
+                }
             }).catch((err) => {
                 console.log(err);
             });
@@ -146,7 +152,8 @@ export default function AddToolExcel({ token }) {
                         flexDirection: "row",
                     }}>
                         <img
-                            src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx"
+                            id="equipment-img"
+                            src="https://image.kkday.com/v2/image/get/s1.kkday.com/campaign_1345/20210113072959_BYrad/jpg"
                             alt="태블릿" />
                         <div>
                             <label>이미지 파일 불러오기</label>

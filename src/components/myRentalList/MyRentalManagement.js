@@ -29,6 +29,7 @@ export default function MyRentalManagement({ userData }) {
             }
         })
             .then((res) => {
+                console.log(res);
                 setRentalList(res.data.result);
             }).catch(err => {
                 console.log(err);

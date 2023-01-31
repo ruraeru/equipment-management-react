@@ -28,7 +28,7 @@ export default function Register() {
     }, [univInput]);
 
     const onConfirmID = async () => {
-        await axios.get(`http://121.88.167.247:5080/user/confirmId/`, {
+        await axios.get(`${process.env.REACT_APP_DOMAIN}/user/confirmId`, {
             params: {
                 user_id: univInput.id
             }
@@ -45,7 +45,7 @@ export default function Register() {
                 alert("중복된 아이디입니다.");
                 setUnivInput({
                     ...univInput,
-                    "confrimID": true
+                    "confrimID": false
                 });
             }
         })

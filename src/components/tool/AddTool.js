@@ -81,7 +81,7 @@ export default function AddTool({ token }) {
             const reader = new FileReader();
 
             reader.onload = e => {
-                const previewImage = document.querySelector("img");
+                const previewImage = document.getElementById("equipment-img");
                 previewImage.src = e.target.result;
                 // setValues({
                 //     ...values,
@@ -98,7 +98,8 @@ export default function AddTool({ token }) {
             <form onSubmit={onSubmit} encType="multipart/form-data">
                 <div id="input-filed-wrap">
                     <img
-                        src="https://www.lenovo.com/medias/lenovo-tablet-lenovo-tab-p12-pro-subseries-hero.png?context=bWFzdGVyfHJvb3R8MjM1NTEwfGltYWdlL3BuZ3xoOTgvaGQ3LzEyNjgwMzcxOTI5MTE4LnBuZ3wzZjU1YzNmYmMzZDgxOTQ5NjBkZjU2ZThhNmUxZGMzY2E2ZjM3ZjM1OGMyZDA4YzhjNTBhNjUxZDRhMDlhZjgx"
+                        id="equipment-img"
+                        src="https://image.kkday.com/v2/image/get/s1.kkday.com/campaign_1345/20210113072959_BYrad/jpg"
                         alt="태블릿"
                         style={{
                             width: "240px",

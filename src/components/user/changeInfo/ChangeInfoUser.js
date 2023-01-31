@@ -222,23 +222,23 @@ export default function ChangeInfoUser({ userInfo }) {
                                         // minWidth: "300px",
                                         marginRight: "8px"
                                     }}>
-                                        <span>{item.tool.tool_name}</span> &nbsp; 대여 중
+                                        <span>{item.tool.tool_name}</span> &nbsp; {item.tool.tool_state}
                                         <p id="code">
-                                            품목 코드 : 9115 <br />
+                                            품목 코드 : {item.tool.tool_code} <br />
                                             자산번호 : {item.tool.tool_id}
                                         </p>
                                         <p id="info">
-                                            구입 구분 : 교비 (등록금) <br />
-                                            구입 일자 : 2017년 2월 14일 <br />
-                                            물품 규격 : LG G패드 3 8.0 Wi-Fi 32G
+                                            구입 구분 : {item.tool.tool_purchase_division} <br />
+                                            구입 일자 : {item.tool.tool_purchase_date.split("-")[0]}년 {item.tool.tool_purchase_date.split("-")[1]}월 {item.tool.tool_purchase_date.split("-")[2].slice(0, 2)}일 <br />
+                                            물품 규격 : {item.tool.tool_standard}
                                         </p>
                                     </div>
                                 </div>
                                 <div style={{
                                     textAlign: "center",
                                 }}>
-                                    <h3>{item.rental_state}</h3>
-                                    <p>~ {item.rental_date.split("-")[1]} / {item.rental_date.split("-")[2].slice(0, 2)}</p>
+                                    <h3>{item.tool.tool_state}</h3>
+                                    {/* <p>~ {item.rental_date.split("-")[1]} / {item.rental_date.split("-")[2].slice(0, 2)}</p> */}
                                 </div>
                             </RentalPackage>
                         ))}

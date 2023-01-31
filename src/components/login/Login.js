@@ -77,6 +77,7 @@ export default function Login({ cookies, setCookie, removeCookie }) {
                         name="user_pw"
                         placeholder="비밀번호를 입력해주세요."
                         value={input.user_pw}
+                        type="password"
                         onChange={onInputChange} />
                     <button type="submit"
                         className={(input.user_id && input.user_pw) && "activeLoginBtn"}

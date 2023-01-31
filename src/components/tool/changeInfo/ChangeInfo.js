@@ -159,7 +159,7 @@ export default function ChangeInfo({ userData }) {
                                 <td>{item?.tool?.tool_use_division}</td>
                                 {/* <td>{item?.tool?.department_id}</td> */}
                                 <td>{item?.tool?.tool_name}</td>
-                                <td>{item?.tool?.tool_code}</td>
+                                <td>{item?.tool?.tool_id}</td>
                                 <td>{item?.tool?.tool_state}</td>
                             </tr>
                         ))
@@ -194,7 +194,7 @@ export default function ChangeInfo({ userData }) {
                                     <td>{item.tool.tool_use_division}</td>
                                     {/* <td>{item.tool.department_id}</td> */}
                                     <td>{item.tool.tool_name}</td>
-                                    <td>{item.tool.tool_code}</td>
+                                    <td>{item.tool.tool_id}</td>
                                     <td>{item.tool.tool_state}</td>
                                 </tr>
                                 : null
